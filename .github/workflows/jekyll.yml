@@ -65,7 +65,7 @@ jobs:
           python-version: "3.9"
       
       - name: Install Jupyter
-        run: pip install jupyter
+        run: pip install notebook
 
   # Deployment job
   deploy:
