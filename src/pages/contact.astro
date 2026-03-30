@@ -1,0 +1,33 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import PageIntro from "../components/PageIntro.astro";
+import IconDock from "../components/IconDock.astro";
+import { contactMethods, navLinks, profileLinks, siteMeta } from "../data/site.js";
+---
+
+<BaseLayout title={`Contact | ${siteMeta.name}`} description="Contact information and external profiles for Anshul Choudhary.">
+  <div class="noise" aria-hidden="true"></div>
+  <div class="site-shell">
+    <SiteHeader navLinks={navLinks} currentPath="/contact" />
+
+    <main class="page-stack">
+      <PageIntro
+        eyebrow="Contact"
+        title="Open to scientific conversation, collaboration, and thoughtful exchange."
+        body="The best way to reach me is by email. For publications and public academic records, Scholar and ORCID are the most reliable references."
+      />
+
+      <section class="contact-list">
+        {contactMethods.map((method) => (
+          <article class="contact-card surface-card">
+            <p class="contact-label">{method.label}</p>
+            <h3><a class="article-link" href={method.href} target={method.href.startsWith("mailto:") ? undefined : "_blank"} rel={method.href.startsWith("mailto:") ? undefined : "noreferrer"}>{method.value}</a></h3>
+          </article>
+        ))}
+      </section>
+    </main>
+
+    <IconDock links={profileLinks} />
+  </div>
+</BaseLayout>

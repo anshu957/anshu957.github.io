@@ -1,0 +1,45 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import PageIntro from "../components/PageIntro.astro";
+import IconDock from "../components/IconDock.astro";
+import ResearchHighlights from "../components/ResearchHighlights.astro";
+import { navLinks, profileLinks, siteMeta } from "../data/site.js";
+import { researchThemes, selectedPublications } from "../data/research.js";
+---
+
+<BaseLayout title={`Research | ${siteMeta.name}`} description="Research themes and selected publications by Anshul Choudhary.">
+  <div class="noise" aria-hidden="true"></div>
+  <div class="site-shell">
+    <SiteHeader navLinks={navLinks} currentPath="/research" />
+
+    <main class="page-stack">
+      <PageIntro
+        eyebrow="Research"
+        title="Dynamics, inference, and scientific machine learning."
+        body="My work sits between biological questions and dynamical descriptions: single-cell state transitions, behavioral phenotyping, and structure-aware learning for nonlinear systems."
+      />
+
+      <ResearchHighlights items={researchThemes} title="Themes" kicker="Focus" />
+
+      <section class="section-block" aria-labelledby="publications-heading">
+        <div class="section-heading">
+          <p class="section-kicker">Selected publications</p>
+          <h2 id="publications-heading">Recent and representative work</h2>
+        </div>
+
+        <div class="publication-grid">
+          {selectedPublications.map((item) => (
+            <article class="publication-card surface-card">
+              <p class="publication-meta">{item.venue} · {item.year}</p>
+              <h3><a class="article-link" href={item.href} target="_blank" rel="noreferrer">{item.title}</a></h3>
+              <p>{item.summary}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+    </main>
+
+    <IconDock links={profileLinks} note="Scholar / ORCID / code" />
+  </div>
+</BaseLayout>

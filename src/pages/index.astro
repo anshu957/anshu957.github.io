@@ -1,0 +1,37 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import HeroPanel from "../components/HeroPanel.astro";
+import BlogList from "../components/BlogList.astro";
+import IconDock from "../components/IconDock.astro";
+import { navLinks, profileLinks, siteMeta } from "../data/site.js";
+
+const posts = (await getCollection("blog", ({ data }) => !data.draft))
+  .sort(
+    (a, b) =>
+      Number(b.data.featured) - Number(a.data.featured) ||
+      b.data.date.getTime() - a.data.date.getTime(),
+  )
+  .slice(0, 3);
+---
+
+<BaseLayout
+  title={`${siteMeta.name} | ${siteMeta.role}`}
+  description={siteMeta.description}
+>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="site-shell">
+    <SiteHeader navLinks={navLinks} currentPath="/" />
+
+    <main class="page-stack">
+      <HeroPanel siteMeta={siteMeta} />
+
+      <div class="home-sections home-sections--single">
+        <BlogList posts={posts} title="Recent writing" kicker="Blog" variant="spotlight" />
+      </div>
+    </main>
+
+    <IconDock links={profileLinks} note="Find me elsewhere" />
+  </div>
+</BaseLayout>

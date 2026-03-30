@@ -1,0 +1,53 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import PageIntro from "../components/PageIntro.astro";
+import IconDock from "../components/IconDock.astro";
+import { navLinks, profileLinks, siteMeta } from "../data/site.js";
+---
+
+<BaseLayout title={`About | ${siteMeta.name}`} description="Background, research trajectory, and working approach of Anshul Choudhary.">
+  <div class="noise" aria-hidden="true"></div>
+  <div class="site-shell">
+    <SiteHeader navLinks={navLinks} currentPath="/about" />
+
+    <main class="page-stack">
+      <PageIntro
+        eyebrow="About"
+        title="Physics-trained, biology-facing, and drawn to dynamics."
+        body="I work at the intersection of genomics, machine learning, and nonlinear dynamics, building computational tools for biological discovery while keeping one foot in the mathematical language of attractors, networks, and stability."
+      />
+
+      <section class="page-grid">
+        <aside class="page-sidebar">
+          <div class="paper-panel contact-card">
+            <p class="section-kicker">Current role</p>
+            <h3>{siteMeta.role}</h3>
+            <p>{siteMeta.institution}</p>
+            <p class="meta-line">{siteMeta.location}</p>
+          </div>
+        </aside>
+
+        <div class="page-main prose about-copy">
+          <p>
+            At The Jackson Laboratory, I work on predicting cell fate dynamics by combining RNA velocity with ideas from dynamical systems, especially attractors and basins of attraction. I am interested in descriptions that move beyond static clustering and better capture how cellular states evolve.
+          </p>
+
+          <p>
+            In parallel, I contribute to computational phenotyping work, including the JAX Animal Behavior System (JABS), where machine learning, careful measurement, and genetics come together in a usable platform for laboratory science.
+          </p>
+
+          <p>
+            My background is in physics. My doctoral work focused on dynamical systems on graphs and the emergence of rich spatio-temporal behavior in complex systems. After that, I worked in theoretical ecology and later in scientific machine learning, where I studied physics-aware neural networks and interpretable latent representations for dynamical prediction.
+          </p>
+
+          <p>
+            Across these domains, the recurring question is the same: how do we build models that remain faithful to structure, transition, and mechanism, rather than merely fitting observations?
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <IconDock links={profileLinks} />
+  </div>
+</BaseLayout>

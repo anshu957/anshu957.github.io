@@ -1,0 +1,969 @@
+{
+  "name": "soundwave-icons",
+  "description": "A reusable 8-bit sound-wave icon set on an 8x8 grid.",
+  "grid": "8x8",
+  "count": 80,
+  "generatedAt": "2026-03-28T23:10:03.609Z",
+  "files": [
+    {
+      "id": 1,
+      "file": "soundwave-001.svg",
+      "title": "Bar Wave 01",
+      "family": "bars",
+      "palette": [
+        "#f5edda",
+        "#d0a25d",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 2,
+      "file": "soundwave-002.svg",
+      "title": "Mirror Wave 01",
+      "family": "mirror",
+      "palette": [
+        "#efe4cf",
+        "#b85a43",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 3,
+      "file": "soundwave-003.svg",
+      "title": "Pulse Wave 01",
+      "family": "pulse",
+      "palette": [
+        "#f2e8d7",
+        "#576d53",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 4,
+      "file": "soundwave-004.svg",
+      "title": "Ripple Echo 01",
+      "family": "ripple",
+      "palette": [
+        "#f6ecdb",
+        "#7686b7",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 5,
+      "file": "soundwave-005.svg",
+      "title": "Speaker Wave 01",
+      "family": "speaker",
+      "palette": [
+        "#f1e6d2",
+        "#6fb3a6",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 6,
+      "file": "soundwave-006.svg",
+      "title": "Beam Wave 01",
+      "family": "beam",
+      "palette": [
+        "#eee1c7",
+        "#d67b7b",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 7,
+      "file": "soundwave-007.svg",
+      "title": "Stereo Wave 01",
+      "family": "stereo",
+      "palette": [
+        "#f7eedf",
+        "#9d86c8",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 8,
+      "file": "soundwave-008.svg",
+      "title": "Spark Wave 01",
+      "family": "spark",
+      "palette": [
+        "#f0e4cf",
+        "#d0a25d",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 9,
+      "file": "soundwave-009.svg",
+      "title": "Oscillator Wave 01",
+      "family": "oscillator",
+      "palette": [
+        "#f5edda",
+        "#d0a25d",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 10,
+      "file": "soundwave-010.svg",
+      "title": "Wavelet 01",
+      "family": "wavelet",
+      "palette": [
+        "#efe4cf",
+        "#b85a43",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 11,
+      "file": "soundwave-011.svg",
+      "title": "Echo Wave 01",
+      "family": "echo",
+      "palette": [
+        "#f2e8d7",
+        "#576d53",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 12,
+      "file": "soundwave-012.svg",
+      "title": "Bar Wave 02",
+      "family": "bars",
+      "palette": [
+        "#f6ecdb",
+        "#7686b7",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 13,
+      "file": "soundwave-013.svg",
+      "title": "Mirror Wave 02",
+      "family": "mirror",
+      "palette": [
+        "#f1e6d2",
+        "#6fb3a6",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 14,
+      "file": "soundwave-014.svg",
+      "title": "Pulse Wave 02",
+      "family": "pulse",
+      "palette": [
+        "#eee1c7",
+        "#d67b7b",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 15,
+      "file": "soundwave-015.svg",
+      "title": "Ripple Echo 02",
+      "family": "ripple",
+      "palette": [
+        "#f7eedf",
+        "#9d86c8",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 16,
+      "file": "soundwave-016.svg",
+      "title": "Speaker Wave 02",
+      "family": "speaker",
+      "palette": [
+        "#f0e4cf",
+        "#d0a25d",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 17,
+      "file": "soundwave-017.svg",
+      "title": "Beam Wave 02",
+      "family": "beam",
+      "palette": [
+        "#f5edda",
+        "#d0a25d",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 18,
+      "file": "soundwave-018.svg",
+      "title": "Stereo Wave 02",
+      "family": "stereo",
+      "palette": [
+        "#efe4cf",
+        "#b85a43",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 19,
+      "file": "soundwave-019.svg",
+      "title": "Spark Wave 02",
+      "family": "spark",
+      "palette": [
+        "#f2e8d7",
+        "#576d53",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 20,
+      "file": "soundwave-020.svg",
+      "title": "Oscillator Wave 02",
+      "family": "oscillator",
+      "palette": [
+        "#f6ecdb",
+        "#7686b7",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 21,
+      "file": "soundwave-021.svg",
+      "title": "Wavelet 02",
+      "family": "wavelet",
+      "palette": [
+        "#f1e6d2",
+        "#6fb3a6",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 22,
+      "file": "soundwave-022.svg",
+      "title": "Echo Wave 02",
+      "family": "echo",
+      "palette": [
+        "#eee1c7",
+        "#d67b7b",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 23,
+      "file": "soundwave-023.svg",
+      "title": "Bar Wave 03",
+      "family": "bars",
+      "palette": [
+        "#f7eedf",
+        "#9d86c8",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 24,
+      "file": "soundwave-024.svg",
+      "title": "Mirror Wave 03",
+      "family": "mirror",
+      "palette": [
+        "#f0e4cf",
+        "#d0a25d",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 25,
+      "file": "soundwave-025.svg",
+      "title": "Pulse Wave 03",
+      "family": "pulse",
+      "palette": [
+        "#f5edda",
+        "#d0a25d",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 26,
+      "file": "soundwave-026.svg",
+      "title": "Ripple Echo 03",
+      "family": "ripple",
+      "palette": [
+        "#efe4cf",
+        "#b85a43",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 27,
+      "file": "soundwave-027.svg",
+      "title": "Speaker Wave 03",
+      "family": "speaker",
+      "palette": [
+        "#f2e8d7",
+        "#576d53",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 28,
+      "file": "soundwave-028.svg",
+      "title": "Beam Wave 03",
+      "family": "beam",
+      "palette": [
+        "#f6ecdb",
+        "#7686b7",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 29,
+      "file": "soundwave-029.svg",
+      "title": "Stereo Wave 03",
+      "family": "stereo",
+      "palette": [
+        "#f1e6d2",
+        "#6fb3a6",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 30,
+      "file": "soundwave-030.svg",
+      "title": "Spark Wave 03",
+      "family": "spark",
+      "palette": [
+        "#eee1c7",
+        "#d67b7b",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 31,
+      "file": "soundwave-031.svg",
+      "title": "Oscillator Wave 03",
+      "family": "oscillator",
+      "palette": [
+        "#f7eedf",
+        "#9d86c8",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 32,
+      "file": "soundwave-032.svg",
+      "title": "Wavelet 03",
+      "family": "wavelet",
+      "palette": [
+        "#f0e4cf",
+        "#d0a25d",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 33,
+      "file": "soundwave-033.svg",
+      "title": "Echo Wave 03",
+      "family": "echo",
+      "palette": [
+        "#f5edda",
+        "#d0a25d",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 34,
+      "file": "soundwave-034.svg",
+      "title": "Bar Wave 04",
+      "family": "bars",
+      "palette": [
+        "#efe4cf",
+        "#b85a43",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 35,
+      "file": "soundwave-035.svg",
+      "title": "Mirror Wave 04",
+      "family": "mirror",
+      "palette": [
+        "#f2e8d7",
+        "#576d53",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 36,
+      "file": "soundwave-036.svg",
+      "title": "Pulse Wave 04",
+      "family": "pulse",
+      "palette": [
+        "#f6ecdb",
+        "#7686b7",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 37,
+      "file": "soundwave-037.svg",
+      "title": "Ripple Echo 04",
+      "family": "ripple",
+      "palette": [
+        "#f1e6d2",
+        "#6fb3a6",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 38,
+      "file": "soundwave-038.svg",
+      "title": "Speaker Wave 04",
+      "family": "speaker",
+      "palette": [
+        "#eee1c7",
+        "#d67b7b",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 39,
+      "file": "soundwave-039.svg",
+      "title": "Beam Wave 04",
+      "family": "beam",
+      "palette": [
+        "#f7eedf",
+        "#9d86c8",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 40,
+      "file": "soundwave-040.svg",
+      "title": "Stereo Wave 04",
+      "family": "stereo",
+      "palette": [
+        "#f0e4cf",
+        "#d0a25d",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 41,
+      "file": "soundwave-041.svg",
+      "title": "Spark Wave 04",
+      "family": "spark",
+      "palette": [
+        "#f5edda",
+        "#d0a25d",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 42,
+      "file": "soundwave-042.svg",
+      "title": "Oscillator Wave 04",
+      "family": "oscillator",
+      "palette": [
+        "#efe4cf",
+        "#b85a43",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 43,
+      "file": "soundwave-043.svg",
+      "title": "Wavelet 04",
+      "family": "wavelet",
+      "palette": [
+        "#f2e8d7",
+        "#576d53",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 44,
+      "file": "soundwave-044.svg",
+      "title": "Echo Wave 04",
+      "family": "echo",
+      "palette": [
+        "#f6ecdb",
+        "#7686b7",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 45,
+      "file": "soundwave-045.svg",
+      "title": "Bar Wave 05",
+      "family": "bars",
+      "palette": [
+        "#f1e6d2",
+        "#6fb3a6",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 46,
+      "file": "soundwave-046.svg",
+      "title": "Mirror Wave 05",
+      "family": "mirror",
+      "palette": [
+        "#eee1c7",
+        "#d67b7b",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 47,
+      "file": "soundwave-047.svg",
+      "title": "Pulse Wave 05",
+      "family": "pulse",
+      "palette": [
+        "#f7eedf",
+        "#9d86c8",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 48,
+      "file": "soundwave-048.svg",
+      "title": "Ripple Echo 05",
+      "family": "ripple",
+      "palette": [
+        "#f0e4cf",
+        "#d0a25d",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 49,
+      "file": "soundwave-049.svg",
+      "title": "Speaker Wave 05",
+      "family": "speaker",
+      "palette": [
+        "#f5edda",
+        "#d0a25d",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 50,
+      "file": "soundwave-050.svg",
+      "title": "Beam Wave 05",
+      "family": "beam",
+      "palette": [
+        "#efe4cf",
+        "#b85a43",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 51,
+      "file": "soundwave-051.svg",
+      "title": "Stereo Wave 05",
+      "family": "stereo",
+      "palette": [
+        "#f2e8d7",
+        "#576d53",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 52,
+      "file": "soundwave-052.svg",
+      "title": "Spark Wave 05",
+      "family": "spark",
+      "palette": [
+        "#f6ecdb",
+        "#7686b7",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 53,
+      "file": "soundwave-053.svg",
+      "title": "Oscillator Wave 05",
+      "family": "oscillator",
+      "palette": [
+        "#f1e6d2",
+        "#6fb3a6",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 54,
+      "file": "soundwave-054.svg",
+      "title": "Wavelet 05",
+      "family": "wavelet",
+      "palette": [
+        "#eee1c7",
+        "#d67b7b",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 55,
+      "file": "soundwave-055.svg",
+      "title": "Echo Wave 05",
+      "family": "echo",
+      "palette": [
+        "#f7eedf",
+        "#9d86c8",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 56,
+      "file": "soundwave-056.svg",
+      "title": "Bar Wave 06",
+      "family": "bars",
+      "palette": [
+        "#f0e4cf",
+        "#d0a25d",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 57,
+      "file": "soundwave-057.svg",
+      "title": "Mirror Wave 06",
+      "family": "mirror",
+      "palette": [
+        "#f5edda",
+        "#d0a25d",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 58,
+      "file": "soundwave-058.svg",
+      "title": "Pulse Wave 06",
+      "family": "pulse",
+      "palette": [
+        "#efe4cf",
+        "#b85a43",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 59,
+      "file": "soundwave-059.svg",
+      "title": "Ripple Echo 06",
+      "family": "ripple",
+      "palette": [
+        "#f2e8d7",
+        "#576d53",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 60,
+      "file": "soundwave-060.svg",
+      "title": "Speaker Wave 06",
+      "family": "speaker",
+      "palette": [
+        "#f6ecdb",
+        "#7686b7",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 61,
+      "file": "soundwave-061.svg",
+      "title": "Beam Wave 06",
+      "family": "beam",
+      "palette": [
+        "#f1e6d2",
+        "#6fb3a6",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 62,
+      "file": "soundwave-062.svg",
+      "title": "Stereo Wave 06",
+      "family": "stereo",
+      "palette": [
+        "#eee1c7",
+        "#d67b7b",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 63,
+      "file": "soundwave-063.svg",
+      "title": "Spark Wave 06",
+      "family": "spark",
+      "palette": [
+        "#f7eedf",
+        "#9d86c8",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 64,
+      "file": "soundwave-064.svg",
+      "title": "Oscillator Wave 06",
+      "family": "oscillator",
+      "palette": [
+        "#f0e4cf",
+        "#d0a25d",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 65,
+      "file": "soundwave-065.svg",
+      "title": "Wavelet 06",
+      "family": "wavelet",
+      "palette": [
+        "#f5edda",
+        "#d0a25d",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 66,
+      "file": "soundwave-066.svg",
+      "title": "Echo Wave 06",
+      "family": "echo",
+      "palette": [
+        "#efe4cf",
+        "#b85a43",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 67,
+      "file": "soundwave-067.svg",
+      "title": "Bar Wave 07",
+      "family": "bars",
+      "palette": [
+        "#f2e8d7",
+        "#576d53",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 68,
+      "file": "soundwave-068.svg",
+      "title": "Mirror Wave 07",
+      "family": "mirror",
+      "palette": [
+        "#f6ecdb",
+        "#7686b7",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 69,
+      "file": "soundwave-069.svg",
+      "title": "Pulse Wave 07",
+      "family": "pulse",
+      "palette": [
+        "#f1e6d2",
+        "#6fb3a6",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 70,
+      "file": "soundwave-070.svg",
+      "title": "Ripple Echo 07",
+      "family": "ripple",
+      "palette": [
+        "#eee1c7",
+        "#d67b7b",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 71,
+      "file": "soundwave-071.svg",
+      "title": "Speaker Wave 07",
+      "family": "speaker",
+      "palette": [
+        "#f7eedf",
+        "#9d86c8",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 72,
+      "file": "soundwave-072.svg",
+      "title": "Beam Wave 07",
+      "family": "beam",
+      "palette": [
+        "#f0e4cf",
+        "#d0a25d",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 73,
+      "file": "soundwave-073.svg",
+      "title": "Stereo Wave 07",
+      "family": "stereo",
+      "palette": [
+        "#f5edda",
+        "#d0a25d",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 74,
+      "file": "soundwave-074.svg",
+      "title": "Spark Wave 07",
+      "family": "spark",
+      "palette": [
+        "#efe4cf",
+        "#b85a43",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 75,
+      "file": "soundwave-075.svg",
+      "title": "Oscillator Wave 07",
+      "family": "oscillator",
+      "palette": [
+        "#f2e8d7",
+        "#576d53",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 76,
+      "file": "soundwave-076.svg",
+      "title": "Wavelet 07",
+      "family": "wavelet",
+      "palette": [
+        "#f6ecdb",
+        "#7686b7",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 77,
+      "file": "soundwave-077.svg",
+      "title": "Echo Wave 07",
+      "family": "echo",
+      "palette": [
+        "#f1e6d2",
+        "#6fb3a6",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 78,
+      "file": "soundwave-078.svg",
+      "title": "Bar Wave 08",
+      "family": "bars",
+      "palette": [
+        "#eee1c7",
+        "#d67b7b",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 79,
+      "file": "soundwave-079.svg",
+      "title": "Mirror Wave 08",
+      "family": "mirror",
+      "palette": [
+        "#f7eedf",
+        "#9d86c8",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    },
+    {
+      "id": 80,
+      "file": "soundwave-080.svg",
+      "title": "Pulse Wave 08",
+      "family": "pulse",
+      "palette": [
+        "#f0e4cf",
+        "#d0a25d",
+        "#241b18"
+      ],
+      "viewBox": "0 0 8 8"
+    }
+  ]
+}

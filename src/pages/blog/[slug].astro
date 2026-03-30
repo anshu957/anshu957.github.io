@@ -1,0 +1,42 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import IconDock from "../../components/IconDock.astro";
+import { navLinks, profileLinks, siteMeta } from "../../data/site.js";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BaseLayout title={`${post.data.title} | ${siteMeta.name}`} description={post.data.description}>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="site-shell">
+    <SiteHeader navLinks={navLinks} currentPath="/blog" />
+
+    <article class="article-shell">
+      <header class="article-header">
+        <p class="eyebrow">Notebook</p>
+        <h1 class="page-title">{post.data.title}</h1>
+        <p class="article-meta">
+          {post.data.readingTime} · {post.data.date.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
+        </p>
+        <p class="lede lede-compact">{post.data.description}</p>
+      </header>
+
+      <div class="prose">
+        <Content />
+      </div>
+    </article>
+
+    <IconDock links={profileLinks} />
+  </div>
+</BaseLayout>

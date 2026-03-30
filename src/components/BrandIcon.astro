@@ -1,0 +1,20 @@
+---
+import { siGithub, siGooglescholar, siOrcid } from "simple-icons";
+
+const icons = {
+  github: siGithub,
+  scholar: siGooglescholar,
+  orcid: siOrcid,
+};
+
+const { icon, class: className = "" } = Astro.props;
+const iconData = icons[icon];
+
+if (!iconData) {
+  throw new Error(`Unknown brand icon: ${icon}`);
+}
+---
+
+<svg class={className} viewBox="0 0 24 24" aria-hidden="true" fill="currentColor" role="img">
+  <path d={iconData.path}></path>
+</svg>

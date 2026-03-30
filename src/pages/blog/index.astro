@@ -1,0 +1,32 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import BlogList from "../../components/BlogList.astro";
+import PageIntro from "../../components/PageIntro.astro";
+import IconDock from "../../components/IconDock.astro";
+import { navLinks, profileLinks, siteMeta } from "../../data/site.js";
+
+const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+---
+
+<BaseLayout title={`Blog | ${siteMeta.name}`} description="Notes and essays on computational biology, nonlinear dynamics, and scientific practice.">
+  <div class="noise" aria-hidden="true"></div>
+  <div class="site-shell">
+    <SiteHeader navLinks={navLinks} currentPath="/blog" />
+
+    <main class="page-stack">
+      <PageIntro
+        eyebrow="Blog"
+        title="Notes from the notebook."
+        body="Essays and technical notes on cell fate, nonlinear systems, scientific machine learning, and the slower side of computational work."
+      />
+
+      <BlogList posts={posts} title="All writing" kicker="Archive" />
+    </main>
+
+    <IconDock links={profileLinks} />
+  </div>
+</BaseLayout>
