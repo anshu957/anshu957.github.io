@@ -19,6 +19,9 @@
   --gold: #c89a52;
   --accent-blue: #6b7fb0;
   --shadow: rgba(98, 74, 54, 0.14);
+  --shadow-dock: rgba(129, 98, 71, 0.10);
+  --toggle-bg: rgba(255, 255, 255, 0.5);
+  --toggle-color: #5c4b43;
   --font-body: "Newsreader", Georgia, serif;
   --font-display: "Newsreader", Georgia, serif;
   --font-ui: "Newsreader", Georgia, serif;
@@ -36,4 +39,25 @@
   --space-6: 3.5rem;
   --space-7: 5rem;
   --walker-size: 4.4rem;
+}
+
+html.dark {
+  --paper: #1a1210;
+  --paper-strong: #211713;
+  --paper-soft: rgba(26, 18, 16, 0.7);
+  --surface: rgba(38, 27, 22, 0.88);
+  --surface-strong: rgba(44, 32, 26, 0.94);
+  --ink: #e8d9c4;
+  --ink-soft: #b09a87;
+  --ink-faint: rgba(232, 217, 196, 0.74);
+  --line: rgba(220, 201, 169, 0.10);
+  --line-strong: rgba(220, 201, 169, 0.18);
+  --oxide: #d4705a;
+  --sage: #7a9470;
+  --gold: #d4a85a;
+  --accent-blue: #8898c0;
+  --shadow: rgba(0, 0, 0, 0.32);
+  --shadow-dock: rgba(0, 0, 0, 0.28);
+  --toggle-bg: rgba(255, 255, 255, 0.08);
+  --toggle-color: #b09a87;
 }

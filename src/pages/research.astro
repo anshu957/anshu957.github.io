@@ -1,11 +1,9 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteHeader from "../components/SiteHeader.astro";
-import PageIntro from "../components/PageIntro.astro";
 import IconDock from "../components/IconDock.astro";
-import ResearchHighlights from "../components/ResearchHighlights.astro";
 import { navLinks, profileLinks, siteMeta } from "../data/site.js";
-import { researchThemes, selectedPublications } from "../data/research.js";
+import { selectedPublications } from "../data/research.js";
 ---
 
 <BaseLayout title={`Research | ${siteMeta.name}`} description="Research themes and selected publications by Anshul Choudhary.">
@@ -14,18 +12,40 @@ import { researchThemes, selectedPublications } from "../data/research.js";
     <SiteHeader navLinks={navLinks} currentPath="/research" />
 
     <main class="page-stack">
-      <PageIntro
-        eyebrow="Research"
-        title="Dynamics, inference, and scientific machine learning."
-        body="My work sits between biological questions and dynamical descriptions: single-cell state transitions, behavioral phenotyping, and structure-aware learning for nonlinear systems."
-      />
+      <!-- Themes — editorial prose -->
+      <section class="research-themes">
+        <p class="eyebrow">Research</p>
+        <h1>Themes &amp; work</h1>
 
-      <ResearchHighlights items={researchThemes} title="Themes" kicker="Focus" />
+        <div class="research-prose">
+          <div class="research-theme">
+            <h3 class="research-theme-title">Cell fate &amp; transcriptomic dynamics</h3>
+            <p>
+              I am drawn to the question of how cells commit. The language I use is dynamical systems — attractors, basins of attraction, and vector fields — applied to RNA expression profiles. The goal is a description of cellular decision-making that is richer than a cluster label: one that says something about the forces at work, the stabilities available, and the transitions that remain possible.
+            </p>
+          </div>
 
+          <div class="research-theme">
+            <h3 class="research-theme-title">Behavioral phenotyping &amp; machine learning</h3>
+            <p>
+              At JAX I contribute to tools that make automated mouse behavior analysis practical and genetically informative. This work involves the full stack — video, pose, classifier, genetics — and the recurring challenge is designing systems that scientists actually want to use.
+            </p>
+          </div>
+
+          <div class="research-theme">
+            <h3 class="research-theme-title">Physics-aware scientific machine learning</h3>
+            <p>
+              My earlier work asked whether knowing the structure of a physical system — its conservation laws, its symmetries, its phase-space geometry — makes a neural network both more accurate and more honest. The answer was yes, often dramatically so. I continue to think about what it means to build models that remain faithful to mechanism.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Publications -->
       <section class="section-block" aria-labelledby="publications-heading">
         <div class="section-heading">
           <p class="section-kicker">Selected publications</p>
-          <h2 id="publications-heading">Recent and representative work</h2>
+          <h2 id="publications-heading">Papers</h2>
         </div>
 
         <div class="publication-grid">
@@ -43,3 +63,38 @@ import { researchThemes, selectedPublications } from "../data/research.js";
     <IconDock links={profileLinks} note="Scholar / ORCID / code" />
   </div>
 </BaseLayout>
+
+<style>
+  .research-themes {
+    display: grid;
+    gap: 1.4rem;
+  }
+
+  .research-prose {
+    display: grid;
+    gap: 1.6rem;
+    max-width: 64ch;
+  }
+
+  .research-theme {
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .research-theme-title {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--oxide);
+    letter-spacing: 0.02em;
+    line-height: 1.3;
+    margin: 0;
+  }
+
+  .research-theme p {
+    margin: 0;
+    color: var(--ink-faint);
+    line-height: 1.9;
+    text-wrap: pretty;
+  }
+</style>

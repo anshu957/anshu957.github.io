@@ -15,6 +15,16 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+const formatDate = (date) =>
+  date.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+
+const tags = post.data.tags ?? [];
+const domainColor = (() => {
+  const t = tags.join(" ").toLowerCase();
+  if (/tea|notes|practice|personal/.test(t)) return "gold";
+  if (/network|physics|complex|math|graph/.test(t)) return "blue";
+  return "oxide";
+})();
 ---
 
 <BaseLayout title={`${post.data.title} | ${siteMeta.name}`} description={post.data.description}>
@@ -23,13 +33,17 @@ const { Content } = await render(post);
     <SiteHeader navLinks={navLinks} currentPath="/blog" />
 
     <article class="article-shell">
-      <header class="article-header">
-        <p class="eyebrow">Notebook</p>
-        <h1 class="page-title">{post.data.title}</h1>
-        <p class="article-meta">
-          {post.data.readingTime} · {post.data.date.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
+      <a href="/blog" class="article-back">← all writing</a>
+
+      <header class:list={["article-header", `article-header--${domainColor}`]}>
+        <p class="article-domain">
+          {tags.slice(0, 2).join("  ·  ")}
         </p>
-        <p class="lede lede-compact">{post.data.description}</p>
+        <h1 class="page-title article-title">{post.data.title}</h1>
+        <p class="lede lede-compact article-lede">{post.data.description}</p>
+        <p class="article-meta">
+          {formatDate(post.data.date)}&ensp;·&ensp;{post.data.readingTime}
+        </p>
       </header>
 
       <div class="prose">
@@ -40,3 +54,66 @@ const { Content } = await render(post);
     <IconDock links={profileLinks} />
   </div>
 </BaseLayout>
+
+<style>
+  .article-back {
+    display: inline-block;
+    margin-bottom: 2.4rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    opacity: 0.55;
+    text-decoration: none;
+    transition: color 180ms ease, opacity 180ms ease;
+  }
+
+  .article-back:hover {
+    color: var(--oxide);
+    opacity: 1;
+  }
+
+  .article-header {
+    display: grid;
+    gap: 0.7rem;
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--line);
+    max-width: var(--reading-width);
+  }
+
+  .article-domain {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0;
+    color: var(--oxide);
+    opacity: 0.8;
+  }
+
+  .article-header--blue .article-domain  { color: var(--accent-blue); }
+  .article-header--gold .article-domain  { color: var(--gold); }
+  .article-header--oxide .article-domain { color: var(--oxide); }
+
+  .article-title {
+    max-width: 18ch;
+    text-align: left;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+  }
+
+  .article-lede {
+    font-style: italic;
+    color: var(--ink-soft);
+    max-width: 36rem;
+    text-align: left;
+  }
+
+  .article-meta {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    opacity: 0.5;
+    margin: 0;
+  }
+</style>

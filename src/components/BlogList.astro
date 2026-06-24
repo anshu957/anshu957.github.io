@@ -1,62 +1,190 @@
 ---
-const { posts, title = "Recent writing", kicker = "Notebook", showDescriptions = true, variant = "editorial" } = Astro.props;
+const { posts, title = "Recent writing", kicker = "Notebook" } = Astro.props;
 
 const formatDate = (date) =>
-  date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
+  date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
 
-const featuredPost = variant === "spotlight" ? posts[0] : null;
-const supportingPosts = variant === "spotlight" ? posts.slice(1, 3) : posts;
+// Map first tag to a thematic domain color token
+const domainColor = (tags = []) => {
+  const t = tags.join(" ").toLowerCase();
+  if (/tea|notes|practice|personal|pause/.test(t)) return "gold";
+  if (/network|physics|complex|math|graph/.test(t)) return "blue";
+  return "oxide";
+};
 ---
 
-<section class:list={["section-block", variant === "spotlight" && "section-block--writing"]} aria-labelledby="blog-list-heading">
-  <div class="section-heading">
+<section class="writing-section" aria-labelledby="blog-list-heading">
+  <header class="writing-header">
     <p class="section-kicker">{kicker}</p>
     <h2 id="blog-list-heading">{title}</h2>
-  </div>
+  </header>
 
-  {variant === "spotlight" && featuredPost ? (
-    <div class="writing-spotlight">
-      <article class="writing-featured">
-        <p class="meta-line">
-          {featuredPost.data.featured ? "Featured · " : ""}{featuredPost.data.readingTime} · {formatDate(featuredPost.data.date)}
-        </p>
-        <h3 class="featured-title">
-          <a class="article-link" href={`/blog/${featuredPost.slug}/`}>{featuredPost.data.title}</a>
-        </h3>
-        <p class="writing-dek">{featuredPost.data.description}</p>
-      </article>
-
-      <div class="writing-secondary-list">
-        {supportingPosts.map((post) => (
-          <article class="writing-secondary">
-            <div class="writing-secondary-copy">
-              <h3 class="writing-secondary-heading">
-                <a class="article-link" href={`/blog/${post.slug}/`}>{post.data.title}</a>
-              </h3>
-              <p class="meta-line">{post.data.readingTime}</p>
-            </div>
-            <p class="writing-secondary-date">{formatDate(post.data.date)}</p>
+  <ol class="writing-roll" role="list">
+    {posts.map((post) => {
+      const color = domainColor(post.data.tags);
+      return (
+        <li class:list={["writing-entry", `writing-entry--${color}`]}>
+          <article>
+            <p class="writing-entry-domain">
+              {post.data.tags.slice(0, 2).join("  ·  ")}
+            </p>
+            <h3 class="writing-entry-title">
+              <a class="writing-entry-link" href={`/blog/${post.slug}/`}>
+                {post.data.title}
+                <span class="writing-entry-arrow" aria-hidden="true">→</span>
+              </a>
+            </h3>
+            <p class="writing-entry-desc">{post.data.description}</p>
+            <p class="writing-entry-foot">
+              <span class="writing-entry-date">{formatDate(post.data.date)}</span>
+              <span class="writing-entry-mid">·</span>
+              <span class="writing-entry-time">{post.data.readingTime}</span>
+            </p>
           </article>
-        ))}
-      </div>
-    </div>
-  ) : (
-    <div class:list={["writing-list", variant === "editorial" && "editorial-list"]}>
-      {supportingPosts.map((post) => (
-        <article class:list={["writing-item", variant === "editorial" ? "editorial-item" : "surface-card"]}>
-          <p class="meta-line">
-            {post.data.readingTime} · {formatDate(post.data.date)}
-          </p>
-          <h3>
-            <a class="article-link" href={`/blog/${post.slug}/`}>{post.data.title}</a>
-          </h3>
-          {showDescriptions && <p>{post.data.description}</p>}
-        </article>
-      ))}
-    </div>
-  )}
+        </li>
+      );
+    })}
+  </ol>
 </section>
+
+<style>
+  .writing-section {
+    display: grid;
+    gap: 1.6rem;
+  }
+
+  .writing-header {
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .writing-roll {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* ── Entry ── */
+  .writing-entry {
+    position: relative;
+    padding: 1.5rem 0 1.5rem 1.6rem;
+    border-top: 1px solid var(--line);
+    transition: transform 200ms ease;
+  }
+
+  .writing-entry:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .writing-entry:hover {
+    transform: translateX(0.25rem);
+  }
+
+  /* Left accent bar */
+  .writing-entry::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 1.5rem;
+    bottom: 1.5rem;
+    width: 2px;
+    border-radius: 999px;
+    background: var(--oxide);
+    opacity: 0.35;
+    transition: opacity 220ms ease, top 220ms ease, bottom 220ms ease;
+  }
+
+  .writing-entry:hover::before {
+    opacity: 0.9;
+    top: 1rem;
+    bottom: 1rem;
+  }
+
+  .writing-entry--blue::before  { background: var(--accent-blue); }
+  .writing-entry--gold::before  { background: var(--gold); }
+  .writing-entry--oxide::before { background: var(--oxide); }
+
+  /* Domain tag */
+  .writing-entry-domain {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.64rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0 0 0.45rem;
+    color: var(--ink-soft);
+    opacity: 0.5;
+    transition: opacity 200ms ease;
+  }
+
+  .writing-entry--blue .writing-entry-domain  { color: var(--accent-blue); opacity: 0.75; }
+  .writing-entry--gold .writing-entry-domain  { color: var(--gold); opacity: 0.85; }
+  .writing-entry--oxide .writing-entry-domain { color: var(--oxide); opacity: 0.75; }
+
+  .writing-entry:hover .writing-entry-domain {
+    opacity: 1;
+  }
+
+  /* Title */
+  .writing-entry-title {
+    font-size: clamp(1.22rem, 1.65vw, 1.52rem);
+    font-weight: 500;
+    line-height: 1.15;
+    margin: 0 0 0.55rem;
+  }
+
+  .writing-entry-link {
+    color: var(--ink);
+    text-decoration: none;
+    transition: color 180ms ease;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.45em;
+  }
+
+  .writing-entry-link:hover {
+    color: var(--oxide);
+  }
+
+  .writing-entry--blue .writing-entry-link:hover  { color: var(--accent-blue); }
+  .writing-entry--gold .writing-entry-link:hover  { color: var(--gold); }
+
+  .writing-entry-arrow {
+    font-size: 0.8em;
+    opacity: 0;
+    transform: translateX(-0.3em);
+    transition: opacity 200ms ease, transform 200ms ease;
+    display: inline-block;
+  }
+
+  .writing-entry-link:hover .writing-entry-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* Description */
+  .writing-entry-desc {
+    margin: 0 0 0.65rem;
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--ink-faint);
+    line-height: 1.65;
+    max-width: 42rem;
+  }
+
+  /* Footer */
+  .writing-entry-foot {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.68rem;
+    color: var(--ink-soft);
+    opacity: 0.5;
+    letter-spacing: 0.03em;
+  }
+
+  .writing-entry-mid {
+    opacity: 0.5;
+  }
+</style>

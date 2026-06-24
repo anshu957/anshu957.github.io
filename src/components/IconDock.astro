@@ -1,11 +1,10 @@
 ---
 import BrandIcon from "./BrandIcon.astro";
 
-const { links, note = "Find me elsewhere" } = Astro.props;
+const { links } = Astro.props;
 ---
 
 <footer class="site-footer">
-  <p class="site-footer-note">{note}</p>
   <div class="icon-dock" aria-label="External profiles">
     {links.map((link) => (
       <a
@@ -15,6 +14,7 @@ const { links, note = "Find me elsewhere" } = Astro.props;
         rel="noreferrer"
         aria-label={link.label}
         title={link.label}
+        data-icon={link.icon}
       >
         <BrandIcon icon={link.icon} class="dock-icon" />
       </a>

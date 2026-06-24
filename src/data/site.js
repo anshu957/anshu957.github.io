@@ -57,4 +57,14 @@ export const contactMethods = [
     value: "github.com/anshu957",
     href: "https://github.com/anshu957",
   },
+  {
+    label: "Google Scholar",
+    value: "Anshul Choudhary",
+    href: "https://scholar.google.com/citations?user=Tybi34wAAAAJ",
+  },
+  {
+    label: "ORCID",
+    value: "0000-0001-6651-5224",
+    href: "https://orcid.org/0000-0001-6651-5224",
+  },
 ];

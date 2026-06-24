@@ -3,7 +3,6 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import SiteHeader from "../../components/SiteHeader.astro";
 import BlogList from "../../components/BlogList.astro";
-import PageIntro from "../../components/PageIntro.astro";
 import IconDock from "../../components/IconDock.astro";
 import { navLinks, profileLinks, siteMeta } from "../../data/site.js";
 
@@ -18,11 +17,12 @@ const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
     <SiteHeader navLinks={navLinks} currentPath="/blog" />
 
     <main class="page-stack">
-      <PageIntro
-        eyebrow="Blog"
-        title="Notes from the notebook."
-        body="Essays and technical notes on cell fate, nonlinear systems, scientific machine learning, and the slower side of computational work."
-      />
+      <div class="blog-intro">
+        <p class="section-kicker">Blog</p>
+        <h1 class="blog-intro-title">Notes from the notebook.</h1>
+        <p class="blog-intro-sub">field notes on cells, attractors, and the quiet in between</p>
+        <p class="blog-intro-count">{posts.length} pieces</p>
+      </div>
 
       <BlogList posts={posts} title="All writing" kicker="Archive" />
     </main>
@@ -30,3 +30,39 @@ const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
     <IconDock links={profileLinks} />
   </div>
 </BaseLayout>
+
+<style>
+  .blog-intro {
+    padding: calc(var(--space-4) + 0.2rem) 0 var(--space-1);
+    display: grid;
+    gap: 0.4rem;
+    align-content: start;
+  }
+
+  .blog-intro-title {
+    font-size: clamp(2rem, 3.2vw, 2.8rem);
+    font-weight: 500;
+    letter-spacing: -0.024em;
+    line-height: 1;
+    margin: 0;
+    color: var(--ink);
+  }
+
+  .blog-intro-sub {
+    font-family: var(--font-body);
+    font-style: italic;
+    font-size: 0.98rem;
+    color: var(--ink-soft);
+    margin: 0;
+    opacity: 0.75;
+  }
+
+  .blog-intro-count {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    opacity: 0.4;
+    margin: 0.2rem 0 0;
+  }
+</style>

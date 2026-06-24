@@ -1,7 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteHeader from "../components/SiteHeader.astro";
-import PageIntro from "../components/PageIntro.astro";
 import IconDock from "../components/IconDock.astro";
 import { contactMethods, navLinks, profileLinks, siteMeta } from "../data/site.js";
 ---
@@ -11,18 +10,25 @@ import { contactMethods, navLinks, profileLinks, siteMeta } from "../data/site.j
   <div class="site-shell">
     <SiteHeader navLinks={navLinks} currentPath="/contact" />
 
-    <main class="page-stack">
-      <PageIntro
-        eyebrow="Contact"
-        title="Open to scientific conversation, collaboration, and thoughtful exchange."
-        body="The best way to reach me is by email. For publications and public academic records, Scholar and ORCID are the most reliable references."
-      />
+    <main class="page-stack contact-page">
+      <div class="page-intro">
+        <p class="eyebrow">Contact</p>
+        <h1>Get in touch</h1>
+        <p class="lede" style="font-style: italic;">
+          Best reached by email. Response times vary — I am often deep in a simulation, or a long steep.
+        </p>
+      </div>
 
       <section class="contact-list">
         {contactMethods.map((method) => (
-          <article class="contact-card surface-card">
-            <p class="contact-label">{method.label}</p>
-            <h3><a class="article-link" href={method.href} target={method.href.startsWith("mailto:") ? undefined : "_blank"} rel={method.href.startsWith("mailto:") ? undefined : "noreferrer"}>{method.value}</a></h3>
+          <article class="contact-row surface-card">
+            <span class="contact-label-text">{method.label}</span>
+            <a
+              class="contact-value article-link"
+              href={method.href}
+              target={method.href.startsWith("mailto:") ? undefined : "_blank"}
+              rel={method.href.startsWith("mailto:") ? undefined : "noreferrer"}
+            >{method.value}</a>
           </article>
         ))}
       </section>
@@ -31,3 +37,30 @@ import { contactMethods, navLinks, profileLinks, siteMeta } from "../data/site.j
     <IconDock links={profileLinks} />
   </div>
 </BaseLayout>
+
+<style>
+  .contact-page {
+    max-width: 54rem;
+  }
+
+  .contact-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 1rem 1.2rem;
+  }
+
+  .contact-label-text {
+    font-family: var(--font-ui);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--ink-soft);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .contact-value {
+    font-size: 1rem;
+  }
+</style>

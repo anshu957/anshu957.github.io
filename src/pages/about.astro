@@ -1,53 +1,367 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteHeader from "../components/SiteHeader.astro";
-import PageIntro from "../components/PageIntro.astro";
 import IconDock from "../components/IconDock.astro";
+import katex from "katex";
+import { Cog, Atom, Waves, BrainCircuit, Dna } from "lucide-react";
 import { navLinks, profileLinks, siteMeta } from "../data/site.js";
+
+const interests = [
+  "nonlinear dynamics", "transcriptomics", "scientific ML",
+  "behavioral phenotyping", "complex systems", "tea",
+];
+
+const eqGlyph = katex.renderToString(
+  String.raw`\partial\,\text{life}\;/\;\partial t`,
+  { displayMode: false, throwOnError: false, strict: "ignore" }
+);
+
+const timeline = [
+  {
+    Icon: Cog,
+    period: "2005–09",
+    role: "B.E., Manufacturing & Automation Engineering",
+    inst: "Netaji Subhas Institute of Technology",
+    loc: "Delhi, India",
+    type: "edu",
+  },
+  {
+    Icon: Atom,
+    period: "2011–16",
+    role: "Ph.D., Physics",
+    inst: "IISER Mohali",
+    loc: "Mohali, India",
+    note: "Dynamics on Complex Networks",
+    type: "edu",
+  },
+  {
+    Icon: Waves,
+    period: "2016–18",
+    role: "Postdoctoral Researcher",
+    inst: "University of Oldenburg",
+    loc: "Oldenburg, Germany",
+    type: "research",
+  },
+  {
+    Icon: BrainCircuit,
+    period: "2019–22",
+    role: "Postdoctoral Researcher",
+    inst: "NC State University · NAIL",
+    loc: "Raleigh, NC, USA",
+    type: "research",
+  },
+  {
+    Icon: Dna,
+    period: "2022–",
+    role: "Associate Computational Scientist",
+    inst: "The Jackson Laboratory",
+    loc: "Farmington, CT, USA",
+    type: "current",
+  },
+];
+
+const typeColor = {
+  edu:      "var(--accent-blue)",
+  research: "var(--sage)",
+  current:  "var(--oxide)",
+};
 ---
 
-<BaseLayout title={`About | ${siteMeta.name}`} description="Background, research trajectory, and working approach of Anshul Choudhary.">
+<BaseLayout
+  title={`About | ${siteMeta.name}`}
+  description="Background, research trajectory, and working approach of Anshul Choudhary."
+>
   <div class="noise" aria-hidden="true"></div>
   <div class="site-shell">
     <SiteHeader navLinks={navLinks} currentPath="/about" />
 
     <main class="page-stack">
-      <PageIntro
-        eyebrow="About"
-        title="Physics-trained, biology-facing, and drawn to dynamics."
-        body="I work at the intersection of genomics, machine learning, and nonlinear dynamics, building computational tools for biological discovery while keeping one foot in the mathematical language of attractors, networks, and stability."
-      />
 
-      <section class="page-grid">
-        <aside class="page-sidebar">
-          <div class="paper-panel contact-card">
-            <p class="section-kicker">Current role</p>
-            <h3>{siteMeta.role}</h3>
-            <p>{siteMeta.institution}</p>
-            <p class="meta-line">{siteMeta.location}</p>
-          </div>
-        </aside>
-
-        <div class="page-main prose about-copy">
-          <p>
-            At The Jackson Laboratory, I work on predicting cell fate dynamics by combining RNA velocity with ideas from dynamical systems, especially attractors and basins of attraction. I am interested in descriptions that move beyond static clustering and better capture how cellular states evolve.
-          </p>
-
-          <p>
-            In parallel, I contribute to computational phenotyping work, including the JAX Animal Behavior System (JABS), where machine learning, careful measurement, and genetics come together in a usable platform for laboratory science.
-          </p>
-
-          <p>
-            My background is in physics. My doctoral work focused on dynamical systems on graphs and the emergence of rich spatio-temporal behavior in complex systems. After that, I worked in theoretical ecology and later in scientific machine learning, where I studied physics-aware neural networks and interpretable latent representations for dynamical prediction.
-          </p>
-
-          <p>
-            Across these domains, the recurring question is the same: how do we build models that remain faithful to structure, transition, and mechanism, rather than merely fitting observations?
-          </p>
-        </div>
+      <!-- ── Bio ─────────────────────────────── -->
+      <section class="about-bio">
+        <p>
+          I am a computational scientist at <a href="https://www.jax.org/people/anshul-choudhary" class="about-link">The Jackson Laboratory</a>,
+          where I work on understanding how cells decide their fate. My research draws on
+          dynamical systems — attractors, basins, vector fields — to model cell state
+          transitions from single-cell RNA sequencing data.
+        </p>
+        <p>
+          My path here wound through physics. I trained at IISER Mohali, where my doctoral
+          work explored dynamical systems on complex networks. From there I moved through
+          theoretical ecology in Germany and physics-aware machine learning at NC State
+          before arriving at biology. The questions changed; the mathematics did not.
+        </p>
+        <p>
+          I am drawn to compact descriptions of complex behavior. Also tea.
+        </p>
       </section>
+
+      <hr class="about-rule" />
+
+      <!-- ── Timeline ──────────────────────────── -->
+      <div class="about-timeline">
+        {timeline.map(({ Icon, period, role, inst, loc, note, type }, i) => (
+          <div class:list={["tl-row", i % 2 === 0 ? "tl-row--left" : "tl-row--right"]}>
+            <div class:list={["tl-dot", `tl-dot--${type}`]} />
+            <div class="tl-card">
+              <div class="tl-header">
+                <Icon
+                  size={13}
+                  stroke-width={1.6}
+                  style={{ color: typeColor[type], flexShrink: 0 }}
+                  aria-hidden="true"
+                />
+                <span class="tl-period">{period}</span>
+              </div>
+              <p class="tl-role">{role}</p>
+              <p class="tl-inst">{inst}</p>
+              <p class="tl-loc">{loc}</p>
+              {note && <p class="tl-note">"{note}"</p>}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <hr class="about-rule" />
+
+      <!-- ── Interests ─────────────────────────── -->
+      <div class="about-interests">
+        <p class="about-interests-label">interests</p>
+        <div class="chip-row">
+          {interests.map((item) => <span class="chip">{item}</span>)}
+        </div>
+      </div>
+
+      <!-- ── Closing glyph ─────────────────────── -->
+      <div class="about-glyph">
+        <span class="about-glyph-eq" set:html={eqGlyph} />
+        <span class="about-glyph-tail">→&thinsp;temporal dynamics</span>
+      </div>
+
     </main>
 
     <IconDock links={profileLinks} />
   </div>
 </BaseLayout>
+
+<style>
+  /* ── Bio ── */
+  .about-bio {
+    max-width: var(--reading-width);
+    display: grid;
+    gap: 1.1rem;
+    padding: calc(var(--space-3) + 0.2rem) 0 var(--space-1);
+  }
+
+  .about-bio p {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.88;
+    color: var(--ink-faint);
+  }
+
+  .about-link {
+    color: var(--ink);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    transition: color 160ms ease;
+  }
+
+  .about-link:hover { color: var(--oxide); }
+
+  .about-rule {
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 0;
+  }
+
+  /* ── Timeline container ── */
+  .about-timeline {
+    position: relative;
+    padding: 0.5rem 0;
+  }
+
+  .about-timeline::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    transform: translateX(-50%);
+    background: var(--line);
+  }
+
+  /* ── Row ── */
+  .tl-row {
+    position: relative;
+    padding-bottom: 2.6rem;
+    min-height: 2rem;
+  }
+
+  .tl-row:last-child { padding-bottom: 0.4rem; }
+
+  /* ── Card: floats into one half ── */
+  .tl-card {
+    width: calc(50% - 2.2rem);
+    display: grid;
+    gap: 0.14rem;
+  }
+
+  .tl-row--left .tl-card {
+    margin-right: auto;
+    padding-right: 1.8rem;
+    text-align: right;
+  }
+
+  .tl-row--right .tl-card {
+    margin-left: auto;
+    padding-left: 1.8rem;
+    text-align: left;
+  }
+
+  /* ── Header row: icon + period ── */
+  .tl-header {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.38rem;
+    margin-bottom: 0.18rem;
+  }
+
+  .tl-row--left .tl-header {
+    flex-direction: row-reverse; /* icon on the right for right-aligned text */
+  }
+
+  /* ── Dot on the spine ── */
+  .tl-dot {
+    position: absolute;
+    left: 50%;
+    top: 0.82rem;
+    transform: translateX(-50%);
+    width: 0.68rem;
+    height: 0.68rem;
+    border-radius: 50%;
+    background: var(--ink-soft);
+    border: 2px solid var(--paper);
+    box-shadow: 0 0 0 1.5px var(--ink-soft);
+    z-index: 1;
+  }
+
+  .tl-dot--edu      { background: var(--accent-blue); box-shadow: 0 0 0 1.5px var(--accent-blue); }
+  .tl-dot--research { background: var(--sage);        box-shadow: 0 0 0 1.5px var(--sage); }
+  .tl-dot--current  {
+    background: var(--oxide);
+    box-shadow: 0 0 0 1.5px var(--oxide), 0 0 0 4px rgba(184, 90, 67, 0.12);
+    animation: dot-pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes dot-pulse {
+    0%, 100% { box-shadow: 0 0 0 1.5px var(--oxide), 0 0 0 4px rgba(184, 90, 67, 0.12); }
+    50%       { box-shadow: 0 0 0 1.5px var(--oxide), 0 0 0 7px rgba(184, 90, 67, 0.05); }
+  }
+
+  /* ── Text ── */
+  .tl-period {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.07em;
+    color: var(--ink-soft);
+    opacity: 0.55;
+  }
+
+  .tl-role {
+    font-family: var(--font-body);
+    font-size: 0.93rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0;
+    line-height: 1.25;
+  }
+
+  .tl-row:last-child .tl-role { color: var(--oxide); }
+
+  .tl-inst {
+    font-size: 0.82rem;
+    font-style: italic;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  .tl-loc {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.63rem;
+    color: var(--ink-soft);
+    opacity: 0.42;
+    letter-spacing: 0.04em;
+    margin: 0;
+  }
+
+  .tl-note {
+    font-size: 0.78rem;
+    font-style: italic;
+    color: var(--ink-soft);
+    opacity: 0.62;
+    margin: 0.2rem 0 0;
+  }
+
+  /* ── Interests ── */
+  .about-interests {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .about-interests-label {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: 0.5;
+    margin: 0;
+  }
+
+  /* ── Closing glyph ── */
+  .about-glyph {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: var(--space-1) 0 var(--space-2);
+    opacity: 0.28;
+    transition: opacity 300ms ease;
+  }
+
+  .about-glyph:hover { opacity: 0.68; }
+
+  .about-glyph-eq :global(.katex) {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+
+  .about-glyph-tail {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.7rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 580px) {
+    .about-timeline::before { left: 1.1rem; transform: none; }
+
+    .tl-dot { left: 1.1rem; transform: translateX(-50%); }
+
+    .tl-row--left .tl-card,
+    .tl-row--right .tl-card {
+      width: auto;
+      margin-left: 2.8rem;
+      margin-right: 0;
+      padding-left: 0.6rem;
+      padding-right: 0;
+      text-align: left;
+    }
+
+    .tl-row--left .tl-header {
+      flex-direction: row; /* restore normal order on mobile */
+    }
+  }
+</style>
