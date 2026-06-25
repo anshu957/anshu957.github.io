@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from "react";
+import { careerNodes as NODES, careerTypeColor as TYPE_COL } from "../data/career.js";
 
 // ── Coordinate system ──────────────────────────────────
 const VW = 900, VH = 440;
-const PL = 106, PR = 56, PT = 44, PB = 52;
+const PL = 106, PR = 70, PT = 44, PB = 52;
 const UW = VW - PL - PR;   // usable width  = 738
 const UH = VH - PT - PB;   // usable height = 344
 const Y0 = 2005, Y1 = 2025;
@@ -10,23 +11,13 @@ const Y0 = 2005, Y1 = 2025;
 const gx = (t) => PL + t * UW;
 const gy = (y) => PT + ((y - Y0) / (Y1 - Y0)) * UH;
 
-// ── Data ───────────────────────────────────────────────
-const NODES = [
-  { id: "nsit",    year: 2009, t: 0.10, period: "2005–09", role: "B.E., Engineering",               inst: "NSIT",                    loc: "Delhi, India",       type: "edu"      },
-  { id: "iiser",   year: 2016, t: 0.20, period: "2011–16", role: "Ph.D., Physics",                  inst: "IISER Mohali",            loc: "Mohali, India",      type: "edu"      },
-  { id: "olden",   year: 2018, t: 0.44, period: "2016–18", role: "Postdoctoral Researcher",          inst: "University of Oldenburg", loc: "Oldenburg, Germany", type: "research" },
-  { id: "ncstate", year: 2022, t: 0.63, period: "2019–22", role: "Postdoctoral Researcher",          inst: "NC State · NAIL",         loc: "Raleigh, NC, USA",   type: "research" },
-  { id: "jax",     year: 2025, t: 0.82, period: "2022–",   role: "Assoc. Computational Scientist",  inst: "The Jackson Laboratory",  loc: "Farmington, CT",     type: "current"  },
-];
-
+// ── Data (NODES + TYPE_COL imported from ../data/career.js) ──
 const BRANCHES = {
   iiser:   [ { lbl: "complex networks",      dx: 62,  dy: -28 }, { lbl: "nonlinear dynamics",   dx: -52, dy: 14  } ],
   olden:   [ { lbl: "phase synchronization", dx: -68, dy: -18 }, { lbl: "trait diversity",       dx: 58,  dy: 26  } ],
   ncstate: [ { lbl: "Hamiltonian ML",        dx: -58, dy: -22 }, { lbl: "neuronal diversity",    dx: 64,  dy: 12  } ],
   jax:     [ { lbl: "RNA velocity",          dx: -52, dy: -30 }, { lbl: "JABS · behavior",       dx: 56,  dy: 22  } ],
 };
-
-const TYPE_COL = { edu: "var(--accent-blue)", research: "var(--sage)", current: "var(--oxide)" };
 
 // ── Catmull-Rom → cubic bezier path ───────────────────
 function smoothPath(pts, tension = 0.28) {
@@ -180,7 +171,7 @@ export default function CareerMap() {
         >
           {/* Nearly invisible pulse dot in top-right — requires deliberate discovery */}
           <circle cx={VW - PR + 28} cy={PT - 8} r="3"
-            style={{ fill: "var(--oxide)", opacity: 0.06, cursor: "default" }}
+            style={{ fill: "var(--oxide)", opacity: 0.05, cursor: "default" }}
             className="cmap-egg-dot"
           />
           <text x={VW - PR + 34} y={PT - 4}

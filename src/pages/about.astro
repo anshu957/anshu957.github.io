@@ -2,9 +2,10 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
+import CareerMap from "../components/CareerMap.jsx";
 import katex from "katex";
-import { Cog, Atom, Waves, BrainCircuit, Dna } from "lucide-react";
 import { navLinks, siteMeta } from "../data/site.js";
+import { careerNodes, careerTypeColor } from "../data/career.js";
 
 const interests = [
   "nonlinear dynamics", "transcriptomics", "scientific ML",
@@ -15,56 +16,6 @@ const eqGlyph = katex.renderToString(
   String.raw`\partial\,\text{life}\;/\;\partial t`,
   { displayMode: false, throwOnError: false, strict: "ignore" }
 );
-
-const timeline = [
-  {
-    Icon: Cog,
-    period: "2005–09",
-    role: "B.E., Manufacturing & Automation Engineering",
-    inst: "Netaji Subhas Institute of Technology",
-    loc: "Delhi, India",
-    type: "edu",
-  },
-  {
-    Icon: Atom,
-    period: "2011–16",
-    role: "Ph.D., Physics",
-    inst: "IISER Mohali",
-    loc: "Mohali, India",
-    note: "Dynamics on Complex Networks",
-    type: "edu",
-  },
-  {
-    Icon: Waves,
-    period: "2016–18",
-    role: "Postdoctoral Researcher",
-    inst: "University of Oldenburg",
-    loc: "Oldenburg, Germany",
-    type: "research",
-  },
-  {
-    Icon: BrainCircuit,
-    period: "2019–22",
-    role: "Postdoctoral Researcher",
-    inst: "NC State University · NAIL",
-    loc: "Raleigh, NC, USA",
-    type: "research",
-  },
-  {
-    Icon: Dna,
-    period: "2022–",
-    role: "Associate Computational Scientist",
-    inst: "The Jackson Laboratory",
-    loc: "Farmington, CT, USA",
-    type: "current",
-  },
-];
-
-const typeColor = {
-  edu:      "var(--accent-blue)",
-  research: "var(--sage)",
-  current:  "var(--oxide)",
-};
 ---
 
 <BaseLayout
@@ -96,31 +47,29 @@ const typeColor = {
         </p>
       </section>
 
-      <hr class="about-rule" />
+      <!-- ── Trajectory ──────────────────────────── -->
+      <section class="about-trajectory">
+        <p class="eyebrow">Trajectory</p>
+        <p class="about-trajectory-cap">theory → biology, 2005–present.</p>
 
-      <!-- ── Timeline ──────────────────────────── -->
-      <div class="about-timeline">
-        {timeline.map(({ Icon, period, role, inst, loc, note, type }, i) => (
-          <div class:list={["tl-row", i % 2 === 0 ? "tl-row--left" : "tl-row--right"]}>
-            <div class:list={["tl-dot", `tl-dot--${type}`]} />
-            <div class="tl-card">
-              <div class="tl-header">
-                <Icon
-                  size={13}
-                  stroke-width={1.6}
-                  style={{ color: typeColor[type], flexShrink: 0 }}
-                  aria-hidden="true"
-                />
-                <span class="tl-period">{period}</span>
+        <div class="about-map">
+          <CareerMap client:visible />
+        </div>
+
+        <ol class="career-list" aria-label="Career history">
+          {careerNodes.map((node) => (
+            <li class="career-list-item">
+              <span class="career-dot" style={`--dot:${careerTypeColor[node.type]}`}></span>
+              <div class="career-list-copy">
+                <span class="career-period">{node.period}</span>
+                <p class="career-role">{node.role}</p>
+                <p class="career-inst">{node.inst}</p>
+                <p class="career-loc">{node.loc}</p>
               </div>
-              <p class="tl-role">{role}</p>
-              <p class="tl-inst">{inst}</p>
-              <p class="tl-loc">{loc}</p>
-              {note && <p class="tl-note">"{note}"</p>}
-            </div>
-          </div>
-        ))}
-      </div>
+            </li>
+          ))}
+        </ol>
+      </section>
 
       <hr class="about-rule" />
 
@@ -175,134 +124,27 @@ const typeColor = {
     margin: 0;
   }
 
-  /* ── Timeline container ── */
-  .about-timeline {
-    position: relative;
-    padding: 0.5rem 0;
-  }
-
-  .about-timeline::before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    transform: translateX(-50%);
-    background: var(--line);
-  }
-
-  /* ── Row ── */
-  .tl-row {
-    position: relative;
-    padding-bottom: 2.6rem;
-    min-height: 2rem;
-  }
-
-  .tl-row:last-child { padding-bottom: 0.4rem; }
-
-  /* ── Card: floats into one half ── */
-  .tl-card {
-    width: calc(50% - 2.2rem);
+  /* ── Trajectory ── */
+  .about-trajectory {
     display: grid;
-    gap: 0.14rem;
+    gap: 0.3rem;
   }
 
-  .tl-row--left .tl-card {
-    margin-right: auto;
-    padding-right: 1.8rem;
-    text-align: right;
-  }
-
-  .tl-row--right .tl-card {
-    margin-left: auto;
-    padding-left: 1.8rem;
-    text-align: left;
-  }
-
-  /* ── Header row: icon + period ── */
-  .tl-header {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.38rem;
-    margin-bottom: 0.18rem;
-  }
-
-  .tl-row--left .tl-header {
-    flex-direction: row-reverse; /* icon on the right for right-aligned text */
-  }
-
-  /* ── Dot on the spine ── */
-  .tl-dot {
-    position: absolute;
-    left: 50%;
-    top: 0.82rem;
-    transform: translateX(-50%);
-    width: 0.68rem;
-    height: 0.68rem;
-    border-radius: 50%;
-    background: var(--ink-soft);
-    border: 2px solid var(--paper);
-    box-shadow: 0 0 0 1.5px var(--ink-soft);
-    z-index: 1;
-  }
-
-  .tl-dot--edu      { background: var(--accent-blue); box-shadow: 0 0 0 1.5px var(--accent-blue); }
-  .tl-dot--research { background: var(--sage);        box-shadow: 0 0 0 1.5px var(--sage); }
-  .tl-dot--current  {
-    background: var(--oxide);
-    box-shadow: 0 0 0 1.5px var(--oxide), 0 0 0 4px rgba(184, 90, 67, 0.12);
-    animation: dot-pulse 2.4s ease-in-out infinite;
-  }
-
-  @keyframes dot-pulse {
-    0%, 100% { box-shadow: 0 0 0 1.5px var(--oxide), 0 0 0 4px rgba(184, 90, 67, 0.12); }
-    50%       { box-shadow: 0 0 0 1.5px var(--oxide), 0 0 0 7px rgba(184, 90, 67, 0.05); }
-  }
-
-  /* ── Text ── */
-  .tl-period {
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 0.66rem;
-    letter-spacing: 0.07em;
-    color: var(--ink-soft);
-    opacity: 0.55;
-  }
-
-  .tl-role {
-    font-family: var(--font-body);
-    font-size: 0.93rem;
-    font-weight: 600;
-    color: var(--ink);
-    margin: 0;
-    line-height: 1.25;
-  }
-
-  .tl-row:last-child .tl-role { color: var(--oxide); }
-
-  .tl-inst {
-    font-size: 0.82rem;
+  .about-trajectory-cap {
+    margin: 0 0 0.2rem;
     font-style: italic;
+    font-size: 0.92rem;
     color: var(--ink-soft);
-    margin: 0;
+    opacity: 0.7;
   }
 
-  .tl-loc {
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 0.63rem;
-    color: var(--ink-soft);
-    opacity: 0.42;
-    letter-spacing: 0.04em;
-    margin: 0;
+  .about-map {
+    max-width: min(100%, 760px);
+    margin: 0.5rem auto 0;
   }
 
-  .tl-note {
-    font-size: 0.78rem;
-    font-style: italic;
-    color: var(--ink-soft);
-    opacity: 0.62;
-    margin: 0.2rem 0 0;
-  }
+  /* Desktop: the interactive map; mobile: a static node list */
+  .career-list { display: none; }
 
   /* ── Interests ── */
   .about-interests {
@@ -344,24 +186,68 @@ const typeColor = {
     letter-spacing: 0.04em;
   }
 
-  /* ── Mobile ── */
-  @media (max-width: 580px) {
-    .about-timeline::before { left: 1.1rem; transform: none; }
+  /* ── Mobile: hide map, show static trajectory list ── */
+  @media (max-width: 640px) {
+    .about-map { display: none; }
 
-    .tl-dot { left: 1.1rem; transform: translateX(-50%); }
-
-    .tl-row--left .tl-card,
-    .tl-row--right .tl-card {
-      width: auto;
-      margin-left: 2.8rem;
-      margin-right: 0;
-      padding-left: 0.6rem;
-      padding-right: 0;
-      text-align: left;
+    .career-list {
+      display: grid;
+      gap: 1.25rem;
+      list-style: none;
+      margin: 0.7rem 0 0;
+      padding: 0;
     }
 
-    .tl-row--left .tl-header {
-      flex-direction: row; /* restore normal order on mobile */
+    .career-list-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.7rem;
+      align-items: start;
+    }
+
+    .career-dot {
+      width: 0.6rem;
+      height: 0.6rem;
+      margin-top: 0.42rem;
+      border-radius: 50%;
+      background: var(--dot, var(--ink-soft));
+      box-shadow: 0 0 0 1.5px var(--dot, var(--ink-soft));
+    }
+
+    .career-list-copy { display: grid; gap: 0.05rem; }
+
+    .career-period {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.66rem;
+      letter-spacing: 0.07em;
+      color: var(--ink-soft);
+      opacity: 0.55;
+    }
+
+    .career-role {
+      margin: 0.1rem 0 0;
+      font-size: 0.93rem;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.25;
+    }
+
+    .career-list-item:last-child .career-role { color: var(--oxide); }
+
+    .career-inst {
+      margin: 0;
+      font-size: 0.82rem;
+      font-style: italic;
+      color: var(--ink-soft);
+    }
+
+    .career-loc {
+      margin: 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.63rem;
+      color: var(--ink-soft);
+      opacity: 0.45;
+      letter-spacing: 0.04em;
     }
   }
 </style>
