@@ -1,8 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteHeader from "../components/SiteHeader.astro";
-import IconDock from "../components/IconDock.astro";
-import { navLinks, profileLinks, siteMeta } from "../data/site.js";
+import SiteFooter from "../components/SiteFooter.astro";
+import { navLinks, siteMeta } from "../data/site.js";
 import { selectedPublications } from "../data/research.js";
 ---
 
@@ -60,7 +60,7 @@ import { selectedPublications } from "../data/research.js";
       </section>
     </main>
 
-    <IconDock links={profileLinks} note="Scholar / ORCID / code" />
+    <SiteFooter />
   </div>
 </BaseLayout>
 

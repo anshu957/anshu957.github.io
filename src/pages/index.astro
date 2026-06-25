@@ -3,8 +3,8 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import BlogList from "../components/BlogList.astro";
-import IconDock from "../components/IconDock.astro";
-import { navLinks, profileLinks, siteMeta } from "../data/site.js";
+import SiteFooter from "../components/SiteFooter.astro";
+import { navLinks, siteMeta } from "../data/site.js";
 
 const posts = (await getCollection("blog", ({ data }) => !data.draft))
   .sort(
@@ -24,41 +24,57 @@ const posts = (await getCollection("blog", ({ data }) => !data.draft))
     <SiteHeader navLinks={navLinks} currentPath="/" />
 
     <main class="page-stack page-stack--home">
+      <section class="home-identity">
+        <p class="home-identity-role">{siteMeta.role} · {siteMeta.institution}</p>
+        <p class="home-identity-pitch">{siteMeta.tagline}</p>
+        <p class="home-identity-strange">{siteMeta.heroIntro[0]}</p>
+      </section>
+
       <div class="home-sections home-sections--single">
-        <BlogList posts={posts} title="Recent writing" kicker="Blog" variant="spotlight" />
+        <BlogList posts={posts} title="Recent writing" kicker="Blog" />
 
         <a href="/blog" class="home-all-writing">all writing →</a>
       </div>
     </main>
 
-    <IconDock links={profileLinks} />
+    <SiteFooter />
   </div>
 </BaseLayout>
 
 <style>
   .home-identity {
     display: grid;
-    gap: 0.2rem;
-    padding-bottom: 2rem;
+    gap: 0.55rem;
+    padding: 0.2rem 0 0;
+    max-width: 40rem;
   }
 
-  .home-identity-byline {
+  .home-identity-role {
+    margin: 0;
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     color: var(--ink-soft);
-    opacity: 0.7;
-    letter-spacing: 0.04em;
-    margin: 0;
+    opacity: 0.6;
   }
 
-  .home-identity-desc {
-    font-family: var(--font-body);
-    font-size: 1rem;
-    font-style: italic;
-    color: var(--ink-faint);
-    line-height: 1.7;
+  .home-identity-pitch {
     margin: 0;
-    max-width: 44rem;
+    max-width: 30ch;
+    font-size: clamp(1.3rem, 2.1vw, 1.6rem);
+    font-weight: 500;
+    line-height: 1.34;
+    color: var(--ink);
+  }
+
+  .home-identity-strange {
+    margin: 0.1rem 0 0;
+    font-style: italic;
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+    opacity: 0.5;
   }
 
   .home-all-writing {

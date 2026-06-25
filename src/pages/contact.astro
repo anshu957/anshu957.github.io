@@ -1,8 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteHeader from "../components/SiteHeader.astro";
-import IconDock from "../components/IconDock.astro";
-import { contactMethods, navLinks, profileLinks, siteMeta } from "../data/site.js";
+import SiteFooter from "../components/SiteFooter.astro";
+import { contactMethods, navLinks, siteMeta } from "../data/site.js";
 ---
 
 <BaseLayout title={`Contact | ${siteMeta.name}`} description="Contact information and external profiles for Anshul Choudhary.">
@@ -34,7 +34,7 @@ import { contactMethods, navLinks, profileLinks, siteMeta } from "../data/site.j
       </section>
     </main>
 
-    <IconDock links={profileLinks} />
+    <SiteFooter />
   </div>
 </BaseLayout>
 

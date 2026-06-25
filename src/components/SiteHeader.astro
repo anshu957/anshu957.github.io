@@ -1,5 +1,4 @@
 ---
-import NavCompanion from "./NavCompanion.jsx";
 import MathWordmark from "./MathWordmark.astro";
 import ThemeToggle from "./ThemeToggle.jsx";
 
@@ -7,10 +6,10 @@ const { navLinks, currentPath = "/" } = Astro.props;
 ---
 
 <header class="site-header pixel-frame">
-  <a class="brand" href="/" aria-label="Go home">
+  <a class="brand" href="/" aria-label="Anshul Choudhary — home">
     <span class="brand-copy">
+      <span class="brand-name">Anshul Choudhary</span>
       <MathWordmark />
-      <span class="brand-name" aria-hidden="true">// Anshul Choudhary<span class="brand-cursor"></span></span>
     </span>
   </a>
 
@@ -19,7 +18,6 @@ const { navLinks, currentPath = "/" } = Astro.props;
       const isActive = currentPath === link.href;
       return (
         <a class="nav-link" href={link.href} aria-current={isActive ? "page" : undefined}>
-          {isActive && <NavCompanion className="nav-link-companion" client:load />}
           <span class="nav-link-label">{link.label}</span>
         </a>
       );

@@ -3,8 +3,8 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import SiteHeader from "../../components/SiteHeader.astro";
 import BlogList from "../../components/BlogList.astro";
-import IconDock from "../../components/IconDock.astro";
-import { navLinks, profileLinks, siteMeta } from "../../data/site.js";
+import SiteFooter from "../../components/SiteFooter.astro";
+import { navLinks, siteMeta } from "../../data/site.js";
 
 const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime(),
@@ -27,7 +27,7 @@ const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
       <BlogList posts={posts} title="All writing" kicker="Archive" />
     </main>
 
-    <IconDock links={profileLinks} />
+    <SiteFooter />
   </div>
 </BaseLayout>
 

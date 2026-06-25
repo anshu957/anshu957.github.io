@@ -1,10 +1,10 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteHeader from "../components/SiteHeader.astro";
-import IconDock from "../components/IconDock.astro";
+import SiteFooter from "../components/SiteFooter.astro";
 import katex from "katex";
 import { Cog, Atom, Waves, BrainCircuit, Dna } from "lucide-react";
-import { navLinks, profileLinks, siteMeta } from "../data/site.js";
+import { navLinks, siteMeta } from "../data/site.js";
 
 const interests = [
   "nonlinear dynamics", "transcriptomics", "scientific ML",
@@ -140,7 +140,7 @@ const typeColor = {
 
     </main>
 
-    <IconDock links={profileLinks} />
+    <SiteFooter />
   </div>
 </BaseLayout>
 

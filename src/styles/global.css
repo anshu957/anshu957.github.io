@@ -33,15 +33,12 @@
 }
 
 .brand-name {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.72rem;
-  color: var(--ink-soft);
-  letter-spacing: 0.04em;
-  opacity: 0.65;
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 1.7vw, 1.58rem);
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.012em;
   line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  padding-left: 1.55rem;
 }
 
 .brand-cursor {
@@ -66,10 +63,11 @@
   gap: 0.06rem;
   color: var(--ink-soft);
   font-family: var(--font-ui);
-  font-size: clamp(1.48rem, 1.62vw, 1.7rem);
-  line-height: 0.92;
+  font-size: 0.95rem;
+  line-height: 1;
   letter-spacing: 0;
   white-space: nowrap;
+  opacity: 0.82;
 }
 
 .brand-mathmark .brand-symbol {
@@ -121,32 +119,24 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 1.9rem;
+  gap: 1.4rem;
   flex-wrap: wrap;
-  padding-top: 0.72rem;
 }
 
 .nav-link {
   position: relative;
   display: inline-flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
-  min-width: 4.9rem;
-  min-height: 4.25rem;
-  padding-top: 2rem;
+  padding: 0.3rem 0.1rem;
   color: var(--ink-soft);
   font-family: var(--font-ui);
-  font-size: 1.48rem;
-  font-weight: 700;
+  font-size: 1.02rem;
+  font-weight: 600;
   line-height: 1;
-  letter-spacing: 0.008em;
+  letter-spacing: 0.005em;
   text-decoration: none;
-  transition:
-    color 180ms ease,
-    transform 180ms ease,
-    letter-spacing 180ms ease,
-    text-shadow 180ms ease,
-    filter 180ms ease;
+  transition: color 180ms ease;
 }
 
 .nav-link-label {
@@ -178,27 +168,13 @@
 }
 
 .nav-link::before {
-  content: "";
-  position: absolute;
-  left: -0.18rem;
-  right: -0.18rem;
-  top: -0.18rem;
-  bottom: -0.18rem;
-  border-radius: 0.5rem;
-  background: rgba(255, 255, 255, 0.26);
-  opacity: 0;
-  transform: scale(0.96);
-  transition: opacity 180ms ease, transform 180ms ease;
+  content: none;
 }
 
 .nav-link:hover,
 .nav-link:focus-visible,
 .nav-link[aria-current="page"] {
   color: var(--ink);
-  transform: translateY(-1px) scale(1.02);
-  letter-spacing: 0.02em;
-  text-shadow: 0 0 14px rgba(184, 90, 67, 0.08);
-  filter: saturate(1.08);
 }
 
 .nav-link:hover::after,
@@ -221,7 +197,8 @@
 }
 
 .page-stack--home {
-  padding-top: 0.9rem;
+  gap: var(--space-5);
+  padding-top: 0.6rem;
 }
 
 .home-hero {
@@ -610,58 +587,62 @@
   text-transform: none;
 }
 
-.icon-dock {
+.site-footer {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-  padding: var(--space-2) 0;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.7rem 1.6rem;
+  margin-top: var(--space-6);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--line);
 }
 
-.dock-link {
+.site-footer-id {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.045em;
+  color: var(--ink-soft);
+  opacity: 0.6;
+}
+
+.site-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.3rem;
+}
+
+.footer-link {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  padding: 0.4rem;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  opacity: 0.72;
-  transition: transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 220ms ease, filter 220ms ease;
+  gap: 0.42rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.03em;
+  color: var(--ink-soft);
   text-decoration: none;
+  opacity: 0.7;
+  transition: color 160ms ease, opacity 160ms ease;
 }
 
-.dock-link:nth-child(1) { margin-top: 5px; }
-.dock-link:nth-child(3) { margin-top: 5px; }
-
-/* Brand colors — light mode */
-.dock-link[data-icon="scholar"] { color: #4285F4; }
-.dock-link[data-icon="github"]  { color: #181717; }
-.dock-link[data-icon="orcid"]   { color: #A6CE39; }
-
-/* Adapted for dark backgrounds */
-html.dark .dock-link[data-icon="scholar"] { color: #7aaaf7; }
-html.dark .dock-link[data-icon="github"]  { color: #d4cfc9; }
-html.dark .dock-link[data-icon="orcid"]   { color: #bada6a; }
-
-.dock-link:hover,
-.dock-link:focus-visible {
+.footer-link:hover,
+.footer-link:focus-visible {
   opacity: 1;
-  transform: translateY(-6px) scale(1.18);
-  filter: drop-shadow(0 5px 12px rgba(0, 0, 0, 0.22));
+  color: var(--ink);
 }
 
-.dock-icon {
-  width: 1.7rem;
-  height: 1.7rem;
+.footer-link[data-icon="scholar"]:hover { color: #4285f4; }
+.footer-link[data-icon="orcid"]:hover { color: #6f9d1f; }
+html.dark .footer-link[data-icon="scholar"]:hover { color: #7aaaf7; }
+html.dark .footer-link[data-icon="orcid"]:hover { color: #bada6a; }
+
+.footer-icon,
+.footer-icon-mail {
+  width: 0.85rem;
+  height: 0.85rem;
+  flex: 0 0 auto;
   display: block;
-}
-
-.site-footer {
-  display: grid;
-  justify-items: center;
-  padding-top: var(--space-2);
-  padding-bottom: var(--space-2);
 }
 
 /* ── CareerMap ─────────────────────────────────────── */

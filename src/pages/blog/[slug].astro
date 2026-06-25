@@ -2,8 +2,8 @@
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import SiteHeader from "../../components/SiteHeader.astro";
-import IconDock from "../../components/IconDock.astro";
-import { navLinks, profileLinks, siteMeta } from "../../data/site.js";
+import SiteFooter from "../../components/SiteFooter.astro";
+import { navLinks, siteMeta } from "../../data/site.js";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog", ({ data }) => !data.draft);
@@ -51,7 +51,7 @@ const domainColor = (() => {
       </div>
     </article>
 
-    <IconDock links={profileLinks} />
+    <SiteFooter />
   </div>
 </BaseLayout>
 
