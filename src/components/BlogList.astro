@@ -1,15 +1,27 @@
 ---
+import { phaseGlyph } from "../lib/phaseGlyph.js";
+
 const { posts, title = "Recent writing", kicker = "Notebook" } = Astro.props;
 
 const formatDate = (date) =>
-  date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+  date.toLocaleDateString("en-US", { month: "short", year: "numeric" }).toLowerCase();
 
-// Map first tag to a thematic domain color token
+const formatTime = (rt) => (rt ?? "").replace(/\s*read$/i, "").trim();
+
+const ACCENT = {
+  oxide: "var(--oxide)",
+  blue: "var(--accent-blue)",
+  sage: "var(--sage)",
+  gold: "var(--gold)",
+};
+
+// Map a post's tags to one of four meaning-bearing domain accents.
 const domainColor = (tags = []) => {
   const t = tags.join(" ").toLowerCase();
-  if (/tea|notes|practice|personal|pause/.test(t)) return "gold";
-  if (/network|physics|complex|math|graph/.test(t)) return "blue";
-  return "oxide";
+  if (/tea|notes|practice|personal|pause/.test(t)) return "gold"; // personal
+  if (/network|physics|complex|math|graph/.test(t)) return "blue"; // theory
+  if (/genom|transcriptom|sequenc|method|pipeline|software/.test(t)) return "sage"; // genomics/methods
+  return "oxide"; // biology / default
 };
 ---
 
@@ -22,11 +34,30 @@ const domainColor = (tags = []) => {
   <ol class="writing-roll" role="list">
     {posts.map((post) => {
       const color = domainColor(post.data.tags);
+      const glyph = phaseGlyph(post.slug);
       return (
         <li class:list={["writing-entry", `writing-entry--${color}`]}>
-          <article>
+          <svg
+            class="pf-glyph"
+            viewBox="0 0 40 40"
+            aria-hidden="true"
+            style={`color:${ACCENT[color]}`}
+          >
+            <path
+              d={glyph.d}
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              vector-effect="non-scaling-stroke"
+            />
+            <circle cx={glyph.end[0]} cy={glyph.end[1]} r="1.1" fill="currentColor" opacity="0.7" />
+          </svg>
+
+          <article class="writing-entry-body">
             <p class="writing-entry-domain">
-              {post.data.tags.slice(0, 2).join("  ·  ")}
+              {post.data.tags.slice(0, 3).join("  ·  ")}
             </p>
             <h3 class="writing-entry-title">
               <a class="writing-entry-link" href={`/blog/${post.slug}/`}>
@@ -38,7 +69,7 @@ const domainColor = (tags = []) => {
             <p class="writing-entry-foot">
               <span class="writing-entry-date">{formatDate(post.data.date)}</span>
               <span class="writing-entry-mid">·</span>
-              <span class="writing-entry-time">{post.data.readingTime}</span>
+              <span class="writing-entry-time">{formatTime(post.data.readingTime)}</span>
             </p>
           </article>
         </li>
@@ -50,7 +81,7 @@ const domainColor = (tags = []) => {
 <style>
   .writing-section {
     display: grid;
-    gap: 1.6rem;
+    gap: 1.5rem;
   }
 
   .writing-header {
@@ -64,11 +95,14 @@ const domainColor = (tags = []) => {
     padding: 0;
   }
 
-  /* ── Entry ── */
+  /* ── Entry: glyph gutter | content ── */
   .writing-entry {
-    position: relative;
-    padding: 1.5rem 0 1.5rem 1.6rem;
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 0 1.1rem;
+    padding: 1.5rem 0;
     border-top: 1px solid var(--line);
+    align-items: start;
     transition: transform 200ms ease;
   }
 
@@ -80,56 +114,46 @@ const domainColor = (tags = []) => {
     transform: translateX(0.25rem);
   }
 
-  /* Left accent bar */
-  .writing-entry::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 1.5rem;
-    bottom: 1.5rem;
-    width: 2px;
-    border-radius: 999px;
-    background: var(--oxide);
-    opacity: 0.35;
-    transition: opacity 220ms ease, top 220ms ease, bottom 220ms ease;
+  /* ── Phase-space specimen glyph (the accent) ── */
+  .pf-glyph {
+    width: 34px;
+    height: 34px;
+    margin-top: 0.15rem;
+    opacity: 0.55;
+    overflow: visible;
+    transition: opacity 200ms ease;
   }
 
-  .writing-entry:hover::before {
+  .writing-entry:hover .pf-glyph {
     opacity: 0.9;
-    top: 1rem;
-    bottom: 1rem;
   }
 
-  .writing-entry--blue::before  { background: var(--accent-blue); }
-  .writing-entry--gold::before  { background: var(--gold); }
-  .writing-entry--oxide::before { background: var(--oxide); }
+  .writing-entry-body {
+    min-width: 0;
+  }
 
-  /* Domain tag */
+  /* ── Domain tag ── */
   .writing-entry-domain {
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
     font-size: 0.64rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    margin: 0 0 0.45rem;
+    margin: 0 0 0.4rem;
     color: var(--ink-soft);
-    opacity: 0.5;
-    transition: opacity 200ms ease;
+    opacity: 0.6;
   }
 
-  .writing-entry--blue .writing-entry-domain  { color: var(--accent-blue); opacity: 0.75; }
-  .writing-entry--gold .writing-entry-domain  { color: var(--gold); opacity: 0.85; }
-  .writing-entry--oxide .writing-entry-domain { color: var(--oxide); opacity: 0.75; }
+  .writing-entry--oxide .writing-entry-domain { color: var(--oxide); opacity: 0.8; }
+  .writing-entry--blue  .writing-entry-domain { color: var(--accent-blue); opacity: 0.85; }
+  .writing-entry--sage  .writing-entry-domain { color: var(--sage); opacity: 0.85; }
+  .writing-entry--gold  .writing-entry-domain { color: var(--gold); opacity: 0.9; }
 
-  .writing-entry:hover .writing-entry-domain {
-    opacity: 1;
-  }
-
-  /* Title */
+  /* ── Title ── */
   .writing-entry-title {
-    font-size: clamp(1.22rem, 1.65vw, 1.52rem);
+    font-size: clamp(1.3rem, 1.7vw, 1.55rem);
     font-weight: 500;
-    line-height: 1.15;
-    margin: 0 0 0.55rem;
+    line-height: 1.14;
+    margin: 0 0 0.45rem;
   }
 
   .writing-entry-link {
@@ -145,33 +169,34 @@ const domainColor = (tags = []) => {
     color: var(--oxide);
   }
 
-  .writing-entry--blue .writing-entry-link:hover  { color: var(--accent-blue); }
-  .writing-entry--gold .writing-entry-link:hover  { color: var(--gold); }
+  .writing-entry--blue  .writing-entry-link:hover { color: var(--accent-blue); }
+  .writing-entry--sage  .writing-entry-link:hover { color: var(--sage); }
+  .writing-entry--gold  .writing-entry-link:hover { color: var(--gold); }
 
   .writing-entry-arrow {
     font-size: 0.8em;
     opacity: 0;
     transform: translateX(-0.3em);
-    transition: opacity 200ms ease, transform 200ms ease;
+    transition: opacity 180ms ease, transform 180ms ease;
     display: inline-block;
   }
 
   .writing-entry-link:hover .writing-entry-arrow {
     opacity: 1;
-    transform: translateX(0);
+    transform: none;
   }
 
-  /* Description */
+  /* ── Description ── */
   .writing-entry-desc {
-    margin: 0 0 0.65rem;
+    margin: 0 0 0.55rem;
     font-size: 0.95rem;
     font-style: italic;
     color: var(--ink-faint);
-    line-height: 1.65;
+    line-height: 1.6;
     max-width: 42rem;
   }
 
-  /* Footer */
+  /* ── Footer ── */
   .writing-entry-foot {
     margin: 0;
     display: flex;
@@ -186,5 +211,20 @@ const domainColor = (tags = []) => {
 
   .writing-entry-mid {
     opacity: 0.5;
+  }
+
+  /* ── Mobile: glyph as a small leading mark in a narrow gutter ── */
+  @media (max-width: 640px) {
+    .writing-entry {
+      grid-template-columns: 26px 1fr;
+      gap: 0 0.7rem;
+      padding: 1.3rem 0;
+    }
+
+    .pf-glyph {
+      width: 22px;
+      height: 22px;
+      margin-top: 0;
+    }
   }
 </style>
