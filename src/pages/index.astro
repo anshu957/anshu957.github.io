@@ -26,8 +26,10 @@ const posts = (await getCollection("blog", ({ data }) => !data.draft))
     <main class="page-stack page-stack--home">
       <section class="home-identity">
         <p class="home-identity-role">{siteMeta.role} · {siteMeta.institution}</p>
-        <p class="home-identity-pitch">{siteMeta.tagline}</p>
-        <p class="home-identity-strange">{siteMeta.heroIntro[0]}</p>
+        <div class="home-identity-main">
+          <p class="home-identity-pitch">{siteMeta.tagline}</p>
+          <p class="home-identity-strange">— {siteMeta.heroIntro[0]}</p>
+        </div>
       </section>
 
       <div class="home-sections home-sections--single">
@@ -46,7 +48,7 @@ const posts = (await getCollection("blog", ({ data }) => !data.draft))
     display: grid;
     gap: 0.55rem;
     padding: 0.2rem 0 0;
-    max-width: 40rem;
+    max-width: 46rem;
   }
 
   .home-identity-role {
@@ -60,9 +62,15 @@ const posts = (await getCollection("blog", ({ data }) => !data.draft))
     opacity: 0.6;
   }
 
+  .home-identity-main {
+    display: grid;
+    grid-template-columns: minmax(0, 30ch) 1fr;
+    gap: 0 1.6rem;
+    align-items: end;
+  }
+
   .home-identity-pitch {
     margin: 0;
-    max-width: 30ch;
     font-size: clamp(1.3rem, 2.1vw, 1.6rem);
     font-weight: 500;
     line-height: 1.34;
@@ -70,11 +78,23 @@ const posts = (await getCollection("blog", ({ data }) => !data.draft))
   }
 
   .home-identity-strange {
-    margin: 0.1rem 0 0;
+    margin: 0 0 0.3rem;
     font-style: italic;
     font-size: 0.92rem;
     color: var(--ink-soft);
     opacity: 0.5;
+  }
+
+  @media (max-width: 640px) {
+    .home-identity-main {
+      grid-template-columns: 1fr;
+      gap: 0.3rem;
+      align-items: start;
+    }
+
+    .home-identity-strange {
+      margin: 0;
+    }
   }
 
   .home-all-writing {

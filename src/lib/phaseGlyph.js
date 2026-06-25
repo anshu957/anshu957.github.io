@@ -30,14 +30,14 @@ export function phaseGlyph(slug) {
   const pick = (arr) => arr[Math.floor(rnd() * arr.length)];
 
   const f1 = pick([2, 3, 3, 4]);
-  const f2 = f1 + pick([1, 2]) + 0.04; // detune → never a static closed loop
+  const f2 = f1 + pick([1, 2]) + (0.08 + rnd() * 0.1); // detune 0.08–0.18 → precesses, never a static loop
   const f3 = pick([2, 3, 3, 4]);
-  const f4 = f3 + pick([1, 2]) + 0.04;
+  const f4 = f3 + pick([1, 2]) + (0.08 + rnd() * 0.1);
   const p1 = rnd() * Math.PI * 2;
   const p2 = rnd() * Math.PI * 2;
   const p3 = rnd() * Math.PI * 2;
   const p4 = rnd() * Math.PI * 2;
-  const d1 = 0.0035 + rnd() * 0.002; // slow envelope on the primary
+  const d1 = 0.0025 + rnd() * 0.0025; // slow envelope keeps sparse figures open
   const d2 = 0.008 + rnd() * 0.003; // faster envelope on the secondary
 
   const T = 78;
