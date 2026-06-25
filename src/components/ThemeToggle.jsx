@@ -9,16 +9,7 @@ const PhaseIcon = ({ dark }) => (
     aria-hidden="true"
     style={{ display: "block", transition: "transform 400ms ease" }}
   >
-    {/* outer ring */}
-    <circle
-      cx="12"
-      cy="12"
-      r="9.5"
-      stroke="currentColor"
-      strokeWidth="1.4"
-      fill="none"
-    />
-    {/* filled half — right in light mode, left in dark */}
+    <circle cx="12" cy="12" r="9.5" stroke="currentColor" strokeWidth="1.4" fill="none" />
     <path
       d={dark
         ? "M12 2.5 A9.5 9.5 0 0 0 12 21.5 Z"
@@ -26,7 +17,6 @@ const PhaseIcon = ({ dark }) => (
       fill="currentColor"
       opacity="0.9"
     />
-    {/* sine-wave divider */}
     <path
       d="M12 2.5 C10 7 14 12 12 17 C10 19.5 12 21.5 12 21.5"
       stroke="currentColor"
@@ -34,7 +24,6 @@ const PhaseIcon = ({ dark }) => (
       fill="none"
       strokeLinecap="round"
     />
-    {/* small inner circle accent */}
     <circle
       cx={dark ? "9" : "15"}
       cy="12"
@@ -47,14 +36,12 @@ const PhaseIcon = ({ dark }) => (
   </svg>
 );
 
-export default function ThemeToggle() {
+export default function ThemeToggle({ variant = "icon" }) {
   const [dark, setDark] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem("ac-dark") === "1";
-    const prefDark = !stored && window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const isDark = localStorage.getItem("ac-dark") !== null ? stored : prefDark;
+    const isDark = localStorage.getItem("ac-dark") === "1";
     setDark(isDark);
     setMounted(true);
     document.documentElement.classList.toggle("dark", isDark);
@@ -70,6 +57,38 @@ export default function ThemeToggle() {
   }
 
   if (!mounted) return null;
+
+  if (variant === "text") {
+    return (
+      <button
+        type="button"
+        className="proto-theme-text"
+        onClick={toggle}
+        aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
+      >
+        Dark mode
+      </button>
+    );
+  }
+
+  if (variant === "manuscript") {
+    return (
+      <button
+        type="button"
+        className="ms-theme-switch"
+        onClick={toggle}
+        aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
+        aria-pressed={dark}
+      >
+        <span className="ms-theme-track" aria-hidden="true">
+          <span className="ms-theme-orbit">
+            <PhaseIcon dark={dark} />
+          </span>
+        </span>
+        <span className="ms-theme-label">{dark ? "paper" : "night"}</span>
+      </button>
+    );
+  }
 
   return (
     <button

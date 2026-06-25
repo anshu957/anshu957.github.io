@@ -1,0 +1,368 @@
+---
+import ThemeToggle from "../ThemeToggle.jsx";
+import ManuscriptNavCat from "./ManuscriptNavCat.jsx";
+
+const { currentPath = "/" } = Astro.props;
+
+const links = [
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
+  { href: "/research", label: "Research" },
+  { href: "/blog", label: "Blog" },
+  { href: "/contact", label: "Contact" },
+];
+
+---
+
+<header class="ms-header">
+  <div class="ms-equation-badge" aria-label="Site tagline">
+    <span class="ms-terminal-line">
+      <span class="ms-prompt">a957@phase-space</span>
+      <span class="ms-command">
+        <span class="ms-symbol ms-symbol--integral">∫</span>
+        <span class="ms-word ms-word--bio">biology</span>
+        <span class="ms-symbol ms-symbol--partial">∂</span>
+        <span class="ms-word ms-word--dynamics">(dynamical system)</span>
+      </span>
+      <span class="ms-cursor" aria-hidden="true"></span>
+    </span>
+    <span class="ms-landscape" aria-hidden="true">
+      <svg viewBox="0 0 280 26" preserveAspectRatio="none">
+        <defs>
+          <radialGradient id="ms-cell-fill" cx="38%" cy="32%" r="72%">
+            <stop offset="0%" stop-color="#eef4e8" />
+            <stop offset="45%" stop-color="#b8c9a8" />
+            <stop offset="88%" stop-color="#5e7257" />
+            <stop offset="100%" stop-color="#46553f" />
+          </radialGradient>
+        </defs>
+        <path class="ms-landscape-shadow" d="M 6 17.5 C 38 4, 68 22, 101 10.5 S 168 2.5, 210 14 S 258 22, 274 9.5" />
+        <path
+          class="ms-landscape-line"
+          id="ms-curve"
+          d="M 6 16 C 38 3, 68 21, 101 10 S 168 1, 210 13 S 258 21, 274 8"
+        />
+        <g class="ms-rolling-cell">
+          <circle r="4.2" fill="url(#ms-cell-fill)" stroke="#5e7257" stroke-width="0.55" opacity="0.94" />
+          <circle r="1.35" cx="0.9" cy="-0.7" fill="#3d4f38" opacity="0.62" />
+          <animateMotion
+            dur="7.5s"
+            repeatCount="indefinite"
+            keyPoints="0;1;1;0"
+            keyTimes="0;0.48;0.52;1"
+            calcMode="spline"
+            keySplines="0.45 0 0.25 1;0.45 0 0.25 1;0.45 0 0.25 1"
+            path="M 6 16 C 38 3, 68 21, 101 10 S 168 1, 210 13 S 258 21, 274 8"
+          />
+        </g>
+      </svg>
+    </span>
+  </div>
+  <div class="ms-header-nav-stage">
+    <ManuscriptNavCat client:load currentPath={currentPath} />
+    <nav class="ms-header-nav" aria-label="Primary">
+      {links.map((link) => {
+        const isActive =
+          currentPath === link.href ||
+          (link.href !== "/" && currentPath.startsWith(link.href));
+        return (
+          <a
+            class="ms-header-link"
+            href={link.href}
+            aria-current={isActive ? "page" : undefined}
+          >
+            {link.label}
+          </a>
+        );
+      })}
+      <ThemeToggle client:load variant="manuscript" />
+    </nav>
+  </div>
+</header>
+
+<style>
+  .ms-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem 2.2rem;
+    padding: 1.28rem 0 1.18rem;
+    border-bottom: 1px solid var(--ms-rule);
+  }
+
+  .ms-equation-badge {
+    position: relative;
+    display: inline-grid;
+    align-items: start;
+    gap: 0.34rem;
+    max-width: 100%;
+    min-width: min(37rem, 55vw);
+    padding: 0.72rem 1rem 0.84rem;
+    border: 1px solid color-mix(in srgb, var(--ms-secondary) 22%, transparent);
+    border-radius: 1.15rem;
+    background:
+      radial-gradient(circle at 92% 10%, color-mix(in srgb, var(--ms-secondary) 11%, transparent), transparent 5rem),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.46), rgba(155, 87, 68, 0.055)),
+      color-mix(in srgb, var(--ms-sheet) 82%, transparent);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.58) inset;
+    font-family: var(--ms-font-mono);
+    font-size: clamp(0.9rem, 1.36vw, 1.16rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--ms-primary);
+  }
+
+  .ms-terminal-line {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 0.38rem;
+    max-width: 100%;
+  }
+
+  .ms-prompt {
+    color: var(--ms-secondary);
+    flex-shrink: 0;
+  }
+
+  .ms-prompt::after {
+    content: ">>";
+    margin: 0 0.5rem 0 0.32rem;
+    color: var(--ms-muted);
+    font-weight: 600;
+    letter-spacing: -0.06em;
+  }
+
+  .ms-command {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.28rem 0.42rem;
+    color: var(--ms-primary);
+    white-space: nowrap;
+  }
+
+  .ms-symbol {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--ms-primary);
+    font-family: var(--ms-font-display);
+    font-size: 1.55em;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .ms-symbol--integral {
+    font-size: 1.85em;
+  }
+
+  .ms-symbol--partial {
+    font-size: 1.75em;
+  }
+
+  .ms-word {
+    font-family: var(--ms-font-display);
+    font-size: 1.08em;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+  }
+
+  .ms-word--bio {
+    color: var(--sage, #5e7257);
+  }
+
+  .ms-word--dynamics {
+    color: var(--accent-blue, #6b7fb0);
+  }
+
+  .ms-landscape {
+    position: relative;
+    display: block;
+    width: min(100%, 23rem);
+    height: 2.15rem;
+    margin-top: -0.12rem;
+    color: var(--ms-wave);
+  }
+
+  .ms-landscape svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .ms-landscape-line,
+  .ms-landscape-shadow {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+  }
+
+  .ms-landscape-line {
+    stroke-width: 1.7;
+    opacity: 0.72;
+  }
+
+  .ms-landscape-shadow {
+    stroke-width: 5;
+    opacity: 0.13;
+  }
+
+  .ms-rolling-cell {
+    filter: drop-shadow(0 1px 2px rgba(62, 79, 56, 0.28));
+  }
+
+  .ms-cursor {
+    display: inline-block;
+    flex-shrink: 0;
+    align-self: center;
+    width: 0.56em;
+    height: 1.24em;
+    margin-left: 0.2rem;
+    border-radius: 2px;
+    background: var(--ms-secondary);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--ms-secondary) 28%, transparent),
+      0 1px 4px color-mix(in srgb, var(--ms-secondary) 35%, transparent);
+    animation: ms-blink 0.92s step-end infinite;
+  }
+
+  @keyframes ms-blink {
+    0%, 46% {
+      opacity: 1;
+      transform: scaleX(1);
+    }
+    47%, 100% {
+      opacity: 0;
+      transform: scaleX(1);
+    }
+  }
+
+  .ms-header-quote {
+    margin: 0;
+    font-family: var(--ms-font-body);
+    font-size: clamp(0.94rem, 1.7vw, 1.12rem);
+    font-weight: 650;
+    font-style: italic;
+    line-height: 1.1;
+    color: var(--ms-primary);
+  }
+
+  .ms-header-nav-stage {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    flex-shrink: 0;
+  }
+
+  :global(.ms-nav-cat-rail) {
+    position: relative;
+    width: 100%;
+    height: clamp(2.35rem, 3.2vw, 2.85rem);
+    margin-bottom: 0.42rem;
+    pointer-events: none;
+  }
+
+  :global(.ms-nav-cat) {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    will-change: transform;
+    transition:
+      transform 520ms cubic-bezier(0.45, 0, 0.2, 1),
+      opacity 180ms ease;
+  }
+
+  :global(.ms-nav-cat--still) {
+    transition: none;
+  }
+
+  :global(.ms-nav-cat-inner) {
+    width: clamp(2.65rem, 3.4vw, 3.15rem);
+    height: clamp(2.65rem, 3.4vw, 3.15rem);
+    transition: transform 280ms ease;
+  }
+
+  :global(.ms-nav-cat-inner--left) {
+    transform: scaleX(-1);
+  }
+
+  :global(.ms-nav-cat .nav-track) {
+    min-width: 0;
+    min-height: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  :global(.ms-nav-cat .nav-companion) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .ms-header-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: clamp(1rem, 2.4vw, 1.65rem);
+  }
+
+  .ms-header-link {
+    font-family: var(--ms-font-body);
+    font-size: clamp(1.1rem, 1.36vw, 1.2rem);
+    font-weight: 650;
+    line-height: 1;
+    color: var(--ms-primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .ms-header-link:hover,
+  .ms-header-link:focus-visible,
+  .ms-header-link[aria-current="page"] {
+    color: var(--ms-secondary);
+  }
+
+  @media (max-width: 720px) {
+    .ms-header {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .ms-header-nav-stage {
+      align-items: flex-start;
+      width: 100%;
+    }
+
+    .ms-header-nav {
+      justify-content: flex-start;
+    }
+
+    .ms-equation-badge {
+      min-width: 0;
+      width: 100%;
+      border-radius: 0.7rem;
+      line-height: 1.35;
+    }
+
+    .ms-terminal-line {
+      row-gap: 0.2rem;
+    }
+
+    .ms-command {
+      white-space: normal;
+    }
+
+    .ms-landscape {
+      width: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ms-cursor {
+      animation: none;
+    }
+  }
+</style>

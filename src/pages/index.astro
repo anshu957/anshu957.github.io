@@ -1,115 +1,47 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import SiteHeader from "../components/SiteHeader.astro";
-import BlogList from "../components/BlogList.astro";
-import SiteFooter from "../components/SiteFooter.astro";
-import { navLinks, siteMeta } from "../data/site.js";
+import ManuscriptHeader from "../components/manuscript/ManuscriptHeader.astro";
+import ManuscriptHome from "../components/manuscript/ManuscriptHome.astro";
+import ManuscriptFooter from "../components/manuscript/ManuscriptFooter.astro";
+import { siteMeta } from "../data/site.js";
+import { fallbackHomePosts } from "../data/homePosts.js";
+import "../styles/manuscript.css";
 
-const posts = (await getCollection("blog", ({ data }) => !data.draft))
+const collectionPosts = (await getCollection("blog", ({ data }) => !data.draft))
   .sort(
     (a, b) =>
       Number(b.data.featured) - Number(a.data.featured) ||
       b.data.date.getTime() - a.data.date.getTime(),
   )
-  .slice(0, 3);
+  .slice(0, 6);
+
+const posts = collectionPosts.length > 0 ? collectionPosts : fallbackHomePosts;
 ---
 
 <BaseLayout
-  title={`${siteMeta.name} | ${siteMeta.role}`}
+  title={`${siteMeta.name} | Research & Observations`}
   description={siteMeta.description}
 >
-  <div class="noise" aria-hidden="true"></div>
-  <div class="site-shell">
-    <SiteHeader navLinks={navLinks} currentPath="/" />
-
-    <main class="page-stack page-stack--home">
-      <section class="home-identity">
-        <p class="home-identity-role">{siteMeta.role} · {siteMeta.institution}</p>
-        <div class="home-identity-main">
-          <p class="home-identity-pitch">{siteMeta.tagline}</p>
-          <p class="home-identity-strange">— {siteMeta.heroIntro[0]}</p>
-        </div>
-      </section>
-
-      <div class="home-sections home-sections--single">
-        <BlogList posts={posts} title="Recent writing" kicker="Blog" />
-
-        <a href="/blog" class="home-all-writing">all writing →</a>
-      </div>
-    </main>
-
-    <SiteFooter />
+  <div class="manuscript-page">
+    <div class="ms-shell">
+      <ManuscriptHeader currentPath="/" />
+      <ManuscriptHome posts={posts} />
+      <ManuscriptFooter />
+    </div>
   </div>
 </BaseLayout>
 
-<style>
-  .home-identity {
-    display: grid;
-    gap: 0.55rem;
-    padding: 0.2rem 0 0;
-    max-width: 46rem;
+<style is:global>
+  /* Homepage uses manuscript system — override global body styles */
+  body:has(.manuscript-page) {
+    background: #f4f0e8;
+    font-family: "Newsreader", Georgia, serif;
+    font-size: 16px;
+    line-height: 1.6;
   }
 
-  .home-identity-role {
-    margin: 0;
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 0.7rem;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-    opacity: 0.6;
-  }
-
-  .home-identity-main {
-    display: grid;
-    grid-template-columns: minmax(0, 30ch) 1fr;
-    gap: 0 1.6rem;
-    align-items: end;
-  }
-
-  .home-identity-pitch {
-    margin: 0;
-    font-size: clamp(1.3rem, 2.1vw, 1.6rem);
-    font-weight: 500;
-    line-height: 1.34;
-    color: var(--ink);
-  }
-
-  .home-identity-strange {
-    margin: 0 0 0.3rem;
-    font-style: italic;
-    font-size: 0.92rem;
-    color: var(--ink-soft);
-    opacity: 0.5;
-  }
-
-  @media (max-width: 640px) {
-    .home-identity-main {
-      grid-template-columns: 1fr;
-      gap: 0.3rem;
-      align-items: start;
-    }
-
-    .home-identity-strange {
-      margin: 0;
-    }
-  }
-
-  .home-all-writing {
-    display: inline-block;
-    padding-top: 1.4rem;
-    font-family: var(--font-ui);
-    font-size: 0.82rem;
-    font-weight: 600;
-    letter-spacing: 0.035em;
-    color: var(--ink-soft);
-    text-decoration: none;
-    transition: color 180ms ease;
-  }
-
-  .home-all-writing:hover {
-    color: var(--oxide);
+  html.dark body:has(.manuscript-page) {
+    background: #17100e;
   }
 </style>

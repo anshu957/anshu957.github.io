@@ -9,6 +9,12 @@
   "dependencies": {
     "@astrojs/mdx": "^4.3.14",
     "@astrojs/react": "^4.4.2",
+    "@fontsource/eb-garamond": "^5.2.7",
+    "@fontsource/fraunces": "^5.2.9",
+    "@fontsource/hanken-grotesk": "^5.2.8",
+    "@fontsource/ibm-plex-sans": "^5.2.8",
+    "@fontsource/jetbrains-mono": "^5.2.8",
+    "@fontsource/libre-caslon-text": "^5.2.7",
     "@fontsource/newsreader": "^5.2.10",
     "@lottiefiles/dotlottie-react": "^0.18.7",
     "astro": "^5.18.1",

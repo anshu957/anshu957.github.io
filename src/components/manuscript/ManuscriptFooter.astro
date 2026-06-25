@@ -1,0 +1,95 @@
+---
+import { siteMeta, profileLinks } from "../../data/site.js";
+import BrandIcon from "../BrandIcon.astro";
+---
+
+<footer class="ms-footer">
+  <p class="ms-footer-line">{siteMeta.name} © 2026</p>
+
+  <div class="ms-footer-links" aria-label="Profile links">
+    {profileLinks.map((link) => (
+      <a class="ms-footer-link" href={link.href} target="_blank" rel="noreferrer">
+        <BrandIcon icon={link.icon} class="ms-footer-icon" />
+        <span>{link.label === "Google Scholar" ? "Google Scholar" : link.label}</span>
+      </a>
+    ))}
+    <a class="ms-footer-link" href={`mailto:${siteMeta.email}`}>
+      <svg class="ms-footer-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 6.75h16v10.5H4z" fill="none" stroke="currentColor" stroke-width="1.7" />
+        <path d="M5 7.5l7 5.25L19 7.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+      </svg>
+      <span>Email</span>
+    </a>
+  </div>
+</footer>
+
+<style>
+  .ms-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.35rem 2rem;
+    padding: 1.45rem 0 1.65rem;
+    border-top: 1.5px solid var(--ms-rule);
+    font-size: clamp(1.08rem, 1.38vw, 1.22rem);
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .ms-footer-line {
+    margin: 0;
+    font-family: var(--ms-font-display);
+    font-size: clamp(0.98rem, 1.28vw, 1.12rem);
+    font-weight: 650;
+    letter-spacing: -0.03em;
+    color: var(--ms-primary);
+  }
+
+  .ms-footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.95rem 1.35rem;
+  }
+
+  .ms-footer-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.42rem;
+    color: var(--ms-primary);
+    font-size: clamp(1.02rem, 1.22vw, 1.16rem);
+    text-decoration: none;
+    transition: color 180ms ease;
+  }
+
+  .ms-footer-link:hover,
+  .ms-footer-link:focus-visible {
+    color: var(--ms-secondary);
+  }
+
+  :global(.ms-footer-icon),
+  .ms-footer-icon {
+    display: block;
+    width: 1.16rem;
+    height: 1.16rem;
+    flex: 0 0 auto;
+  }
+
+  @media (max-width: 720px) {
+    .ms-footer {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.85rem;
+      line-height: 1.45;
+    }
+
+    .ms-footer-links {
+      justify-content: flex-start;
+      gap: 0.78rem 1.1rem;
+    }
+
+    .ms-footer-link {
+      padding: 0.12rem 0;
+    }
+  }
+</style>

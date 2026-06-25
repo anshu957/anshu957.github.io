@@ -7,7 +7,7 @@ export const siteMeta = {
   institution: "The Jackson Laboratory for Genomic Medicine",
   location: "Farmington, Connecticut",
   email: "anshul.choudhary@jax.org",
-  brandSubtitle: "∫ Biology ∂(dynamical systems)",
+  headerTagline: "Finding beauty in complexity.",
   tagline: "Computational biologist working across genomics, machine learning, and nonlinear dynamics.",
   heroIntro: [
     "tea steam over phase space.",

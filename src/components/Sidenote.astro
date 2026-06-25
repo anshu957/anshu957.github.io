@@ -1,0 +1,58 @@
+---
+const { mark = "note" } = Astro.props;
+---
+
+<span class="sidenote">
+  <span class="sidenote-mark" aria-hidden="true">{mark}</span>
+  <span class="sidenote-body">
+    <slot />
+  </span>
+</span>
+
+<style>
+  .sidenote {
+    display: block;
+    float: right;
+    clear: right;
+    width: min(15rem, 28vw);
+    margin: 0.18rem max(-17rem, -24vw) 1rem 1.25rem;
+    padding: 0.62rem 0 0.66rem 0.72rem;
+    border-left: 1px solid color-mix(in srgb, var(--article-accent, var(--ms-secondary, var(--oxide))) 36%, transparent);
+    color: var(--ms-muted, var(--ink-soft));
+    font-family: var(--ms-font-display, var(--font-display));
+    font-size: 0.88rem;
+    font-style: italic;
+    font-weight: 500;
+    line-height: 1.34;
+    text-wrap: pretty;
+  }
+
+  .sidenote-mark {
+    display: block;
+    margin-bottom: 0.28rem;
+    color: var(--article-accent, var(--ms-secondary, var(--oxide)));
+    font-family: var(--ms-font-mono, var(--font-ui));
+    font-size: 0.58rem;
+    font-style: normal;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .sidenote-body {
+    display: block;
+  }
+
+  @media (max-width: 980px) {
+    .sidenote {
+      float: none;
+      width: auto;
+      margin: 0.65rem 0 1.25rem;
+      padding: 0.68rem 0.78rem;
+      border: 1px solid color-mix(in srgb, var(--article-accent, var(--ms-secondary, var(--oxide))) 22%, transparent);
+      border-left-width: 2px;
+      border-radius: 0.45rem;
+      background: color-mix(in srgb, var(--article-accent, var(--ms-secondary, var(--oxide))) 5%, transparent);
+    }
+  }
+</style>
