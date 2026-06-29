@@ -3,6 +3,6 @@ import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 
 export default defineConfig({
-  site: "https://anshu957.github.io",
+  site: "https://integrable.space",
   integrations: [react(), mdx()],
 });
