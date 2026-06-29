@@ -1,6 +1,14 @@
 ---
+import { siGithub, siGooglescholar, siOrcid } from "simple-icons";
 import { siteMeta, profileLinks } from "../../data/site.js";
 import BrandIcon from "../BrandIcon.astro";
+
+const brandColors = {
+  scholar: `#${siGooglescholar.hex}`,
+  github: `#${siGithub.hex}`,
+  orcid: `#${siOrcid.hex}`,
+  email: "#D44638",
+};
 ---
 
 <footer class="ms-footer">
@@ -8,12 +16,17 @@ import BrandIcon from "../BrandIcon.astro";
 
   <div class="ms-footer-links" aria-label="Profile links">
     {profileLinks.map((link) => (
-      <a class="ms-footer-link" href={link.href} target="_blank" rel="noreferrer">
+      <a
+        class={`ms-footer-link ms-footer-link--${link.icon}`}
+        href={link.href}
+        target="_blank"
+        rel="noreferrer"
+      >
         <BrandIcon icon={link.icon} class="ms-footer-icon" />
         <span>{link.label === "Google Scholar" ? "Google Scholar" : link.label}</span>
       </a>
     ))}
-    <a class="ms-footer-link" href={`mailto:${siteMeta.email}`}>
+    <a class="ms-footer-link ms-footer-link--email" href={`mailto:${siteMeta.email}`}>
       <svg class="ms-footer-icon" viewBox="0 0 24 24" aria-hidden="true">
         <path d="M4 6.75h16v10.5H4z" fill="none" stroke="currentColor" stroke-width="1.7" />
         <path d="M5 7.5l7 5.25L19 7.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
@@ -23,7 +36,14 @@ import BrandIcon from "../BrandIcon.astro";
   </div>
 </footer>
 
-<style>
+<style
+  define:vars={{
+    brandScholar: brandColors.scholar,
+    brandGithub: brandColors.github,
+    brandOrcid: brandColors.orcid,
+    brandEmail: brandColors.email,
+  }}
+>
   .ms-footer {
     display: flex;
     align-items: center;
@@ -73,6 +93,30 @@ import BrandIcon from "../BrandIcon.astro";
     width: 1.16rem;
     height: 1.16rem;
     flex: 0 0 auto;
+  }
+
+  .ms-footer-link--scholar :global(.ms-footer-icon),
+  .ms-footer-link--scholar .ms-footer-icon {
+    color: var(--brandScholar);
+  }
+
+  .ms-footer-link--github :global(.ms-footer-icon),
+  .ms-footer-link--github .ms-footer-icon {
+    color: var(--brandGithub);
+  }
+
+  .ms-footer-link--orcid :global(.ms-footer-icon),
+  .ms-footer-link--orcid .ms-footer-icon {
+    color: var(--brandOrcid);
+  }
+
+  .ms-footer-link--email .ms-footer-icon {
+    color: var(--brandEmail);
+  }
+
+  :global(html.dark) .ms-footer-link--github :global(.ms-footer-icon),
+  :global(html.dark) .ms-footer-link--github .ms-footer-icon {
+    color: #f0f6fc;
   }
 
   @media (max-width: 720px) {
