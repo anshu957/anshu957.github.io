@@ -1,68 +1,346 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import SiteHeader from "../../components/SiteHeader.astro";
-import BlogList from "../../components/BlogList.astro";
-import SiteFooter from "../../components/SiteFooter.astro";
-import { navLinks, siteMeta } from "../../data/site.js";
+import ManuscriptHeader from "../../components/manuscript/ManuscriptHeader.astro";
+import ManuscriptFooter from "../../components/manuscript/ManuscriptFooter.astro";
+import { siteMeta } from "../../data/site.js";
+import { domainColor, accentVar, tagLabel } from "../../lib/domainColor.js";
+import "../../styles/manuscript.css";
 
 const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime(),
 );
+
+const formatDate = (date) =>
+  date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+
+const readTimeParts = (rt) => {
+  const m = (rt ?? "").match(/(\d+)/);
+  return m ? { minutes: m[1] } : null;
+};
+
+const byYear = posts.reduce((acc, post) => {
+  const year = post.data.date.getFullYear();
+  if (!acc[year]) acc[year] = [];
+  acc[year].push(post);
+  return acc;
+}, {});
+
+const years = Object.keys(byYear)
+  .map(Number)
+  .sort((a, b) => b - a);
 ---
 
 <BaseLayout title={`Blog | ${siteMeta.name}`} description="Notes and essays on computational biology, nonlinear dynamics, and scientific practice.">
-  <div class="noise" aria-hidden="true"></div>
-  <div class="site-shell">
-    <SiteHeader navLinks={navLinks} currentPath="/blog" />
+  <div class="manuscript-page">
+    <div class="ms-shell">
+      <ManuscriptHeader currentPath="/blog" />
 
-    <main class="page-stack">
-      <div class="blog-intro">
-        <p class="section-kicker">Blog</p>
-        <h1 class="blog-intro-title">Notes from the notebook.</h1>
-        <p class="blog-intro-sub">field notes on cells, attractors, and the quiet in between</p>
-        <p class="blog-intro-count">{posts.length} pieces</p>
-      </div>
+      <main class="ms-archive">
+        <header class="ms-archive-head">
+          <div>
+            <p class="ms-archive-kicker">Archive</p>
+            <h1>Notes from the notebook.</h1>
+          </div>
+          <p class="ms-archive-note">
+            A field index of cells, attractors, practice, and the quiet in between.
+          </p>
+          <p class="ms-archive-count">{posts.length} pieces</p>
+        </header>
 
-      <BlogList posts={posts} title="All writing" kicker="Archive" />
-    </main>
+        {years.map((year) => (
+          <section class="ms-archive-year" aria-labelledby={`year-${year}`}>
+            <h2 class="ms-archive-year-label" id={`year-${year}`}>{year}</h2>
+            <ol class="ms-archive-list" role="list">
+              {byYear[year].map((post, index) => {
+                const color = domainColor(post.data.tags);
+                const accent = accentVar(color);
+                const primaryTag = tagLabel(post.data.tags[0]);
+                const readTime = readTimeParts(post.data.readingTime);
+                return (
+                  <li
+                    class:list={["ms-archive-entry", `ms-archive-entry--${color}`]}
+                    style={`--entry-accent: ${accent}`}
+                  >
+                    <a class="ms-archive-hit" href={`/blog/${post.slug}/`} aria-label={`Read ${post.data.title}`}></a>
 
-    <SiteFooter />
+                    <figure class="ms-archive-plate">
+                      <img src={post.data.image} alt="" loading={index === 0 ? "eager" : "lazy"} decoding="async" />
+                      <span class="ms-archive-plate-wash" aria-hidden="true"></span>
+                    </figure>
+
+                    <article class="ms-archive-copy">
+                      <p class="ms-archive-meta">
+                        <span>{formatDate(post.data.date)}</span>
+                        {readTime && (
+                          <>
+                            <span aria-hidden="true">/</span>
+                            <span class="ms-archive-readtime">
+                              <span class="ms-archive-readtime-n">{readTime.minutes}</span>
+                              <span class="ms-archive-readtime-unit">min</span>
+                            </span>
+                          </>
+                        )}
+                        <span aria-hidden="true">/</span>
+                        <span class="ms-archive-domain">{primaryTag}</span>
+                      </p>
+                      <h3><a href={`/blog/${post.slug}/`}>{post.data.title}<span aria-hidden="true"> -></span></a></h3>
+                      <p>{post.data.description}</p>
+                    </article>
+                  </li>
+                );
+              })}
+            </ol>
+          </section>
+        ))}
+      </main>
+
+      <ManuscriptFooter />
+    </div>
   </div>
 </BaseLayout>
 
 <style>
-  .blog-intro {
-    padding: calc(var(--space-4) + 0.2rem) 0 var(--space-1);
+  .ms-archive {
+    position: relative;
+    padding: clamp(1rem, 2.3vw, 1.8rem) 0 clamp(3rem, 6vw, 4.8rem);
+  }
+
+  .ms-archive::before {
+    content: "";
+    position: absolute;
+    top: 3.2rem;
+    right: clamp(4rem, 12vw, 9rem);
+    width: clamp(3.1rem, 6vw, 4.5rem);
+    aspect-ratio: 1;
+    border: 1px solid color-mix(in srgb, var(--domain-gold) 24%, transparent);
+    border-radius: 46% 54% 50% 50%;
+    opacity: 0.2;
+    transform: rotate(-11deg);
+    pointer-events: none;
+  }
+
+  .ms-archive-head {
     display: grid;
-    gap: 0.4rem;
-    align-content: start;
+    grid-template-columns: minmax(14rem, 0.9fr) minmax(16rem, 1fr) auto;
+    gap: clamp(1rem, 3vw, 2rem);
+    align-items: end;
+    padding: clamp(0.6rem, 1.6vw, 1.2rem) 0 clamp(0.8rem, 1.8vw, 1.2rem);
+    border-bottom: 1px solid var(--ms-rule);
   }
 
-  .blog-intro-title {
-    font-size: clamp(2rem, 3.2vw, 2.8rem);
+  .ms-archive-kicker {
+    margin: 0 0 0.32rem;
+    color: var(--ms-muted);
+    font-family: var(--ms-font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .ms-archive-head h1 {
+    margin: 0;
+    color: var(--ms-primary);
+    font-family: var(--ms-font-display);
+    font-size: clamp(2rem, 3.8vw, 2.8rem);
     font-weight: 500;
-    letter-spacing: -0.024em;
+    letter-spacing: -0.045em;
     line-height: 1;
-    margin: 0;
-    color: var(--ink);
   }
 
-  .blog-intro-sub {
-    font-family: var(--font-body);
+  .ms-archive-note {
+    margin: 0;
+    max-width: 28rem;
+    color: var(--ms-on-surface-variant);
+    font-size: clamp(0.94rem, 1.5vw, 1.06rem);
     font-style: italic;
-    font-size: 0.98rem;
-    color: var(--ink-soft);
-    margin: 0;
-    opacity: 0.75;
+    font-weight: 500;
+    line-height: 1.28;
+    text-wrap: pretty;
   }
 
-  .blog-intro-count {
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  .ms-archive-count {
+    justify-self: end;
+    margin: 0 0 0.15rem;
+    color: var(--ms-muted);
+    font-family: var(--ms-font-mono);
     font-size: 0.68rem;
     letter-spacing: 0.08em;
-    color: var(--ink-soft);
-    opacity: 0.4;
-    margin: 0.2rem 0 0;
+    text-transform: uppercase;
+    opacity: 0.62;
+  }
+
+  .ms-archive-year {
+    margin-top: clamp(1.2rem, 2.4vw, 1.8rem);
+  }
+
+  .ms-archive-year-label {
+    margin: 0 0 0.35rem;
+    padding-bottom: 0.45rem;
+    border-bottom: 1px solid var(--ms-rule);
+    color: var(--ms-muted);
+    font-family: var(--ms-font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.72;
+  }
+
+  .ms-archive-list {
+    display: grid;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .ms-archive-entry {
+    --entry-accent: var(--ms-secondary);
+    position: relative;
+    display: grid;
+    grid-template-columns: clamp(8rem, 17vw, 12rem) minmax(0, 1fr);
+    gap: 0 clamp(1rem, 2.4vw, 1.55rem);
+    align-items: center;
+    padding: clamp(1rem, 2.2vw, 1.35rem) 0;
+    border-bottom: 1px solid var(--ms-rule);
+  }
+
+  .ms-archive-hit {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+  }
+
+  .ms-archive-entry :is(a:not(.ms-archive-hit)) {
+    position: relative;
+    z-index: 4;
+  }
+
+  .ms-archive-plate {
+    position: relative;
+    margin: 0;
+    aspect-ratio: 1.45 / 1;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--entry-accent) 22%, transparent);
+    border-radius: 0.42rem;
+    background: color-mix(in srgb, var(--entry-accent) 12%, var(--ms-sheet));
+    box-shadow: 0 10px 22px rgba(74, 52, 41, 0.09);
+  }
+
+  .ms-archive-plate img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    mix-blend-mode: multiply;
+    opacity: 0.96;
+    filter: saturate(0.96) contrast(1);
+  }
+
+  html.dark .ms-archive-plate img {
+    mix-blend-mode: normal;
+    opacity: 0.9;
+    filter: saturate(0.96) brightness(0.98) contrast(1.02);
+  }
+
+  .ms-archive-plate-wash {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 70%, color-mix(in srgb, var(--ms-sheet) 16%, transparent));
+    pointer-events: none;
+  }
+
+  .ms-archive-copy {
+    min-width: 0;
+    padding-left: clamp(0.75rem, 1.5vw, 0.95rem);
+    border-left: 2px solid color-mix(in srgb, var(--entry-accent) 42%, transparent);
+  }
+
+  .ms-archive-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.36rem;
+    margin: 0 0 0.36rem;
+    color: var(--ms-muted);
+    font-family: var(--ms-font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .ms-archive-domain {
+    color: var(--entry-accent);
+  }
+
+  .ms-archive-readtime {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.14em;
+    padding: 0.16rem 0.38rem 0.14rem;
+    border: 1px solid color-mix(in srgb, var(--entry-accent) 42%, transparent);
+    border-radius: 0.22rem;
+    background: color-mix(in srgb, var(--entry-accent) 11%, var(--ms-sheet));
+    color: var(--entry-accent);
+    font-size: 0.68rem;
+    font-weight: 650;
+    letter-spacing: 0.03em;
+    line-height: 1;
+  }
+
+  .ms-archive-readtime-n {
+    font-size: 1.12em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ms-archive-readtime-unit {
+    opacity: 0.82;
+    font-size: 0.92em;
+  }
+
+  .ms-archive-copy h3 {
+    margin: 0 0 0.28rem;
+    color: var(--ms-primary);
+    font-family: var(--ms-font-display);
+    font-size: clamp(1.24rem, 2.1vw, 1.58rem);
+    font-weight: 550;
+    letter-spacing: -0.035em;
+    line-height: 1.12;
+  }
+
+  .ms-archive-copy a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .ms-archive-copy a:hover,
+  .ms-archive-copy a:focus-visible {
+    color: var(--entry-accent);
+  }
+
+  .ms-archive-copy p:not(.ms-archive-meta) {
+    margin: 0;
+    color: var(--ms-on-surface-variant);
+    font-size: clamp(0.9rem, 1.4vw, 0.98rem);
+    font-style: italic;
+    font-weight: 500;
+    line-height: 1.45;
+  }
+
+  @media (max-width: 760px) {
+    .ms-archive-head {
+      grid-template-columns: 1fr;
+      align-items: start;
+      gap: 0.65rem;
+    }
+
+    .ms-archive-count {
+      justify-self: start;
+    }
+
+    .ms-archive-entry {
+      grid-template-columns: clamp(7.2rem, 34vw, 8.6rem) minmax(0, 1fr);
+      gap: 0.7rem 0.85rem;
+    }
   }
 </style>

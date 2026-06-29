@@ -1,58 +1,16 @@
 ---
+import { domainColor, accentVar, tagLabel } from "../../lib/domainColor.js";
+
 const { posts } = Astro.props;
 
 const formatDate = (date) =>
   date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
 
-const readMinutes = (rt) => {
+const readTimeParts = (rt) => {
   const m = (rt ?? "").match(/(\d+)/);
-  return m ? `${m[1]} min` : "";
+  return m ? { minutes: m[1] } : null;
 };
 
-const tagLabel = (tag) => tag.replace(/-/g, " ");
-
-const ACCENT = {
-  oxide: "#b85a43",
-  blue: "#6b7fb0",
-  sage: "#5e7257",
-  gold: "#c89a52",
-};
-
-const domainColor = (tags = []) => {
-  const t = tags.join(" ").toLowerCase();
-  if (/tea|notes|practice|personal|pause/.test(t)) return "gold";
-  if (/network|physics|complex|math|graph/.test(t)) return "blue";
-  if (/genom|transcriptom|sequenc|method|pipeline|software|single-cell|rna/.test(t)) return "sage";
-  return "oxide";
-};
-
-const marginNote = (tags = []) => {
-  const t = tags.join(" ").toLowerCase();
-  if (/tea|notes|practice|pause/.test(t)) {
-    return {
-      label: "pause protocol",
-      text: "A short interruption kept as method: let the machine go quiet, then look again.",
-    };
-  }
-  if (/network|physics|complex|graph/.test(t)) {
-    return {
-      label: "partial map",
-      text: "Structure appears at the edge of observation, not after the noise is gone.",
-    };
-  }
-  if (/single-cell|rna|cell|fate|velocity/.test(t)) {
-    return {
-      label: "fate sketch",
-      text: "Direction, hesitation, and attractor pull on the same small surface.",
-    };
-  }
-  return {
-    label: "field note",
-    text: "A working fragment from the border between model and measurement.",
-  };
-};
-
-const plateNumber = (index) => String(index + 1).padStart(2, "0");
 ---
 
 <main class="ms-main">
@@ -74,7 +32,7 @@ const plateNumber = (index) => String(index + 1).padStart(2, "0");
         <h1 id="ms-index-heading">Recent writing</h1>
       </div>
       <p class="ms-index-note">
-        Working notes from cell fate, dynamical systems, and the quiet rituals around them.
+        Research, learnings, and interesting things where physics, computation, and biology meet.
       </p>
       <a class="ms-index-all" href="/blog/">All posts</a>
     </header>
@@ -82,12 +40,13 @@ const plateNumber = (index) => String(index + 1).padStart(2, "0");
     <ol class="ms-index-list" role="list">
       {posts.map((post, index) => {
         const color = domainColor(post.data.tags);
-        const primaryTag = tagLabel(post.data.tags[0] ?? "notes");
-        const note = marginNote(post.data.tags);
+        const accent = accentVar(color);
+        const primaryTag = tagLabel(post.data.tags[0]);
+        const readTime = readTimeParts(post.data.readingTime);
         return (
           <li
             class:list={["ms-index-entry", `ms-index-entry--${color}`]}
-            style={`--entry-accent: ${ACCENT[color]}`}
+            style={`--entry-accent: ${accent}`}
           >
             <a
               class="ms-index-hit"
@@ -96,7 +55,6 @@ const plateNumber = (index) => String(index + 1).padStart(2, "0");
             ></a>
 
             <figure class="ms-index-plate">
-              <span class="ms-plate-mark">plate {plateNumber(index)}</span>
               <img
                 class="ms-index-image"
                 src={post.data.image}
@@ -110,8 +68,15 @@ const plateNumber = (index) => String(index + 1).padStart(2, "0");
             <article class="ms-index-body">
               <p class="ms-index-rail">
                 <span>{formatDate(post.data.date)}</span>
-                <span class="ms-index-rail-dot" aria-hidden="true">/</span>
-                <span>{readMinutes(post.data.readingTime)}</span>
+                {readTime && (
+                  <>
+                    <span class="ms-index-rail-dot" aria-hidden="true">/</span>
+                    <span class="ms-index-readtime">
+                      <span class="ms-index-readtime-n">{readTime.minutes}</span>
+                      <span class="ms-index-readtime-unit">min</span>
+                    </span>
+                  </>
+                )}
                 <span class="ms-index-rail-dot" aria-hidden="true">/</span>
                 <span class="ms-index-domain">{primaryTag}</span>
               </p>
@@ -123,515 +88,9 @@ const plateNumber = (index) => String(index + 1).padStart(2, "0");
               </h2>
               <p class="ms-index-desc">{post.data.description}</p>
             </article>
-
-            <aside class="ms-margin-note" aria-label={`${post.data.title} margin note`}>
-              <p class="ms-margin-label">{note.label}</p>
-              <p class="ms-margin-text">{note.text}</p>
-            </aside>
           </li>
         );
       })}
     </ol>
   </section>
 </main>
-
-<style>
-  .ms-main {
-    position: relative;
-    padding: clamp(0.75rem, 1.8vw, 1.4rem) 0 clamp(2.75rem, 5vw, 4rem);
-    overflow: hidden;
-  }
-
-  .ms-field {
-    position: absolute;
-    z-index: -1;
-    color: var(--ms-wave);
-    pointer-events: none;
-  }
-
-  .ms-field--top {
-    top: -3rem;
-    left: 50%;
-    width: min(1100px, 130vw);
-    height: 21rem;
-    transform: translateX(-50%);
-  }
-
-  .ms-desk {
-    position: relative;
-  }
-
-  .ms-desk::before {
-    content: "";
-    position: absolute;
-    top: 1.2rem;
-    right: clamp(4.5rem, 12vw, 9rem);
-    width: clamp(3.2rem, 6vw, 4.7rem);
-    aspect-ratio: 1;
-    border: 1px solid color-mix(in srgb, var(--gold, #c89a52) 24%, transparent);
-    border-radius: 45% 55% 51% 49%;
-    opacity: 0.22;
-    transform: rotate(-12deg);
-    pointer-events: none;
-  }
-
-  .ms-desk::after {
-    content: "";
-    position: absolute;
-    top: clamp(4.6rem, 7vw, 6.8rem);
-    right: 0.35rem;
-    width: min(35rem, 56vw);
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      color-mix(in srgb, var(--ms-etch) 34%, transparent),
-      transparent
-    );
-    transform: rotate(-1.4deg);
-    pointer-events: none;
-  }
-
-  .ms-index-head {
-    display: grid;
-    grid-template-columns: minmax(12rem, 0.9fr) minmax(16rem, 1fr) auto;
-    align-items: end;
-    gap: clamp(1rem, 3vw, 2rem);
-    margin: clamp(0.45rem, 1vw, 0.8rem) 0 clamp(0.65rem, 1.4vw, 1rem);
-    padding-top: clamp(0.55rem, 1.4vw, 1.05rem);
-  }
-
-  .ms-index-kicker {
-    margin: 0 0 0.32rem;
-    color: var(--ms-muted);
-    font-family: var(--ms-font-mono);
-    font-size: 0.68rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-  }
-
-  .ms-index-head h1 {
-    margin: 0;
-    font-family: var(--ms-font-display);
-    font-size: clamp(1.95rem, 3.8vw, 2.8rem);
-    font-weight: 500;
-    letter-spacing: -0.045em;
-    line-height: 1;
-    color: var(--ms-primary);
-    text-wrap: balance;
-  }
-
-  .ms-index-note {
-    margin: 0;
-    max-width: 27rem;
-    color: var(--ms-on-surface-variant);
-    font-size: clamp(0.94rem, 1.5vw, 1.05rem);
-    font-style: italic;
-    font-weight: 500;
-    line-height: 1.28;
-    text-wrap: pretty;
-  }
-
-  .ms-index-all {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    justify-self: end;
-    margin-bottom: 0.08rem;
-    padding: 0.42rem 0.62rem;
-    border: 1px solid color-mix(in srgb, var(--ms-secondary) 28%, transparent);
-    border-radius: 999px;
-    color: var(--ms-secondary);
-    font-family: var(--ms-font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-    text-decoration: none;
-    text-transform: uppercase;
-    transition: background 180ms ease, border-color 180ms ease, transform 180ms ease;
-  }
-
-  .ms-index-all::after {
-    content: "->";
-  }
-
-  .ms-index-all:hover,
-  .ms-index-all:focus-visible {
-    background: color-mix(in srgb, var(--ms-secondary) 10%, transparent);
-    border-color: color-mix(in srgb, var(--ms-secondary) 54%, transparent);
-    transform: translateY(-1px);
-  }
-
-  .ms-index-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    border-top: 1px solid var(--ms-rule);
-  }
-
-  .ms-index-entry {
-    --entry-accent: var(--ms-secondary);
-    position: relative;
-    display: grid;
-    grid-template-columns:
-      clamp(11.5rem, 24vw, 17rem)
-      minmax(18rem, 1fr)
-      minmax(10.5rem, 14rem);
-    grid-template-areas: "plate body note";
-    gap: 0 clamp(1rem, 2.4vw, 1.7rem);
-    align-items: center;
-    padding: clamp(1rem, 2.2vw, 1.35rem) 0;
-    border-bottom: 1px solid var(--ms-rule);
-  }
-
-  .ms-index-entry::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: clamp(11.5rem, 24vw, 17rem);
-    right: clamp(10.5rem, 16vw, 14rem);
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      color-mix(in srgb, var(--entry-accent) 18%, transparent),
-      transparent 64%
-    );
-    opacity: 0.42;
-    pointer-events: none;
-  }
-
-  .ms-index-entry:nth-child(even) .ms-index-plate {
-    transform: translateY(0.18rem) rotate(0.25deg);
-  }
-
-  .ms-index-entry:nth-child(odd) .ms-index-plate {
-    transform: translateY(-0.1rem) rotate(-0.2deg);
-  }
-
-  .ms-index-hit {
-    position: absolute;
-    inset: 0;
-    z-index: 3;
-  }
-
-  .ms-index-entry :is(a:not(.ms-index-hit)) {
-    position: relative;
-    z-index: 4;
-  }
-
-  .ms-index-plate {
-    position: relative;
-    grid-area: plate;
-    z-index: 1;
-    display: block;
-    width: 100%;
-    aspect-ratio: 1.42 / 1;
-    min-height: clamp(8.6rem, 17vw, 11.8rem);
-    margin: 0;
-    overflow: hidden;
-    border: 1px solid color-mix(in srgb, var(--entry-accent) 22%, transparent);
-    border-radius: 0.42rem;
-    background:
-      radial-gradient(circle at 22% 18%, color-mix(in srgb, var(--entry-accent) 20%, transparent), transparent 46%),
-      color-mix(in srgb, var(--ms-sheet) 78%, white 22%);
-    box-shadow:
-      0 12px 26px rgba(74, 52, 41, 0.1),
-      inset 0 1px 0 rgba(255, 255, 255, 0.62);
-    transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
-  }
-
-  .ms-index-entry:hover .ms-index-plate {
-    border-color: color-mix(in srgb, var(--entry-accent) 46%, transparent);
-    box-shadow:
-      0 18px 36px rgba(74, 52, 41, 0.15),
-      inset 0 1px 0 rgba(255, 255, 255, 0.68);
-  }
-
-  .ms-plate-mark {
-    position: absolute;
-    z-index: 2;
-    top: 0.45rem;
-    left: 0.5rem;
-    padding: 0.16rem 0.32rem;
-    border-radius: 0.18rem;
-    background: color-mix(in srgb, var(--ms-sheet) 82%, transparent);
-    color: color-mix(in srgb, var(--entry-accent) 88%, var(--ms-primary));
-    font-family: var(--ms-font-mono);
-    font-size: 0.58rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-
-  .ms-index-image {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center 36%;
-    mix-blend-mode: multiply;
-    opacity: 0.92;
-    filter: saturate(0.96) contrast(0.98) brightness(1.02);
-    transform: scale(1.035);
-    transition: transform 800ms cubic-bezier(0.22, 1, 0.36, 1), filter 360ms ease, opacity 360ms ease;
-  }
-
-  html.dark .ms-index-image {
-    mix-blend-mode: normal;
-    opacity: 0.64;
-    filter: sepia(0.18) saturate(0.82) brightness(0.74) contrast(1.06);
-  }
-
-  .ms-index-entry:hover .ms-index-image {
-    opacity: 1;
-    transform: scale(1.085);
-    filter: saturate(1.05) contrast(1.02) brightness(1.04);
-  }
-
-  html.dark .ms-index-entry:hover .ms-index-image {
-    opacity: 0.76;
-    filter: sepia(0.12) saturate(0.92) brightness(0.82) contrast(1.08);
-  }
-
-  .ms-plate-wash {
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(90deg, transparent 58%, color-mix(in srgb, var(--ms-sheet) 58%, transparent)),
-      radial-gradient(circle at 88% 12%, rgba(255, 255, 255, 0.28), transparent 34%);
-    pointer-events: none;
-  }
-
-  .ms-index-body {
-    position: relative;
-    grid-area: body;
-    z-index: 2;
-    min-width: 0;
-    padding: clamp(0.25rem, 0.7vw, 0.5rem) 0 clamp(0.25rem, 0.7vw, 0.5rem) clamp(0.75rem, 1.6vw, 1rem);
-    border-left: 2px solid color-mix(in srgb, var(--entry-accent) 44%, transparent);
-    background: linear-gradient(90deg, var(--ms-sheet) 0 72%, transparent);
-  }
-
-  .ms-index-rail {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.36rem;
-    margin: 0 0 0.38rem;
-    font-family: var(--ms-font-mono);
-    font-size: 0.66rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: color-mix(in srgb, var(--ms-muted) 88%, var(--ms-primary));
-  }
-
-  .ms-index-rail-dot {
-    opacity: 0.45;
-  }
-
-  .ms-index-domain {
-    color: var(--entry-accent);
-    opacity: 0.9;
-  }
-
-  .ms-index-title {
-    margin: 0 0 0.32rem;
-    font-family: var(--ms-font-display);
-    font-size: clamp(1.22rem, 2.05vw, 1.55rem);
-    font-weight: 500;
-    line-height: 1.13;
-    letter-spacing: -0.032em;
-    color: var(--ms-primary);
-    text-wrap: balance;
-  }
-
-  .ms-index-title-link {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 0.4em;
-    color: inherit;
-    text-decoration: none;
-    transition: color 180ms ease;
-  }
-
-  .ms-index-entry--oxide .ms-index-title-link:hover,
-  .ms-index-entry--oxide .ms-index-title-link:focus-visible {
-    color: #b85a43;
-  }
-
-  .ms-index-entry--blue .ms-index-title-link:hover,
-  .ms-index-entry--blue .ms-index-title-link:focus-visible {
-    color: #6b7fb0;
-  }
-
-  .ms-index-entry--sage .ms-index-title-link:hover,
-  .ms-index-entry--sage .ms-index-title-link:focus-visible {
-    color: #5e7257;
-  }
-
-  .ms-index-entry--gold .ms-index-title-link:hover,
-  .ms-index-entry--gold .ms-index-title-link:focus-visible {
-    color: #c89a52;
-  }
-
-  .ms-index-arrow {
-    font-size: 0.82em;
-    opacity: 0;
-    transform: translateX(-0.25em);
-    transition: opacity 180ms ease, transform 180ms ease;
-  }
-
-  .ms-index-title-link:hover .ms-index-arrow,
-  .ms-index-title-link:focus-visible .ms-index-arrow {
-    opacity: 1;
-    transform: none;
-  }
-
-  .ms-index-desc {
-    margin: 0;
-    max-width: 42rem;
-    font-size: clamp(0.9rem, 1.42vw, 0.98rem);
-    font-style: italic;
-    font-weight: 500;
-    line-height: 1.48;
-    color: var(--ms-on-surface-variant);
-    text-wrap: pretty;
-  }
-
-  .ms-margin-note {
-    position: relative;
-    grid-area: note;
-    z-index: 2;
-    margin: 0;
-    padding: 0.62rem 0.68rem 0.66rem;
-    border-left: 1px solid color-mix(in srgb, var(--entry-accent) 32%, transparent);
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.28), transparent),
-      color-mix(in srgb, var(--entry-accent) 5%, transparent);
-    transform: rotate(0.35deg);
-  }
-
-  .ms-index-entry:nth-child(even) .ms-margin-note {
-    transform: rotate(-0.25deg);
-  }
-
-  .ms-margin-label {
-    margin: 0 0 0.32rem;
-    color: var(--entry-accent);
-    font-family: var(--ms-font-mono);
-    font-size: 0.62rem;
-    letter-spacing: 0.13em;
-    text-transform: uppercase;
-  }
-
-  .ms-margin-text {
-    margin: 0;
-    color: color-mix(in srgb, var(--ms-muted) 82%, var(--ms-primary));
-    font-family: var(--ms-font-display);
-    font-size: clamp(0.84rem, 1.15vw, 0.94rem);
-    font-style: italic;
-    font-weight: 500;
-    line-height: 1.32;
-    text-wrap: pretty;
-  }
-
-  @media (max-width: 760px) {
-    .ms-index-head {
-      grid-template-columns: 1fr auto;
-    }
-
-    .ms-index-note {
-      grid-column: 1 / -1;
-      grid-row: 2;
-      max-width: 35rem;
-    }
-
-    .ms-index-entry {
-      grid-template-columns: clamp(7.25rem, 29vw, 9.5rem) minmax(0, 1fr);
-      grid-template-areas:
-        "plate body"
-        "note note";
-      align-items: start;
-      gap: 0.72rem 0.9rem;
-    }
-
-    .ms-index-entry::before {
-      display: none;
-    }
-
-    .ms-margin-note {
-      margin-top: 0;
-      padding: 0.48rem 0 0 0.72rem;
-      border-top: 1px solid color-mix(in srgb, var(--entry-accent) 20%, transparent);
-      border-left: 2px solid color-mix(in srgb, var(--entry-accent) 30%, transparent);
-      background: transparent;
-      transform: none;
-    }
-
-    .ms-index-entry:nth-child(even) .ms-margin-note {
-      transform: none;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .ms-main {
-      padding-top: 0.9rem;
-    }
-
-    .ms-desk::before,
-    .ms-desk::after {
-      display: none;
-    }
-
-    .ms-index-head {
-      align-items: start;
-      grid-template-columns: 1fr;
-      gap: 0.7rem;
-    }
-
-    .ms-index-all {
-      justify-self: start;
-    }
-
-    .ms-index-entry {
-      grid-template-columns: clamp(7.2rem, 34vw, 8.6rem) minmax(0, 1fr);
-      grid-template-areas:
-        "plate body"
-        "note note";
-      gap: 0.65rem;
-      padding: 1rem 0 1.1rem;
-    }
-
-    .ms-index-plate {
-      aspect-ratio: 1 / 1;
-      min-height: clamp(7.2rem, 34vw, 8.6rem);
-      transform: none !important;
-    }
-
-    .ms-index-body {
-      padding: 0.15rem 0 0 0.72rem;
-      background: transparent;
-    }
-
-    .ms-index-title {
-      font-size: 1.18rem;
-    }
-
-    .ms-index-desc {
-      font-size: 0.9rem;
-      line-height: 1.46;
-    }
-
-    .ms-margin-note {
-      margin-top: 0;
-      padding: 0.54rem 0 0 0.72rem;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .ms-index-plate,
-    .ms-index-image,
-    .ms-index-arrow,
-    .ms-index-all {
-      transition: none;
-    }
-  }
-</style>

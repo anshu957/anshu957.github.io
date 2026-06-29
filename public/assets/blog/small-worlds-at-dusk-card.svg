@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-label="Small-world network at dusk illustration">
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff8eb"/>
+      <stop offset=".52" stop-color="#ebe9dd"/>
+      <stop offset="1" stop-color="#eff3f2"/>
+    </linearGradient>
+    <radialGradient id="dusk" cx="82%" cy="26%" r="42%">
+      <stop offset="0" stop-color="#c89a52" stop-opacity=".26"/>
+      <stop offset=".48" stop-color="#6b7fb0" stop-opacity=".12"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer>
+        <feFuncA type="table" tableValues="0 .1"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="1200" height="760" fill="url(#paper)"/>
+  <rect width="1200" height="760" fill="url(#dusk)"/>
+  <rect width="1200" height="760" filter="url(#grain)" opacity=".26"/>
+  <g fill="none" stroke="#6b7fb0" stroke-width="1.35" opacity=".34">
+    <path d="M-32 543c132-86 265-95 399-27 139 71 260 62 363-26 120-103 274-121 462-51"/>
+    <path d="M-26 595c135-73 260-75 376-8 121 70 245 60 372-31 130-93 286-95 468-7"/>
+    <path d="M45 136c145 61 265 51 361-29 113-94 256-102 431-24 105 47 220 49 345 7"/>
+    <path d="M58 191c124 48 236 38 337-31 115-78 244-80 388-8 109 55 232 64 371 27"/>
+  </g>
+  <g transform="translate(291 112)" fill="none" stroke="#4d596b" stroke-width="1.8" opacity=".58">
+    <path d="M107 308 229 112 381 154 528 70 628 268 475 438 278 414Z"/>
+    <path d="M107 308 381 154 278 414 528 70 229 112 475 438 628 268 381 154"/>
+    <path d="M229 112 278 414 628 268M107 308 475 438M381 154 475 438M229 112 628 268"/>
+    <path d="M184 465 107 308 301 286 381 154 411 362 475 438"/>
+  </g>
+  <g transform="translate(291 112)" fill="#6b7fb0" stroke="#fff7eb" stroke-width="5">
+    <circle cx="107" cy="308" r="23" fill="#b85a43"/>
+    <circle cx="229" cy="112" r="14" opacity=".62"/>
+    <circle cx="381" cy="154" r="18" opacity=".74"/>
+    <circle cx="528" cy="70" r="19" fill="#c89a52" opacity=".82"/>
+    <circle cx="628" cy="268" r="14" opacity=".68"/>
+    <circle cx="475" cy="438" r="28" fill="#b85a43" opacity=".72"/>
+    <circle cx="278" cy="414" r="16" opacity=".62"/>
+    <circle cx="301" cy="286" r="11" opacity=".54"/>
+    <circle cx="411" cy="362" r="12" fill="#c89a52" opacity=".62"/>
+    <circle cx="184" cy="465" r="10" opacity=".5"/>
+  </g>
+  <g fill="none" stroke="#c89a52" stroke-width="2" opacity=".58">
+    <circle cx="968" cy="180" r="78"/>
+    <path d="M850 255c91-42 181-41 270 0"/>
+    <path d="M884 283c61-19 123-18 187 4"/>
+  </g>
+  <g fill="#6b7fb0" opacity=".54">
+    <circle cx="928" cy="96" r="3"/>
+    <circle cx="1035" cy="113" r="2.5"/>
+    <circle cx="1088" cy="73" r="2"/>
+    <circle cx="821" cy="147" r="2"/>
+  </g>
+</svg>

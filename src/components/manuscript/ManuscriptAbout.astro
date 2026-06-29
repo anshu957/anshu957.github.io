@@ -1,0 +1,521 @@
+---
+import { careerNodes } from "../../data/career.js";
+import { siteMeta } from "../../data/site.js";
+import { cvPdf, cvUpdated } from "../../data/cv.js";
+import { buildTimelineItems, stopAccent, stopMeta } from "../../data/aboutTimeline.js";
+
+const items = buildTimelineItems(careerNodes);
+
+let stopIndex = 0;
+---
+
+<main class="about-main">
+  <section class="about-cv-band" aria-label="Curriculum vitae">
+    <div class="about-cv-band-meta">
+      <p class="about-cv-kicker">Curriculum vitae · updated {cvUpdated}</p>
+    </div>
+    <a class="about-cv-download" href={cvPdf} download>
+      Download PDF
+    </a>
+  </section>
+
+  <section class="about-timeline" aria-labelledby="about-timeline-heading">
+    <h2 id="about-timeline-heading" class="visually-hidden">Career timeline</h2>
+    <div class="about-spine" aria-hidden="true"></div>
+
+    <ol class="about-events">
+      {items.map((item) => {
+        if (item.kind === "gap") {
+          return (
+            <li class="about-gap">
+              <span class="about-gap-marker" aria-hidden="true"></span>
+              <p class="about-gap-label">{item.label}</p>
+            </li>
+          );
+        }
+
+        const node = item.node;
+        const side = stopIndex % 2 === 0 ? "right" : "left";
+        const accent = stopAccent(node.type);
+        const meta = stopMeta[node.id];
+        stopIndex += 1;
+
+        return (
+          <li
+            class:list={[
+              "about-event",
+              `about-event--${side}`,
+              `about-event--${accent}`,
+            ]}
+          >
+            {side === "right" && meta?.whisper && (
+              <p class="about-whisper about-whisper--outer">{meta.whisper}</p>
+            )}
+
+            <span class="about-marker" aria-hidden="true"></span>
+
+            <div class="about-event-body">
+              <p class="about-when">{node.period}</p>
+              <h3 class="about-role">{node.role}</h3>
+              <p class="about-where">
+                {node.inst}
+                <span class="about-where-sep" aria-hidden="true"> · </span>
+                {node.loc}
+              </p>
+              {!meta?.research && (
+                <p class="about-note">{node.note}</p>
+              )}
+              {meta?.research && (
+                <p class="about-theme-link">
+                  <a href={meta.research.href}>{meta.research.label}</a>
+                </p>
+              )}
+            </div>
+
+            {side === "left" && meta?.whisper && (
+              <p class="about-whisper about-whisper--outer">{meta.whisper}</p>
+            )}
+          </li>
+        );
+      })}
+    </ol>
+  </section>
+
+  <section class="about-bio" aria-labelledby="about-bio-heading">
+    <h2 id="about-bio-heading" class="visually-hidden">About</h2>
+    <p>
+      <strong>About.</strong>
+      {" "}
+      I studied mechatronics engineering—systems built on top of the usual science, motors and control
+      and the rest of it. What stuck wasn't the building so much as what sat underneath. An internship
+      at a physics lab outside my college was the first time I felt that pull clearly: the pleasure of
+      understanding something from first principles, not just making it work. By the time I finished
+      my degree I was still reading physics on my own, a little quantum here, a little classical there,
+      with no real plan beyond knowing I wasn't done.
+    </p>
+    <p>
+      Like a twenty-one-year-old trying to stand on his own feet, I took a corporate job writing database
+      queries. It paid the bills. In the evenings, and often well into the night, I kept at the physics
+      anyway—slowly, without a syllabus—until I was sure enough to jump back into academia. When I
+      finally got into a physics PhD, it felt like arriving somewhere I'd been heading for a long time.
+      IISER Mohali was a new institute still being built in the foothills of the Himalayas—fresh
+      campus, fresh thinking, and at the time one of the few places in India open to someone with an
+      unconventional background like mine. I went for dynamical systems and chaos. That was the part
+      that finally grabbed me and didn't let go.
+    </p>
+    <p>
+      My first postdoc took me to Germany—my first time living there, in a country where physics has
+      deep roots and you feel it without anyone having to say so. I ended up in Oldenburg, a small town
+      in the northwest, in a theoretical ecology lab working on synchronization in food webs. I learned
+      a fair amount of ecology and not quite enough German.
+    </p>
+    <p>
+      Toward the end of that stint I started drifting into machine learning and AI—showing up at
+      conferences more or less at random, without a tidy reason, just because the questions looked
+      interesting. Around then Bill Ditto at NC State was steering his lab from applied chaos toward
+      what he called AI for physics, and looking for someone at that intersection. I happened to be
+      moving in the same direction. I joined, and worked on physics-informed neural networks for
+      chaotic systems.
+    </p>
+    <p>
+      Now I'm at the Jackson Laboratory, carrying the same habits of thought into cell dynamics and
+      animal behavior.
+    </p>
+    <p class="about-principle">
+      Predrag Cvitanović says a scientist owns the method, not the subject. That's the closest thing to
+      a plan I ever had.
+    </p>
+    <p>
+      What I'm up to now is on the <a href="/research/">research page</a>. (I also drink an indefensible
+      amount of tea—the one variable I've never managed to control.)
+    </p>
+  </section>
+</main>
+
+<style>
+  .about-main {
+    padding: clamp(1.5rem, 3vw, 2.5rem) 0 clamp(3rem, 6vw, 4.5rem);
+  }
+
+  .about-cv-band {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.85rem 1.5rem;
+    max-width: 52rem;
+    margin: 0 auto clamp(1.75rem, 3.5vw, 2.35rem);
+    padding: 0 clamp(0.5rem, 2vw, 1rem) clamp(1.1rem, 2.2vw, 1.35rem);
+    border-bottom: 1px solid var(--ms-rule);
+  }
+
+  .about-cv-band-meta {
+    min-width: 0;
+  }
+
+  .about-cv-kicker {
+    margin: 0;
+    font-family: var(--ms-font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--domain-sage);
+  }
+
+  .about-cv-download {
+    flex-shrink: 0;
+    padding: 0.42rem 0.85rem;
+    border: 1px solid color-mix(in srgb, var(--domain-oxide) 38%, transparent);
+    border-radius: 0.22rem;
+    background: color-mix(in srgb, var(--domain-oxide) 8%, var(--ms-sheet));
+    color: var(--domain-oxide);
+    font-family: var(--ms-font-mono);
+    font-size: 0.64rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: border-color 140ms ease, background 140ms ease, color 140ms ease;
+  }
+
+  .about-cv-download:hover,
+  .about-cv-download:focus-visible {
+    border-color: color-mix(in srgb, var(--domain-oxide) 55%, transparent);
+    background: color-mix(in srgb, var(--domain-oxide) 14%, var(--ms-sheet));
+    color: var(--ms-primary);
+  }
+
+  .about-timeline {
+    position: relative;
+    max-width: 52rem;
+    margin: 0 auto;
+    padding: 0 clamp(0.5rem, 2vw, 1rem);
+  }
+
+  .about-spine {
+    position: absolute;
+    top: 0.55rem;
+    bottom: 0.55rem;
+    left: 50%;
+    width: 1px;
+    background: color-mix(in srgb, var(--ms-muted) 22%, transparent);
+    transform: translateX(-50%);
+  }
+
+  .about-events {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .about-event {
+    --stop-accent: var(--ms-secondary);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 1.65rem minmax(0, 1fr);
+    gap: 0 clamp(1.1rem, 2.4vw, 1.75rem);
+    align-items: start;
+    padding: 0 0 clamp(1.75rem, 3.5vw, 2.35rem);
+  }
+
+  .about-event--oxide {
+    --stop-accent: var(--domain-oxide);
+  }
+
+  .about-event--blue {
+    --stop-accent: var(--domain-blue);
+  }
+
+  .about-event--sage {
+    --stop-accent: var(--domain-sage);
+  }
+
+  .about-event:last-child {
+    padding-bottom: 0;
+  }
+
+  .about-marker {
+    grid-column: 2;
+    grid-row: 1;
+    z-index: 1;
+    justify-self: center;
+    align-self: center;
+    width: 0.72rem;
+    height: 0.72rem;
+    border-radius: 50%;
+    background: var(--stop-accent);
+    box-shadow:
+      0 0 0 2px var(--ms-bg),
+      0 0 0 3px color-mix(in srgb, var(--stop-accent) 65%, transparent);
+  }
+
+  .about-event-body {
+    grid-row: 1;
+    min-width: 0;
+  }
+
+  .about-event--right .about-event-body {
+    grid-column: 3;
+    text-align: left;
+  }
+
+  .about-event--left .about-event-body {
+    grid-column: 1;
+    text-align: right;
+  }
+
+  .about-whisper--outer {
+    grid-row: 1;
+    align-self: center;
+    margin: 0;
+    max-width: 11ch;
+    font-family: var(--ms-font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.03em;
+    line-height: 1.4;
+    color: color-mix(in srgb, var(--ms-muted) 82%, transparent);
+    text-wrap: balance;
+  }
+
+  .about-event--right .about-whisper--outer {
+    grid-column: 1;
+    justify-self: end;
+    padding-right: 0.35rem;
+    text-align: right;
+  }
+
+  .about-event--left .about-whisper--outer {
+    grid-column: 3;
+    justify-self: start;
+    padding-left: 0.35rem;
+    text-align: left;
+  }
+
+  .about-when {
+    margin: 0 0 0.2rem;
+    color: var(--stop-accent);
+    font-family: var(--ms-font-display);
+    font-size: clamp(0.92rem, 1.4vw, 1rem);
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  .about-role {
+    margin: 0 0 0.22rem;
+    font-family: var(--ms-font-display);
+    font-size: clamp(1.05rem, 1.8vw, 1.2rem);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--ms-primary);
+  }
+
+  .about-event--oxide .about-role {
+    font-weight: 650;
+  }
+
+  .about-where {
+    margin: 0;
+    color: color-mix(in srgb, var(--stop-accent) 42%, var(--ms-muted));
+    font-size: clamp(0.9rem, 1.35vw, 0.98rem);
+    line-height: 1.45;
+  }
+
+  .about-where-sep {
+    opacity: 0.72;
+  }
+
+  .about-note {
+    margin: 0.38rem 0 0;
+    font-size: clamp(0.86rem, 1.28vw, 0.92rem);
+    font-style: italic;
+    line-height: 1.42;
+    color: color-mix(in srgb, var(--ms-muted) 88%, var(--ms-on-surface));
+  }
+
+  .about-event--left .about-note {
+    text-align: right;
+  }
+
+  .about-theme-link {
+    margin: 0.42rem 0 0;
+    font-family: var(--ms-font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .about-event--left .about-theme-link {
+    text-align: right;
+  }
+
+  .about-theme-link a {
+    color: color-mix(in srgb, var(--stop-accent) 88%, var(--ms-primary));
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in srgb, var(--stop-accent) 32%, transparent);
+    transition: color 160ms ease, border-color 160ms ease;
+  }
+
+  .about-theme-link a:hover,
+  .about-theme-link a:focus-visible {
+    color: var(--stop-accent);
+    border-color: color-mix(in srgb, var(--stop-accent) 55%, transparent);
+  }
+
+  .about-gap {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 1.65rem minmax(0, 1fr);
+    align-items: center;
+    padding: 0 0 clamp(1rem, 2.2vw, 1.45rem);
+  }
+
+  .about-gap-marker {
+    grid-column: 2;
+    justify-self: center;
+    width: 0.34rem;
+    height: 0.34rem;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--ms-muted) 55%, transparent);
+    box-shadow: 0 0 0 2px var(--ms-bg);
+  }
+
+  .about-gap-label {
+    grid-column: 1 / -1;
+    justify-self: center;
+    margin: 0;
+    padding: 0;
+    font-family: var(--ms-font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.04em;
+    text-transform: none;
+    color: color-mix(in srgb, var(--ms-muted) 75%, transparent);
+  }
+
+  .about-gap-label::before,
+  .about-gap-label::after {
+    content: "·";
+    opacity: 0.4;
+    margin: 0 0.35em;
+  }
+
+  .about-bio {
+    max-width: 42rem;
+    margin: clamp(3rem, 6vw, 4rem) auto 0;
+    padding: clamp(1.5rem, 3vw, 2rem) clamp(0.5rem, 2vw, 1rem) 0;
+    border-top: 1px solid color-mix(in srgb, var(--ms-muted) 18%, transparent);
+  }
+
+  .about-bio p {
+    margin: 0;
+    font-size: clamp(0.95rem, 1.45vw, 1.02rem);
+    line-height: 1.62;
+    color: var(--ms-on-surface);
+    text-wrap: pretty;
+  }
+
+  .about-bio p + p {
+    margin-top: 0.85rem;
+  }
+
+  .about-principle {
+    padding-left: 0.85rem;
+    border-left: 2px solid color-mix(in srgb, var(--domain-blue) 35%, transparent);
+    color: var(--ms-on-surface-variant);
+  }
+
+  .about-bio strong {
+    font-weight: 650;
+    color: var(--ms-primary);
+  }
+
+  .about-bio a {
+    color: var(--domain-blue);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--domain-blue) 42%, transparent);
+    text-underline-offset: 0.14em;
+  }
+
+  .about-bio a:hover,
+  .about-bio a:focus-visible {
+    color: var(--ms-secondary);
+    text-decoration-color: color-mix(in srgb, var(--ms-secondary) 55%, transparent);
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  html.dark .about-whisper--outer {
+    color: color-mix(in srgb, var(--ms-muted) 88%, var(--ms-on-surface-variant));
+  }
+
+  @media (max-width: 900px) {
+    .about-whisper--outer {
+      display: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .about-cv-band {
+      align-items: flex-start;
+    }
+
+    .about-cv-download {
+      width: 100%;
+      text-align: center;
+    }
+
+    .about-timeline {
+      max-width: 34rem;
+      padding-left: 0;
+    }
+
+    .about-spine {
+      left: 0.42rem;
+      transform: none;
+    }
+
+    .about-event,
+    .about-gap {
+      grid-template-columns: 1.65rem minmax(0, 1fr);
+      gap: 0 1rem;
+      padding-bottom: 1.85rem;
+    }
+
+    .about-marker,
+    .about-gap-marker {
+      grid-column: 1;
+      align-self: start;
+      margin-top: 0.35rem;
+    }
+
+    .about-gap-label {
+      grid-column: 2;
+      justify-self: start;
+    }
+
+    .about-event--right .about-event-body,
+    .about-event--left .about-event-body {
+      grid-column: 2;
+      text-align: left;
+    }
+
+    .about-event--left .about-theme-link,
+    .about-event--left .about-note {
+      text-align: left;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .about-theme-link a {
+      transition: none;
+    }
+  }
+</style>

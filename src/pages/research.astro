@@ -1,70 +1,143 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import SiteHeader from "../components/SiteHeader.astro";
-import SiteFooter from "../components/SiteFooter.astro";
-import { navLinks, siteMeta } from "../data/site.js";
+import ManuscriptHeader from "../components/manuscript/ManuscriptHeader.astro";
+import ManuscriptFooter from "../components/manuscript/ManuscriptFooter.astro";
+import { siteMeta } from "../data/site.js";
 import { selectedPublications } from "../data/research.js";
+import { themeDomain, publicationDomain, accentVar } from "../lib/domainColor.js";
+import "../styles/manuscript.css";
+
+const themes = [
+  {
+    label: "theme 01",
+    title: "Cell fate &amp; transcriptomic dynamics",
+    body: "I am drawn to the question of how cells commit. The language I use is dynamical systems — attractors, basins of attraction, and vector fields — applied to RNA expression profiles. The goal is a description of cellular decision-making that is richer than a cluster label: one that says something about the forces at work, the stabilities available, and the transitions that remain possible.",
+  },
+  {
+    label: "theme 02",
+    title: "Behavioral phenotyping &amp; machine learning",
+    body: "At JAX I contribute to tools that make automated mouse behavior analysis practical and genetically informative. This work involves the full stack — video, pose, classifier, genetics — and the recurring challenge is designing systems that scientists actually want to use.",
+  },
+  {
+    label: "theme 03",
+    title: "Physics-aware scientific machine learning",
+    body: "My earlier work asked whether knowing the structure of a physical system — its conservation laws, its symmetries, its phase-space geometry — makes a neural network both more accurate and more honest. The answer was yes, often dramatically so. I continue to think about what it means to build models that remain faithful to mechanism.",
+  },
+];
 ---
 
 <BaseLayout title={`Research | ${siteMeta.name}`} description="Research themes and selected publications by Anshul Choudhary.">
-  <div class="noise" aria-hidden="true"></div>
-  <div class="site-shell">
-    <SiteHeader navLinks={navLinks} currentPath="/research" />
+  <div class="manuscript-page">
+    <div class="ms-shell">
+      <ManuscriptHeader currentPath="/research" />
 
-    <main class="page-stack">
-      <!-- Themes — editorial prose -->
+    <main class="ms-research-page">
       <section class="research-themes">
-        <p class="eyebrow">Research</p>
-        <h1>Themes &amp; work</h1>
+        <header class="ms-page-head">
+          <div>
+            <p class="ms-page-kicker">Research</p>
+            <h1>Themes &amp; work</h1>
+          </div>
+          <p>Current work sits where cellular state, dynamical systems, and scientific machine learning overlap.</p>
+        </header>
 
         <div class="research-prose">
-          <div class="research-theme">
-            <h3 class="research-theme-title">Cell fate &amp; transcriptomic dynamics</h3>
-            <p>
-              I am drawn to the question of how cells commit. The language I use is dynamical systems — attractors, basins of attraction, and vector fields — applied to RNA expression profiles. The goal is a description of cellular decision-making that is richer than a cluster label: one that says something about the forces at work, the stabilities available, and the transitions that remain possible.
-            </p>
-          </div>
-
-          <div class="research-theme">
-            <h3 class="research-theme-title">Behavioral phenotyping &amp; machine learning</h3>
-            <p>
-              At JAX I contribute to tools that make automated mouse behavior analysis practical and genetically informative. This work involves the full stack — video, pose, classifier, genetics — and the recurring challenge is designing systems that scientists actually want to use.
-            </p>
-          </div>
-
-          <div class="research-theme">
-            <h3 class="research-theme-title">Physics-aware scientific machine learning</h3>
-            <p>
-              My earlier work asked whether knowing the structure of a physical system — its conservation laws, its symmetries, its phase-space geometry — makes a neural network both more accurate and more honest. The answer was yes, often dramatically so. I continue to think about what it means to build models that remain faithful to mechanism.
-            </p>
-          </div>
+          {themes.map((theme, index) => {
+            const color = themeDomain[index] ?? "oxide";
+            const accent = accentVar(color);
+            return (
+              <div
+                id={index === 0 ? "theme-cell-fate" : index === 1 ? "theme-behavior" : "theme-physics-ml"}
+                class:list={["research-theme", `research-theme--${color}`]}
+                style={`--theme-accent: ${accent}`}
+              >
+                <p class="research-theme-label">{theme.label}</p>
+                <div class="research-theme-body">
+                  <h3 class="research-theme-title" set:html={theme.title} />
+                  <p>{theme.body}</p>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
 
-      <!-- Publications -->
-      <section class="section-block" aria-labelledby="publications-heading">
-        <div class="section-heading">
-          <p class="section-kicker">Selected publications</p>
+      <section class="research-publications" aria-labelledby="publications-heading">
+        <div class="research-section-heading">
+          <p class="ms-page-kicker">Selected publications</p>
           <h2 id="publications-heading">Papers</h2>
         </div>
 
         <div class="publication-grid">
-          {selectedPublications.map((item) => (
-            <article class="publication-card surface-card">
-              <p class="publication-meta">{item.venue} · {item.year}</p>
-              <h3><a class="article-link" href={item.href} target="_blank" rel="noreferrer">{item.title}</a></h3>
-              <p>{item.summary}</p>
-            </article>
-          ))}
+          {selectedPublications.map((item) => {
+            const color = publicationDomain(item);
+            const accent = accentVar(color);
+            return (
+              <article
+                class:list={["publication-card", `publication-card--${color}`]}
+                style={`--pub-accent: ${accent}`}
+              >
+                <p class="publication-meta">{item.venue} · {item.year}</p>
+                <h3><a href={item.href} target="_blank" rel="noreferrer">{item.title}</a></h3>
+                <p>{item.summary}</p>
+              </article>
+            );
+          })}
         </div>
       </section>
     </main>
 
-    <SiteFooter />
+    <ManuscriptFooter />
+    </div>
   </div>
 </BaseLayout>
 
 <style>
+  .ms-research-page {
+    display: grid;
+    gap: clamp(2rem, 4vw, 3rem);
+    padding: clamp(1rem, 2.3vw, 1.8rem) 0 clamp(3rem, 6vw, 4.8rem);
+  }
+
+  .ms-page-head {
+    display: grid;
+    grid-template-columns: minmax(14rem, 0.9fr) minmax(16rem, 1fr);
+    gap: clamp(1rem, 3vw, 2rem);
+    align-items: end;
+    padding: clamp(0.6rem, 1.6vw, 1.2rem) 0 clamp(0.8rem, 1.8vw, 1.2rem);
+    border-bottom: 1px solid var(--ms-rule);
+  }
+
+  .ms-page-kicker {
+    margin: 0 0 0.32rem;
+    color: var(--ms-muted);
+    font-family: var(--ms-font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .ms-page-head h1,
+  .research-section-heading h2 {
+    margin: 0;
+    color: var(--ms-primary);
+    font-family: var(--ms-font-display);
+    font-size: clamp(2rem, 4.2vw, 3.1rem);
+    font-weight: 500;
+    letter-spacing: -0.05em;
+    line-height: 1;
+  }
+
+  .ms-page-head > p {
+    margin: 0;
+    color: var(--ms-on-surface-variant);
+    font-size: clamp(0.98rem, 1.6vw, 1.12rem);
+    font-style: italic;
+    font-weight: 500;
+    line-height: 1.32;
+    text-wrap: pretty;
+  }
+
   .research-themes {
     display: grid;
     gap: 1.4rem;
@@ -72,29 +145,123 @@ import { selectedPublications } from "../data/research.js";
 
   .research-prose {
     display: grid;
-    gap: 1.6rem;
-    max-width: 64ch;
+    gap: 0;
+    max-width: 72rem;
+    border-top: 1px solid var(--ms-rule);
   }
 
   .research-theme {
+    --theme-accent: var(--ms-secondary);
     display: grid;
-    gap: 0.3rem;
+    grid-template-columns: minmax(7rem, 10rem) minmax(0, 1fr);
+    gap: clamp(1rem, 2.4vw, 1.6rem);
+    padding: clamp(1rem, 2.2vw, 1.35rem) 0;
+    border-bottom: 1px solid var(--ms-rule);
+  }
+
+  .research-theme-body {
+    padding-left: clamp(0.75rem, 1.5vw, 0.95rem);
+    border-left: 2px solid color-mix(in srgb, var(--theme-accent) 42%, transparent);
+  }
+
+  .research-theme-label {
+    margin: 0.18rem 0 0;
+    color: var(--theme-accent);
+    font-family: var(--ms-font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.82;
   }
 
   .research-theme-title {
-    font-family: var(--font-body);
+    margin: 0 0 0.3rem;
+    color: var(--ms-primary);
+    font-family: var(--ms-font-display);
     font-weight: 600;
-    font-size: 1rem;
-    color: var(--oxide);
-    letter-spacing: 0.02em;
+    font-size: clamp(1.18rem, 2vw, 1.42rem);
+    letter-spacing: -0.025em;
     line-height: 1.3;
-    margin: 0;
   }
 
-  .research-theme p {
+  .research-theme-body p {
     margin: 0;
-    color: var(--ink-faint);
-    line-height: 1.9;
+    color: var(--ms-on-surface-variant);
+    font-size: clamp(1rem, 1.4vw, 1.08rem);
+    line-height: 1.72;
     text-wrap: pretty;
+  }
+
+  .research-publications {
+    display: grid;
+    gap: 1.2rem;
+  }
+
+  .research-section-heading h2 {
+    font-size: clamp(1.8rem, 3.4vw, 2.55rem);
+  }
+
+  .publication-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(0.85rem, 2vw, 1.25rem);
+  }
+
+  .publication-card {
+    --pub-accent: var(--ms-secondary);
+    border: 1px solid color-mix(in srgb, var(--pub-accent) 22%, transparent);
+    border-left: 2px solid color-mix(in srgb, var(--pub-accent) 48%, transparent);
+    border-radius: 0.7rem;
+    background: color-mix(in srgb, var(--ms-sheet) 88%, transparent);
+    padding: clamp(0.9rem, 1.8vw, 1.15rem);
+  }
+
+  .publication-meta {
+    margin: 0 0 0.45rem;
+    color: var(--pub-accent);
+    font-family: var(--ms-font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.85;
+  }
+
+  .publication-card h3 {
+    margin: 0 0 0.45rem;
+    font-family: var(--ms-font-display);
+    font-size: clamp(1.08rem, 1.7vw, 1.28rem);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.18;
+  }
+
+  .publication-card a {
+    color: var(--ms-primary);
+    text-decoration-color: color-mix(in srgb, var(--pub-accent) 30%, transparent);
+    text-underline-offset: 0.18em;
+  }
+
+  .publication-card a:hover,
+  .publication-card a:focus-visible {
+    color: var(--pub-accent);
+  }
+
+  .publication-card p:not(.publication-meta) {
+    margin: 0;
+    color: var(--ms-on-surface-variant);
+    font-size: 0.96rem;
+    line-height: 1.55;
+  }
+
+  @media (max-width: 760px) {
+    .ms-page-head,
+    .research-theme,
+    .publication-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .research-theme-body {
+      padding-left: 0.72rem;
+    }
   }
 </style>

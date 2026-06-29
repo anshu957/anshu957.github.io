@@ -2,7 +2,7 @@
   position: fixed;
   inset: 0;
   pointer-events: none;
-  opacity: 0.055;
+  opacity: 0.028;
   background-image:
     radial-gradient(rgba(36, 27, 24, 0.08) 0.7px, transparent 0.9px),
     radial-gradient(rgba(208, 162, 93, 0.08) 0.8px, transparent 1px);

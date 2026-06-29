@@ -1,9 +1,0 @@
----
-const { eyebrow, title, body, compact = false } = Astro.props;
----
-
-<div class="page-intro">
-  {eyebrow && <p class="eyebrow">{eyebrow}</p>}
-  <h1 class="page-title">{title}</h1>
-  <p class:list={["lede", compact && "lede-compact"]}>{body}</p>
-</div>

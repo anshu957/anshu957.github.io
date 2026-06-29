@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-label="Tea and terminal illustration">
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff8ed"/>
+      <stop offset=".52" stop-color="#f3e1c9"/>
+      <stop offset="1" stop-color="#fff9ef"/>
+    </linearGradient>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency=".82" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer>
+        <feFuncA type="table" tableValues="0 .11"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="1200" height="760" fill="url(#paper)"/>
+  <rect width="1200" height="760" filter="url(#grain)" opacity=".28"/>
+  <path d="M0 252c112-77 228-86 350-27 129 62 252 56 368-17 142-89 301-94 482-15v567H0Z" fill="#c89a52" opacity=".13"/>
+  <g fill="none" stroke="#b85a43" stroke-width="1.5" opacity=".38">
+    <path d="M-24 494c120-82 240-96 361-42 121 53 231 47 330-17 112-73 244-85 397-36"/>
+    <path d="M-8 552c126-71 240-78 343-21 101 56 211 48 330-25 112-69 238-80 378-32"/>
+    <path d="M20 322c138-64 265-62 381 6 97 57 200 54 309-9 107-62 230-76 368-39"/>
+  </g>
+  <g transform="translate(660 172)">
+    <rect x="0" y="0" width="392" height="236" rx="14" fill="#27231f" opacity=".88"/>
+    <rect x="0" y="0" width="392" height="43" rx="14" fill="#b88772"/>
+    <circle cx="28" cy="21" r="7" fill="#7d3e2e"/>
+    <circle cx="52" cy="21" r="7" fill="#a86143"/>
+    <circle cx="76" cy="21" r="7" fill="#d0a05e"/>
+    <g font-family="ui-monospace, Menlo, monospace" font-size="18" fill="#e8d1bd" opacity=".8">
+      <text x="32" y="86">&gt; steep(tea)</text>
+      <text x="55" y="123">wait(signal)</text>
+      <text x="55" y="160">emit(pattern)</text>
+    </g>
+  </g>
+  <g transform="translate(250 264)" fill="none" stroke="#7d4b3a" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M126 248c21-109 145-151 269-122 92 22 147 80 156 153-71 63-326 67-425-31Z" fill="#fff3e1" opacity=".62"/>
+    <path d="M180 132c77-72 249-67 327 9"/>
+    <path d="M284 100c10-56 88-55 104 2"/>
+    <path d="M553 247c83-64 160-37 179 27-38 65-119 57-175 8"/>
+    <path d="M122 247c-86-44-157-18-188 44 72-10 132 12 183 57"/>
+    <path d="M220 337c92 45 237 45 326-4"/>
+  </g>
+  <g fill="none" stroke="#b85a43" stroke-width="3" stroke-linecap="round" opacity=".64">
+    <path d="M498 246c-47-61 50-75 7-140"/>
+    <path d="M568 250c-45-64 55-81 14-151"/>
+    <path d="M634 262c-35-50 55-77 23-132"/>
+  </g>
+  <g fill="none" stroke="#5e7257" stroke-width="1.3" opacity=".42">
+    <path d="M111 602c82-50 168-58 257-25 102 38 196 27 282-31"/>
+    <path d="M120 639c70-36 144-38 222-6 90 38 179 31 269-20"/>
+  </g>
+</svg>

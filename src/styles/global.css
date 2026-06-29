@@ -600,8 +600,8 @@
 
 .site-footer-id {
   margin: 0;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.7rem;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
   letter-spacing: 0.045em;
   color: var(--ink-soft);
   opacity: 0.6;
@@ -617,8 +617,8 @@
   display: inline-flex;
   align-items: center;
   gap: 0.42rem;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.7rem;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
   letter-spacing: 0.03em;
   color: var(--ink-soft);
   text-decoration: none;
@@ -643,168 +643,6 @@ html.dark .footer-link[data-icon="orcid"]:hover { color: #bada6a; }
   height: 0.85rem;
   flex: 0 0 auto;
   display: block;
-}
-
-/* ── CareerMap ─────────────────────────────────────── */
-
-.cmap-wrap {
-  position: relative;
-  width: 100%;
-}
-
-.cmap-svg {
-  width: 100%;
-  height: auto;
-  display: block;
-  overflow: visible;
-}
-
-/* Grid lines */
-.cmap-grid {
-  stroke: currentColor;
-  stroke-opacity: 0.09;
-  stroke-width: 1;
-}
-
-/* Year labels */
-.cmap-year-lbl {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 11px;
-  fill: currentColor;
-  fill-opacity: 0.45;
-  letter-spacing: 0.03em;
-}
-
-/* Axis labels */
-.cmap-axis-lbl {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 11px;
-  fill: currentColor;
-  fill-opacity: 0.4;
-  letter-spacing: 0.06em;
-}
-
-/* Main path */
-.cmap-path {
-  stroke: var(--oxide);
-  stroke-opacity: 0.65;
-  transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0.15s;
-}
-
-/* Research branches */
-.cmap-branch {
-  opacity: 0;
-}
-
-.cmap-branch-in {
-  animation: cmap-fade-in 0.5s ease forwards;
-}
-
-.cmap-branch-lbl {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 10px;
-  letter-spacing: 0.04em;
-}
-
-/* Nodes */
-.cmap-node {
-  opacity: 0;
-}
-
-.cmap-node-in {
-  animation: cmap-node-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
-/* Pulsing ring on current role */
-.cmap-pulse {
-  animation: cmap-pulse 2.6s ease-in-out infinite;
-}
-
-@keyframes cmap-pulse {
-  0%, 100% { r: 10; opacity: 0.08; }
-  50%       { r: 14; opacity: 0.04; }
-}
-
-@keyframes cmap-fade-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-@keyframes cmap-node-pop {
-  from { opacity: 0; transform: scale(0.4); }
-  to   { opacity: 1; transform: scale(1); }
-}
-
-/* Easter egg */
-.cmap-egg-dot {
-  transition: opacity 250ms ease;
-}
-
-.cmap-egg:hover .cmap-egg-dot {
-  opacity: 0.7 !important;
-}
-
-.cmap-egg-rec {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 9px;
-  fill: var(--oxide);
-  letter-spacing: 0.08em;
-}
-
-.cmap-egg-credit {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 8px;
-  fill: currentColor;
-  letter-spacing: 0.05em;
-}
-
-/* Tooltip */
-.cmap-tooltip {
-  position: absolute;
-  pointer-events: none;
-  background: var(--surface-strong);
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius-xs);
-  padding: 0.6rem 0.85rem;
-  box-shadow: 0 8px 24px var(--shadow);
-  display: grid;
-  gap: 0.18rem;
-  min-width: 160px;
-  z-index: 10;
-}
-
-.cmap-tt-period {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.65rem;
-  color: var(--oxide);
-  letter-spacing: 0.06em;
-  opacity: 0.85;
-  margin: 0;
-}
-
-.cmap-tt-role {
-  font-family: var(--font-body);
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: var(--ink);
-  margin: 0;
-  line-height: 1.2;
-}
-
-.cmap-tt-inst {
-  font-size: 0.82rem;
-  font-style: italic;
-  color: var(--ink-soft);
-  margin: 0;
-}
-
-.cmap-tt-loc {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.65rem;
-  color: var(--ink-soft);
-  opacity: 0.55;
-  letter-spacing: 0.04em;
-  margin: 0;
 }
 
 .sim-readout {

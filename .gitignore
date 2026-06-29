@@ -5,3 +5,7 @@ dist/
 output/
 .agents/
 plugins/
+qa-screenshots/
+.screenshot-*.png
+.claude/
+scratchpad/

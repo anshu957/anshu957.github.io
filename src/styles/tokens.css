@@ -1,31 +1,40 @@
 @import "@fontsource/newsreader/400.css";
 @import "@fontsource/newsreader/500.css";
 @import "@fontsource/newsreader/600.css";
-@import "@fontsource/newsreader/700.css";
+@import "@fontsource/jetbrains-mono/500.css";
 
 :root {
-  --paper: #f1eadf;
-  --paper-strong: #f7f1e7;
-  --paper-soft: rgba(255, 252, 246, 0.7);
-  --surface: rgba(250, 244, 234, 0.78);
-  --surface-strong: rgba(255, 251, 245, 0.88);
-  --ink: #2b211c;
-  --ink-soft: #5c4b43;
-  --ink-faint: rgba(43, 33, 28, 0.76);
-  --line: rgba(53, 39, 32, 0.12);
-  --line-strong: rgba(53, 39, 32, 0.22);
-  --oxide: #b85a43;
+  /* Part 1 — canvas tokens (matched to prototype) */
+  --paper: #fdfbf7;
+  --paper-strong: #ffffff;
+  --paper-soft: #fdfbf7;
+  --surface: #fdfbf7;
+  --surface-strong: #ffffff;
+  --ink: #2d2520;
+  --ink-soft: #6a5c54;
+  --ink-faint: rgba(45, 37, 32, 0.7);
+  --line: rgba(45, 37, 32, 0.14);
+  --line-strong: rgba(45, 37, 32, 0.22);
+  --oxide: #8f4f38;
+  --terracotta: #9a6048;
+  --tag-bg: rgba(196, 168, 130, 0.22);
+  --tag-text: #7a4a32;
   --sage: #5e7257;
-  --gold: #c89a52;
+  --gold: #b8894a;
   --accent-blue: #6b7fb0;
-  --shadow: rgba(98, 74, 54, 0.14);
-  --shadow-dock: rgba(129, 98, 71, 0.10);
-  --toggle-bg: rgba(255, 255, 255, 0.5);
-  --toggle-color: #5c4b43;
+  /* Domain accents — canonical semantic palette (mirrored on .manuscript-page) */
+  --domain-oxide: #b85a43;
+  --domain-sage: #5e7257;
+  --domain-blue: #6b7fb0;
+  --domain-gold: #c89a52;
+  --illus-stroke: rgba(108, 82, 62, 0.5);
+  --illus-fill: rgba(154, 90, 66, 0.3);
+  --wave-stroke: rgba(190, 165, 135, 0.35);
+  --shadow: rgba(98, 74, 54, 0.06);
   --font-body: "Newsreader", Georgia, serif;
   --font-display: "Newsreader", Georgia, serif;
   --font-ui: "Newsreader", Georgia, serif;
-  --site-width: min(1180px, calc(100vw - 2rem));
+  --site-width: min(1140px, calc(100vw - 4rem));
   --reading-width: 67ch;
   --radius-xs: 0.7rem;
   --radius-sm: 1rem;
@@ -38,26 +47,29 @@
   --space-5: 2.4rem;
   --space-6: 3.5rem;
   --space-7: 5rem;
-  --walker-size: 4.4rem;
 }
 
 html.dark {
   --paper: #1a1210;
   --paper-strong: #211713;
-  --paper-soft: rgba(26, 18, 16, 0.7);
-  --surface: rgba(38, 27, 22, 0.88);
-  --surface-strong: rgba(44, 32, 26, 0.94);
+  --paper-soft: #1a1210;
+  --surface: #1a1210;
+  --surface-strong: #211713;
   --ink: #e8d9c4;
   --ink-soft: #b09a87;
   --ink-faint: rgba(232, 217, 196, 0.74);
-  --line: rgba(220, 201, 169, 0.10);
-  --line-strong: rgba(220, 201, 169, 0.18);
+  --line: rgba(220, 201, 169, 0.12);
+  --line-strong: rgba(220, 201, 169, 0.2);
   --oxide: #d4705a;
-  --sage: #7a9470;
-  --gold: #d4a85a;
-  --accent-blue: #8898c0;
-  --shadow: rgba(0, 0, 0, 0.32);
-  --shadow-dock: rgba(0, 0, 0, 0.28);
-  --toggle-bg: rgba(255, 255, 255, 0.08);
-  --toggle-color: #b09a87;
+  --terracotta: #d4705a;
+  --tag-bg: rgba(212, 112, 90, 0.15);
+  --tag-text: #e8b8a8;
+  --sage: #8faa84;
+  --gold: #d4b06a;
+  --accent-blue: #8fa0cb;
+  --domain-oxide: #e08872;
+  --domain-sage: #8faa84;
+  --domain-blue: #8fa0cb;
+  --domain-gold: #d4b06a;
+  --wave-stroke: rgba(200, 170, 130, 0.2);
 }

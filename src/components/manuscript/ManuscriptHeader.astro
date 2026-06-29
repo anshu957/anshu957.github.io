@@ -1,6 +1,7 @@
 ---
 import ThemeToggle from "../ThemeToggle.jsx";
 import ManuscriptNavCat from "./ManuscriptNavCat.jsx";
+import { navAccent, accentVar } from "../../lib/domainColor.js";
 
 const { currentPath = "/" } = Astro.props;
 
@@ -9,23 +10,25 @@ const links = [
   { href: "/about", label: "About" },
   { href: "/research", label: "Research" },
   { href: "/blog", label: "Blog" },
-  { href: "/contact", label: "Contact" },
 ];
 
+const sectionAccent = accentVar(navAccent(currentPath));
 ---
 
 <header class="ms-header">
   <div class="ms-equation-badge" aria-label="Site tagline">
-    <span class="ms-terminal-line">
-      <span class="ms-prompt">a957@phase-space</span>
-      <span class="ms-command">
-        <span class="ms-symbol ms-symbol--integral">∫</span>
-        <span class="ms-word ms-word--bio">biology</span>
-        <span class="ms-symbol ms-symbol--partial">∂</span>
-        <span class="ms-word ms-word--dynamics">(dynamical system)</span>
+    <p class="ms-terminal-line">
+      <span class="ms-prompt">
+        <span class="ms-prompt-user">a957@phase-space</span><span class="ms-prompt-geo">:</span><span class="ms-prompt-path">~</span><span class="ms-prompt-mark">$</span>
       </span>
-      <span class="ms-cursor" aria-hidden="true"></span>
-    </span>
+      <span class="ms-command">
+        <span class="ms-cmd-symbol" aria-hidden="true">∫</span>
+        <span class="ms-cmd-token ms-cmd-token--oxide">biology</span>
+        <span class="ms-cmd-sep" aria-hidden="true">·</span>
+        <span class="ms-cmd-symbol" aria-hidden="true">∂</span><span class="ms-cmd-token ms-cmd-token--dyn">(dynamical system)</span>
+        <span class="ms-cursor" aria-hidden="true"></span>
+      </span>
+    </p>
     <span class="ms-landscape" aria-hidden="true">
       <svg viewBox="0 0 280 26" preserveAspectRatio="none">
         <defs>
@@ -39,10 +42,9 @@ const links = [
         <path class="ms-landscape-shadow" d="M 6 17.5 C 38 4, 68 22, 101 10.5 S 168 2.5, 210 14 S 258 22, 274 9.5" />
         <path
           class="ms-landscape-line"
-          id="ms-curve"
           d="M 6 16 C 38 3, 68 21, 101 10 S 168 1, 210 13 S 258 21, 274 8"
         />
-        <g class="ms-rolling-cell">
+        <g class="ms-rolling-cell ms-rolling-cell--motion">
           <circle r="4.2" fill="url(#ms-cell-fill)" stroke="#5e7257" stroke-width="0.55" opacity="0.94" />
           <circle r="1.35" cx="0.9" cy="-0.7" fill="#3d4f38" opacity="0.62" />
           <animateMotion
@@ -55,11 +57,15 @@ const links = [
             path="M 6 16 C 38 3, 68 21, 101 10 S 168 1, 210 13 S 258 21, 274 8"
           />
         </g>
+        <g class="ms-rolling-cell ms-rolling-cell--static" transform="translate(140, 12)">
+          <circle r="4.2" fill="url(#ms-cell-fill)" stroke="#5e7257" stroke-width="0.55" opacity="0.94" />
+          <circle r="1.35" cx="0.9" cy="-0.7" fill="#3d4f38" opacity="0.62" />
+        </g>
       </svg>
     </span>
   </div>
-  <div class="ms-header-nav-stage">
-    <ManuscriptNavCat client:load currentPath={currentPath} />
+  <div class="ms-header-nav-stage" style={`--nav-accent: ${sectionAccent}`}>
+    <ManuscriptNavCat client:load transition:persist="ms-nav-cat" />
     <nav class="ms-header-nav" aria-label="Primary">
       {links.map((link) => {
         const isActive =
@@ -67,7 +73,7 @@ const links = [
           (link.href !== "/" && currentPath.startsWith(link.href));
         return (
           <a
-            class="ms-header-link"
+            class:list={["ms-header-link", isActive && "ms-header-link--active"]}
             href={link.href}
             aria-current={isActive ? "page" : undefined}
           >
@@ -94,94 +100,129 @@ const links = [
     position: relative;
     display: inline-grid;
     align-items: start;
-    gap: 0.34rem;
+    gap: 0.32rem;
     max-width: 100%;
-    min-width: min(37rem, 55vw);
-    padding: 0.72rem 1rem 0.84rem;
-    border: 1px solid color-mix(in srgb, var(--ms-secondary) 22%, transparent);
+    min-width: min(34rem, 52vw);
+    padding: 0.68rem 0.92rem 0.76rem;
+    border: 1px solid color-mix(in srgb, var(--domain-oxide) 14%, var(--ms-rule));
     border-radius: 1.15rem;
     background:
-      radial-gradient(circle at 92% 10%, color-mix(in srgb, var(--ms-secondary) 11%, transparent), transparent 5rem),
-      linear-gradient(180deg, rgba(255, 255, 255, 0.46), rgba(155, 87, 68, 0.055)),
-      color-mix(in srgb, var(--ms-sheet) 82%, transparent);
-    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.58) inset;
+      linear-gradient(
+        165deg,
+        color-mix(in srgb, var(--ms-sheet) 96%, var(--ms-highlight)),
+        color-mix(in srgb, var(--domain-oxide) 4%, var(--ms-sheet))
+      );
+    box-shadow:
+      0 1px 0 var(--ms-inset) inset,
+      0 10px 28px color-mix(in srgb, var(--domain-oxide) 7%, transparent);
     font-family: var(--ms-font-mono);
-    font-size: clamp(0.9rem, 1.36vw, 1.16rem);
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-    color: var(--ms-primary);
+    font-size: clamp(0.84rem, 1.26vw, 0.98rem);
+    line-height: 1.35;
+    color: var(--ms-on-surface-variant);
+  }
+
+  html.dark .ms-equation-badge {
+    border-color: color-mix(in srgb, var(--domain-oxide) 18%, var(--ms-rule));
+    background:
+      linear-gradient(
+        165deg,
+        color-mix(in srgb, var(--ms-sheet) 94%, #2a1e1a),
+        color-mix(in srgb, var(--domain-oxide) 8%, var(--ms-sheet))
+      );
+    box-shadow:
+      0 1px 0 var(--ms-inset) inset,
+      0 10px 28px var(--ms-shadow);
   }
 
   .ms-terminal-line {
-    display: inline-flex;
+    display: flex;
     flex-wrap: wrap;
-    align-items: center;
-    gap: 0 0.38rem;
+    align-items: baseline;
+    gap: 0 0.36rem;
+    margin: 0;
     max-width: 100%;
   }
 
   .ms-prompt {
-    color: var(--ms-secondary);
+    display: inline-flex;
+    align-items: baseline;
     flex-shrink: 0;
+    white-space: nowrap;
   }
 
-  .ms-prompt::after {
-    content: ">>";
-    margin: 0 0.5rem 0 0.32rem;
-    color: var(--ms-muted);
+  .ms-prompt-user {
+    color: var(--domain-sage);
     font-weight: 600;
-    letter-spacing: -0.06em;
+  }
+
+  .ms-prompt-geo,
+  .ms-prompt-path {
+    color: var(--ms-muted);
+    font-weight: 500;
+  }
+
+  .ms-prompt-mark {
+    margin-right: 0.1rem;
+    color: var(--ms-primary);
+    font-weight: 600;
   }
 
   .ms-command {
     display: inline-flex;
-    align-items: center;
-    gap: 0.28rem 0.42rem;
-    color: var(--ms-primary);
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.2rem 0.32rem;
+    min-width: 0;
     white-space: nowrap;
   }
 
-  .ms-symbol {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+  .ms-cmd-symbol {
     flex-shrink: 0;
-    color: var(--ms-primary);
-    font-family: var(--ms-font-display);
-    font-size: 1.55em;
-    font-weight: 800;
+    color: var(--ms-muted);
+    font-weight: 500;
     line-height: 1;
   }
 
-  .ms-symbol--integral {
-    font-size: 1.85em;
+  .ms-cmd-token {
+    font-weight: 600;
   }
 
-  .ms-symbol--partial {
-    font-size: 1.75em;
+  .ms-cmd-token--oxide {
+    color: var(--domain-oxide);
   }
 
-  .ms-word {
-    font-family: var(--ms-font-display);
-    font-size: 1.08em;
-    font-weight: 700;
-    letter-spacing: -0.035em;
+  .ms-cmd-token--dyn {
+    color: var(--domain-blue);
   }
 
-  .ms-word--bio {
-    color: var(--sage, #5e7257);
+  .ms-cmd-sep {
+    color: var(--ms-muted);
+    opacity: 0.55;
   }
 
-  .ms-word--dynamics {
-    color: var(--accent-blue, #6b7fb0);
+  .ms-cursor {
+    display: inline-block;
+    flex-shrink: 0;
+    align-self: center;
+    width: 0.5em;
+    height: 1.1em;
+    margin-left: 0.06rem;
+    border-radius: 1px;
+    background: var(--domain-oxide);
+    animation: ms-cursor-blink 1.05s step-end infinite;
+  }
+
+  @keyframes ms-cursor-blink {
+    0%, 48% { opacity: 1; }
+    49%, 100% { opacity: 0; }
   }
 
   .ms-landscape {
     position: relative;
     display: block;
     width: min(100%, 23rem);
-    height: 2.15rem;
-    margin-top: -0.12rem;
+    height: 2.1rem;
+    margin-top: 0.02rem;
     color: var(--ms-wave);
   }
 
@@ -200,43 +241,21 @@ const links = [
   }
 
   .ms-landscape-line {
-    stroke-width: 1.7;
+    stroke-width: 1.6;
     opacity: 0.72;
   }
 
   .ms-landscape-shadow {
     stroke-width: 5;
-    opacity: 0.13;
+    opacity: 0.12;
   }
 
   .ms-rolling-cell {
-    filter: drop-shadow(0 1px 2px rgba(62, 79, 56, 0.28));
+    filter: drop-shadow(0 1px 2px rgba(62, 79, 56, 0.22));
   }
 
-  .ms-cursor {
-    display: inline-block;
-    flex-shrink: 0;
-    align-self: center;
-    width: 0.56em;
-    height: 1.24em;
-    margin-left: 0.2rem;
-    border-radius: 2px;
-    background: var(--ms-secondary);
-    box-shadow:
-      0 0 0 1px color-mix(in srgb, var(--ms-secondary) 28%, transparent),
-      0 1px 4px color-mix(in srgb, var(--ms-secondary) 35%, transparent);
-    animation: ms-blink 0.92s step-end infinite;
-  }
-
-  @keyframes ms-blink {
-    0%, 46% {
-      opacity: 1;
-      transform: scaleX(1);
-    }
-    47%, 100% {
-      opacity: 0;
-      transform: scaleX(1);
-    }
+  .ms-rolling-cell--static {
+    display: none;
   }
 
   .ms-header-quote {
@@ -271,8 +290,8 @@ const links = [
     bottom: 0;
     will-change: transform;
     transition:
-      transform 520ms cubic-bezier(0.45, 0, 0.2, 1),
-      opacity 180ms ease;
+      transform 580ms cubic-bezier(0.33, 1, 0.68, 1),
+      opacity 220ms ease;
   }
 
   :global(.ms-nav-cat--still) {
@@ -320,9 +339,12 @@ const links = [
   }
 
   .ms-header-link:hover,
-  .ms-header-link:focus-visible,
-  .ms-header-link[aria-current="page"] {
-    color: var(--ms-secondary);
+  .ms-header-link:focus-visible {
+    color: var(--nav-accent, var(--ms-secondary));
+  }
+
+  .ms-header-link--active {
+    color: var(--nav-accent, var(--ms-secondary));
   }
 
   @media (max-width: 720px) {
@@ -343,12 +365,12 @@ const links = [
     .ms-equation-badge {
       min-width: 0;
       width: 100%;
-      border-radius: 0.7rem;
-      line-height: 1.35;
+      border-radius: 0.85rem;
+      padding: 0.62rem 0.78rem 0.7rem;
     }
 
     .ms-terminal-line {
-      row-gap: 0.2rem;
+      row-gap: 0.16rem;
     }
 
     .ms-command {
@@ -363,6 +385,15 @@ const links = [
   @media (prefers-reduced-motion: reduce) {
     .ms-cursor {
       animation: none;
+      opacity: 1;
+    }
+
+    .ms-rolling-cell--motion {
+      display: none;
+    }
+
+    .ms-rolling-cell--static {
+      display: block;
     }
   }
 </style>

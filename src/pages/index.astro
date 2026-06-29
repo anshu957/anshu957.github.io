@@ -35,13 +35,13 @@ const posts = collectionPosts.length > 0 ? collectionPosts : fallbackHomePosts;
 <style is:global>
   /* Homepage uses manuscript system — override global body styles */
   body:has(.manuscript-page) {
-    background: #f4f0e8;
+    background: var(--ms-bg, #f4f0e8);
     font-family: "Newsreader", Georgia, serif;
     font-size: 16px;
     line-height: 1.6;
   }
 
   html.dark body:has(.manuscript-page) {
-    background: #17100e;
+    background: var(--ms-bg, #17100e);
   }
 </style>

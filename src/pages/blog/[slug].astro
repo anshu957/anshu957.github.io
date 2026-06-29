@@ -5,6 +5,7 @@ import ManuscriptHeader from "../../components/manuscript/ManuscriptHeader.astro
 import ManuscriptFooter from "../../components/manuscript/ManuscriptFooter.astro";
 import Sidenote from "../../components/Sidenote.astro";
 import { siteMeta } from "../../data/site.js";
+import { domainColor, accentVar, tagLabel } from "../../lib/domainColor.js";
 import "../../styles/manuscript.css";
 
 export async function getStaticPaths() {
@@ -21,49 +22,9 @@ const formatDate = (date) =>
   date.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
 
 const tags = post.data.tags ?? [];
-const domainColor = (() => {
-  const t = tags.join(" ").toLowerCase();
-  if (/tea|notes|practice|personal/.test(t)) return "gold";
-  if (/network|physics|complex|math|graph/.test(t)) return "blue";
-  if (/genom|transcriptom|single-cell|rna|method/.test(t)) return "sage";
-  return "oxide";
-})();
-
-const ACCENT = {
-  oxide: "#b85a43",
-  blue: "#6b7fb0",
-  sage: "#5e7257",
-  gold: "#c89a52",
-};
-
-const fieldNote = (() => {
-  const t = tags.join(" ").toLowerCase();
-  if (/tea|notes|practice/.test(t)) {
-    return {
-      label: "desk note",
-      text: "A short pause treated as part of the method, not an escape from it.",
-    };
-  }
-  if (/network|physics|complex|graph/.test(t)) {
-    return {
-      label: "margin note",
-      text: "The useful map is partial: enough structure to reason, enough uncertainty to stay honest.",
-    };
-  }
-  if (/single-cell|rna|cell|fate|velocity/.test(t)) {
-    return {
-      label: "field note",
-      text: "The question is directional before it is categorical: where is the population moving?",
-    };
-  }
-  return {
-    label: "reader note",
-    text: "A working fragment from the border between measurement and model.",
-  };
-})();
-
-const primaryTag = (tags[0] ?? "notebook").replace(/-/g, " ");
-const accent = ACCENT[domainColor];
+const color = domainColor(tags);
+const accent = accentVar(color);
+const primaryTag = tagLabel(tags[0]);
 ---
 
 <BaseLayout title={`${post.data.title} | ${siteMeta.name}`} description={post.data.description}>
@@ -71,12 +32,17 @@ const accent = ACCENT[domainColor];
     <div class="ms-shell">
       <ManuscriptHeader currentPath="/blog" />
 
-      <article class:list={["ms-article-shell", `ms-article-shell--${domainColor}`]} style={`--article-accent: ${accent}`}>
-        <a href="/blog" class="ms-article-back">← all writing</a>
+      <article class:list={["ms-article-shell", `ms-article-shell--${color}`]} style={`--article-accent: ${accent}`}>
+        <nav class="ms-article-crumb" aria-label="Breadcrumb">
+          <a href="/">index</a>
+          <span aria-hidden="true">/</span>
+          <span class="ms-article-crumb-domain">{primaryTag}</span>
+          <span aria-hidden="true">/</span>
+          <span class="ms-article-crumb-title">{post.data.title}</span>
+        </nav>
 
         <header class="ms-article-header">
           <figure class="ms-article-plate">
-            <span class="ms-article-plate-mark">reading plate</span>
             <img src={post.data.image} alt="" loading="eager" decoding="async" />
             <span class="ms-article-plate-wash" aria-hidden="true"></span>
           </figure>
@@ -92,11 +58,6 @@ const accent = ACCENT[domainColor];
             <h1 class="ms-article-title">{post.data.title}</h1>
             <p class="ms-article-lede">{post.data.description}</p>
           </div>
-
-          <aside class="ms-article-field-note" aria-label="Article margin note">
-            <p class="ms-article-field-label">{fieldNote.label}</p>
-            <p>{fieldNote.text}</p>
-          </aside>
         </header>
 
         <div class="ms-article-reading-grid">
@@ -123,30 +84,49 @@ const accent = ACCENT[domainColor];
     padding: clamp(1rem, 2.3vw, 1.8rem) 0 clamp(3rem, 6vw, 4.8rem);
   }
 
-  .ms-article-back {
-    display: inline-block;
-    margin-bottom: clamp(1rem, 2vw, 1.45rem);
+  .ms-article-crumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.38rem;
+    margin-bottom: clamp(0.85rem, 1.8vw, 1.2rem);
     color: var(--ms-muted);
     font-family: var(--ms-font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.06em;
-    opacity: 0.55;
+    font-size: 0.64rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.62;
+  }
+
+  .ms-article-crumb a {
+    color: inherit;
     text-decoration: none;
     transition: color 180ms ease, opacity 180ms ease;
   }
 
-  .ms-article-back:hover,
-  .ms-article-back:focus-visible {
+  .ms-article-crumb a:hover,
+  .ms-article-crumb a:focus-visible {
     color: var(--article-accent);
     opacity: 1;
+  }
+
+  .ms-article-crumb-domain {
+    color: var(--article-accent);
+    opacity: 0.88;
+  }
+
+  .ms-article-crumb-title {
+    color: var(--ms-primary);
+    opacity: 0.78;
+    text-transform: none;
+    letter-spacing: -0.01em;
   }
 
   .ms-article-header {
     display: grid;
     grid-template-columns:
       clamp(17rem, 28vw, 23rem)
-      minmax(0, 1fr)
-      clamp(11rem, 16vw, 14rem);
+      minmax(0, 1fr);
     gap: clamp(1.15rem, 2.5vw, 2rem);
     align-items: center;
     padding: clamp(1rem, 2.2vw, 1.6rem) 0 clamp(1.5rem, 3vw, 2.3rem);
@@ -162,10 +142,10 @@ const accent = ACCENT[domainColor];
     border-radius: 0.46rem;
     background:
       radial-gradient(circle at 22% 18%, color-mix(in srgb, var(--article-accent) 20%, transparent), transparent 48%),
-      color-mix(in srgb, var(--ms-sheet) 78%, white 22%);
+      color-mix(in srgb, var(--ms-sheet) 78%, var(--ms-highlight) 22%);
     box-shadow:
-      0 14px 30px rgba(74, 52, 41, 0.1),
-      inset 0 1px 0 rgba(255, 255, 255, 0.62);
+      0 14px 30px var(--ms-shadow),
+      inset 0 1px 0 var(--ms-inset);
     transform: rotate(-0.22deg);
   }
 
@@ -182,23 +162,8 @@ const accent = ACCENT[domainColor];
 
   html.dark .ms-article-plate img {
     mix-blend-mode: normal;
-    opacity: 0.7;
-    filter: sepia(0.18) saturate(0.82) brightness(0.74) contrast(1.06);
-  }
-
-  .ms-article-plate-mark {
-    position: absolute;
-    z-index: 2;
-    top: 0.48rem;
-    left: 0.52rem;
-    padding: 0.16rem 0.34rem;
-    border-radius: 0.18rem;
-    background: color-mix(in srgb, var(--ms-sheet) 84%, transparent);
-    color: color-mix(in srgb, var(--article-accent) 88%, var(--ms-primary));
-    font-family: var(--ms-font-mono);
-    font-size: 0.58rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    opacity: 0.9;
+    filter: saturate(0.96) brightness(0.98) contrast(1.02);
   }
 
   .ms-article-plate-wash {
@@ -206,7 +171,7 @@ const accent = ACCENT[domainColor];
     inset: 0;
     background:
       linear-gradient(90deg, transparent 70%, color-mix(in srgb, var(--ms-sheet) 18%, transparent)),
-      radial-gradient(circle at 86% 12%, rgba(255, 255, 255, 0.2), transparent 34%);
+      radial-gradient(circle at 86% 12%, color-mix(in srgb, var(--ms-highlight) 20%, transparent), transparent 34%);
     pointer-events: none;
   }
 
@@ -254,17 +219,6 @@ const accent = ACCENT[domainColor];
     text-wrap: pretty;
   }
 
-  .ms-article-field-note {
-    margin: 0;
-    padding: 0.72rem 0.78rem 0.76rem;
-    border-left: 1px solid color-mix(in srgb, var(--article-accent) 34%, transparent);
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.28), transparent),
-      color-mix(in srgb, var(--article-accent) 5%, transparent);
-    transform: rotate(0.26deg);
-  }
-
-  .ms-article-field-label,
   .ms-article-reader-label {
     margin: 0 0 0.32rem;
     color: var(--article-accent);
@@ -272,17 +226,6 @@ const accent = ACCENT[domainColor];
     font-size: 0.62rem;
     letter-spacing: 0.13em;
     text-transform: uppercase;
-  }
-
-  .ms-article-field-note p:not(.ms-article-field-label) {
-    margin: 0;
-    color: color-mix(in srgb, var(--ms-muted) 86%, var(--ms-primary));
-    font-family: var(--ms-font-display);
-    font-size: clamp(0.86rem, 1.18vw, 0.95rem);
-    font-style: italic;
-    font-weight: 500;
-    line-height: 1.34;
-    text-wrap: pretty;
   }
 
   .ms-article-reading-grid {
@@ -351,15 +294,6 @@ const accent = ACCENT[domainColor];
       align-items: start;
     }
 
-    .ms-article-field-note {
-      grid-column: 2;
-      padding: 0.6rem 0 0 0.75rem;
-      border-top: 1px solid color-mix(in srgb, var(--article-accent) 20%, transparent);
-      border-left-width: 2px;
-      background: transparent;
-      transform: none;
-    }
-
     .ms-article-reading-grid {
       grid-template-columns: 1fr;
     }
@@ -388,10 +322,6 @@ const accent = ACCENT[domainColor];
     .ms-article-title {
       font-size: clamp(2rem, 11vw, 2.8rem);
       max-width: 16ch;
-    }
-
-    .ms-article-field-note {
-      grid-column: auto;
     }
 
     .ms-article-prose {
