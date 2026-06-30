@@ -45,11 +45,15 @@ export function navAccent(path = "/") {
 /** Research theme index → domain accent. */
 export const themeDomain = ["oxide", "sage", "blue"];
 
-/** Publication card domain by venue/title keywords. */
+/** Publication card domain — prefers explicit theme, falls back to keywords. */
 export function publicationDomain(item) {
-  const t = `${item.title} ${item.venue} ${item.summary}`.toLowerCase();
-  if (/behavior|jabs|mouse|phenotyp/.test(t)) return "sage";
-  if (/neural|machine learning|hamiltonian|physics|nonlinear|network|dynamical/.test(t)) return "blue";
-  if (/cell|rna|velocity|fate|genom/.test(t)) return "oxide";
+  if (item.theme === "behavior") return "sage";
+  if (item.theme === "physics-ml") return "blue";
+  if (item.theme === "networks") return "oxide";
+
+  const t = `${item.title} ${item.venue} ${item.summary ?? ""}`.toLowerCase();
+  if (/behavior|jabs|mouse|phenotyp|genom|morphic/.test(t)) return "sage";
+  if (/neural|machine learning|hamiltonian|physics|nonlinear/.test(t)) return "blue";
+  if (/network|dynamical|synchron|basin|perturb/.test(t)) return "oxide";
   return "blue";
 }
