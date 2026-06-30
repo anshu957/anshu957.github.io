@@ -2,16 +2,18 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ManuscriptHeader from "../components/manuscript/ManuscriptHeader.astro";
 import ManuscriptFooter from "../components/manuscript/ManuscriptFooter.astro";
+import ManuscriptPublicationCard from "../components/manuscript/ManuscriptPublicationCard.astro";
 import { siteMeta, profileLinks } from "../data/site.js";
-import { publications, publicationShelves } from "../data/research.js";
-import { themeDomain, publicationDomain, accentVar } from "../lib/domainColor.js";
+import { publications, publicationShelves, publicationThemeLabel } from "../data/research.js";
+import { themeDomain, accentVar } from "../lib/domainColor.js";
 import "../styles/manuscript.css";
 
 const scholarLink = profileLinks.find((link) => link.icon === "scholar");
-const featuredPublications = publications.filter((item) => item.featured);
 const shelfPublications = publicationShelves.map((shelf) => ({
   ...shelf,
-  items: publications.filter((item) => !item.featured && item.theme === shelf.id),
+  items: publications
+    .filter((item) => item.theme === shelf.id)
+    .sort((a, b) => b.year - a.year),
 }));
 
 const themes = [
@@ -83,54 +85,19 @@ const themes = [
           )}
         </header>
 
-        <div class="pub-spotlight" role="list">
-          {featuredPublications.map((item, index) => {
-            const color = publicationDomain(item);
-            const accent = accentVar(color);
-            return (
-              <article
-                class:list={["pub-spotlight-card", `pub-spotlight-card--${color}`]}
-                style={`--pub-accent: ${accent}`}
-                role="listitem"
-              >
-                <p class="pub-year-mark" aria-hidden="true">{item.year}</p>
-                <div class="pub-spotlight-body">
-                  <p class="pub-meta">{item.venue} · {item.year}</p>
-                  <h3 class="pub-title">
-                    <a href={item.href} target="_blank" rel="noreferrer">{item.title}</a>
-                  </h3>
-                  {item.summary && <p class="pub-summary">{item.summary}</p>}
-                </div>
-                <span class="pub-index" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
-              </article>
-            );
-          })}
-        </div>
-
         {shelfPublications.map((shelf) => {
           if (shelf.items.length === 0) return null;
           const accent = accentVar(shelf.accent);
           return (
             <div class="pub-shelf" style={`--shelf-accent: ${accent}`}>
               <p class="pub-shelf-label">{shelf.label}</p>
-              <div class="pub-shelf-grid" role="list">
-                {shelf.items.map((item) => {
-                  const color = publicationDomain(item);
-                  const itemAccent = accentVar(color);
-                  return (
-                    <article
-                      class:list={["pub-shelf-card", `pub-shelf-card--${color}`]}
-                      style={`--pub-accent: ${itemAccent}`}
-                      role="listitem"
-                    >
-                      <span class="pub-shelf-year">{item.year}</span>
-                      <h3 class="pub-title">
-                        <a href={item.href} target="_blank" rel="noreferrer">{item.title}</a>
-                      </h3>
-                      <p class="pub-venue">{item.venue}</p>
-                    </article>
-                  );
-                })}
+              <div class="pub-grid" role="list">
+                {shelf.items.map((item) => (
+                  <ManuscriptPublicationCard
+                    item={item}
+                    themeLabel={publicationThemeLabel(item.theme)}
+                  />
+                ))}
               </div>
             </div>
           );
@@ -287,188 +254,6 @@ const themes = [
     transform: translateX(0.15rem);
   }
 
-  /* —— Spotlight (recent / featured) —— */
-  .pub-spotlight {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(0.85rem, 2vw, 1.15rem);
-  }
-
-  .pub-spotlight-card {
-    --pub-accent: var(--ms-secondary);
-    position: relative;
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    gap: clamp(0.6rem, 1.4vw, 0.9rem);
-    align-items: start;
-    overflow: hidden;
-    border: 1px solid color-mix(in srgb, var(--pub-accent) 20%, transparent);
-    border-radius: 0.75rem;
-    background:
-      radial-gradient(circle at 92% 8%, color-mix(in srgb, var(--pub-accent) 10%, transparent), transparent 42%),
-      color-mix(in srgb, var(--ms-sheet) 90%, transparent);
-    padding: clamp(1rem, 2vw, 1.25rem);
-    box-shadow: 0 10px 24px var(--ms-shadow);
-    transition:
-      border-color 220ms ease,
-      box-shadow 220ms ease,
-      transform 220ms ease;
-  }
-
-  .pub-spotlight-card:hover {
-    border-color: color-mix(in srgb, var(--pub-accent) 38%, transparent);
-    box-shadow: 0 16px 34px var(--ms-shadow-strong);
-    transform: translateY(-0.12rem);
-  }
-
-  .pub-year-mark {
-    margin: 0;
-    color: color-mix(in srgb, var(--pub-accent) 52%, var(--ms-muted));
-    font-family: var(--ms-font-display);
-    font-size: clamp(1.6rem, 3vw, 2.1rem);
-    font-weight: 500;
-    letter-spacing: -0.06em;
-    line-height: 1;
-    opacity: 0.72;
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-  }
-
-  .pub-spotlight-body {
-    min-width: 0;
-    padding-left: clamp(0.5rem, 1vw, 0.7rem);
-    border-left: 2px solid color-mix(in srgb, var(--pub-accent) 44%, transparent);
-  }
-
-  .pub-index {
-    position: absolute;
-    top: 0.65rem;
-    right: 0.75rem;
-    color: color-mix(in srgb, var(--pub-accent) 38%, var(--ms-muted));
-    font-family: var(--ms-font-mono);
-    font-size: 0.58rem;
-    letter-spacing: 0.14em;
-    opacity: 0.7;
-  }
-
-  .pub-meta {
-    margin: 0 0 0.4rem;
-    color: var(--pub-accent);
-    font-family: var(--ms-font-mono);
-    font-size: 0.62rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    opacity: 0.88;
-  }
-
-  .pub-title {
-    margin: 0 0 0.4rem;
-    font-family: var(--ms-font-display);
-    font-size: clamp(1rem, 1.55vw, 1.18rem);
-    font-weight: 600;
-    letter-spacing: -0.025em;
-    line-height: 1.22;
-  }
-
-  .pub-title a {
-    color: var(--ms-primary);
-    text-decoration-color: color-mix(in srgb, var(--pub-accent) 28%, transparent);
-    text-underline-offset: 0.18em;
-  }
-
-  .pub-title a:hover,
-  .pub-title a:focus-visible {
-    color: var(--pub-accent);
-  }
-
-  .pub-summary {
-    margin: 0;
-    color: var(--ms-on-surface-variant);
-    font-size: 0.9rem;
-    line-height: 1.5;
-    text-wrap: pretty;
-  }
-
-  /* —— Theme shelves —— */
-  .pub-shelf {
-    --shelf-accent: var(--ms-secondary);
-    display: grid;
-    gap: 0.75rem;
-    padding-top: 0.35rem;
-    border-top: 1px solid var(--ms-rule);
-  }
-
-  .pub-shelf-label {
-    margin: 0;
-    color: var(--shelf-accent);
-    font-family: var(--ms-font-mono);
-    font-size: 0.64rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    opacity: 0.82;
-  }
-
-  .pub-shelf-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 15.5rem), 1fr));
-    gap: clamp(0.65rem, 1.6vw, 0.9rem);
-  }
-
-  .pub-shelf-card {
-    --pub-accent: var(--ms-secondary);
-    position: relative;
-    display: grid;
-    gap: 0.28rem;
-    min-height: 6.5rem;
-    border: 1px solid color-mix(in srgb, var(--pub-accent) 16%, transparent);
-    border-radius: 0.55rem;
-    background: color-mix(in srgb, var(--ms-sheet) 86%, transparent);
-    padding: 0.75rem 0.85rem 0.8rem;
-    transition:
-      border-color 200ms ease,
-      background 200ms ease,
-      transform 200ms ease;
-  }
-
-  .pub-shelf-card:hover {
-    border-color: color-mix(in srgb, var(--pub-accent) 36%, transparent);
-    background: color-mix(in srgb, var(--ms-sheet) 78%, var(--pub-accent) 6%);
-    transform: translateY(-0.08rem);
-  }
-
-  .pub-shelf-year {
-    position: absolute;
-    top: 0.55rem;
-    right: 0.65rem;
-    color: color-mix(in srgb, var(--pub-accent) 55%, var(--ms-muted));
-    font-family: var(--ms-font-mono);
-    font-size: 0.58rem;
-    letter-spacing: 0.08em;
-    opacity: 0.75;
-  }
-
-  .pub-shelf-card .pub-title {
-    margin: 0;
-    padding-right: 2.2rem;
-    font-size: 0.94rem;
-    line-height: 1.28;
-  }
-
-  .pub-venue {
-    margin: 0;
-    color: var(--ms-muted);
-    font-family: var(--ms-font-mono);
-    font-size: 0.6rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  @media (max-width: 980px) {
-    .pub-spotlight {
-      grid-template-columns: 1fr;
-    }
-  }
-
   @media (max-width: 760px) {
     .ms-page-head,
     .research-theme {
@@ -478,35 +263,11 @@ const themes = [
     .research-theme-body {
       padding-left: 0.72rem;
     }
-
-    .pub-spotlight-card {
-      grid-template-columns: 1fr;
-    }
-
-    .pub-year-mark {
-      writing-mode: horizontal-tb;
-      transform: none;
-      font-size: 1.35rem;
-    }
-
-    .pub-spotlight-body {
-      padding-left: 0;
-      border-left: none;
-      border-top: 2px solid color-mix(in srgb, var(--pub-accent) 44%, transparent);
-      padding-top: 0.65rem;
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .pub-spotlight-card,
-    .pub-shelf-card,
     .research-scholar-arrow {
       transition: none;
-    }
-
-    .pub-spotlight-card:hover,
-    .pub-shelf-card:hover {
-      transform: none;
     }
   }
 </style>
