@@ -1,0 +1,41 @@
+---
+import { accentVar, publicationDomain } from "../../lib/domainColor.js";
+
+const { item, themeLabel } = Astro.props;
+const color = publicationDomain(item);
+const accent = accentVar(color);
+const summary = item.summary ?? "";
+---
+
+<article
+  class:list={["pub-card", `pub-card--${color}`]}
+  style={`--pub-accent: ${accent}`}
+  role="listitem"
+>
+  <a class="pub-card-hit" href={item.href} target="_blank" rel="noreferrer" aria-label={`Read ${item.title}`}></a>
+
+  <figure class="pub-card-plate">
+    <img
+      class="pub-card-image"
+      src={item.image}
+      alt={item.imageAlt ?? ""}
+      loading="lazy"
+      decoding="async"
+    />
+    <span class="pub-card-wash" aria-hidden="true"></span>
+  </figure>
+
+  <div class="pub-card-body">
+    <p class="pub-card-rail">
+      <span>{item.venue}</span>
+      <span class="pub-card-rail-dot" aria-hidden="true">/</span>
+      <span>{item.year}</span>
+      <span class="pub-card-rail-dot" aria-hidden="true">/</span>
+      <span class="pub-card-theme">{themeLabel}</span>
+    </p>
+    <h3 class="pub-card-title">
+      <a href={item.href} target="_blank" rel="noreferrer">{item.title}</a>
+    </h3>
+    <p class="pub-card-summary" aria-hidden={!summary}>{summary || "\u00a0"}</p>
+  </div>
+</article>
