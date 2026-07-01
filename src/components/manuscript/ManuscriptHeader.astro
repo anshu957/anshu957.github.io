@@ -21,6 +21,7 @@ const sectionAccent = accentVar(navAccent(currentPath));
       <span class="ms-prompt">
         <span class="ms-prompt-user">a957@phase-space</span><span class="ms-prompt-geo">:</span><span class="ms-prompt-path">~</span><span class="ms-prompt-mark">$</span>
       </span>
+      <span class="ms-cursor" aria-hidden="true"></span>
     </p>
     <span class="ms-landscape" aria-hidden="true">
       <svg viewBox="0 0 280 26" preserveAspectRatio="none">
@@ -62,7 +63,6 @@ const sectionAccent = accentVar(navAccent(currentPath));
         <span class="ms-cmd-token ms-cmd-token--oxide">biology</span>
         <span class="ms-cmd-sep" aria-hidden="true">·</span>
         <span class="ms-cmd-symbol" aria-hidden="true">∂</span><span class="ms-cmd-token ms-cmd-token--dyn">(dynamical system)</span>
-        <span class="ms-cursor" aria-hidden="true"></span>
       </span>
     </p>
   </div>
@@ -139,6 +139,9 @@ const sectionAccent = accentVar(navAccent(currentPath));
   }
 
   .ms-terminal-line {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.08rem;
     margin: 0;
     justify-self: start;
     align-self: start;
