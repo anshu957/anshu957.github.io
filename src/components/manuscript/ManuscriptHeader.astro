@@ -21,13 +21,6 @@ const sectionAccent = accentVar(navAccent(currentPath));
       <span class="ms-prompt">
         <span class="ms-prompt-user">a957@phase-space</span><span class="ms-prompt-geo">:</span><span class="ms-prompt-path">~</span><span class="ms-prompt-mark">$</span>
       </span>
-      <span class="ms-command">
-        <span class="ms-cmd-symbol" aria-hidden="true">∫</span>
-        <span class="ms-cmd-token ms-cmd-token--oxide">biology</span>
-        <span class="ms-cmd-sep" aria-hidden="true">·</span>
-        <span class="ms-cmd-symbol" aria-hidden="true">∂</span><span class="ms-cmd-token ms-cmd-token--dyn">(dynamical system)</span>
-        <span class="ms-cursor" aria-hidden="true"></span>
-      </span>
     </p>
     <span class="ms-landscape" aria-hidden="true">
       <svg viewBox="0 0 280 26" preserveAspectRatio="none">
@@ -63,6 +56,15 @@ const sectionAccent = accentVar(navAccent(currentPath));
         </g>
       </svg>
     </span>
+    <p class="ms-command-line">
+      <span class="ms-command">
+        <span class="ms-cmd-symbol" aria-hidden="true">∫</span>
+        <span class="ms-cmd-token ms-cmd-token--oxide">biology</span>
+        <span class="ms-cmd-sep" aria-hidden="true">·</span>
+        <span class="ms-cmd-symbol" aria-hidden="true">∂</span><span class="ms-cmd-token ms-cmd-token--dyn">(dynamical system)</span>
+        <span class="ms-cursor" aria-hidden="true"></span>
+      </span>
+    </p>
   </div>
   <div class="ms-header-nav-stage" style={`--nav-accent: ${sectionAccent}`}>
     <ManuscriptNavCat client:load transition:persist="ms-nav-cat" />
@@ -98,12 +100,14 @@ const sectionAccent = accentVar(navAccent(currentPath));
 
   .ms-equation-badge {
     position: relative;
-    display: inline-grid;
-    align-items: start;
-    gap: 0.32rem;
+    display: grid;
+    grid-template-rows: auto minmax(2.05rem, 1fr) auto;
+    align-items: stretch;
+    gap: 0.12rem 0;
     max-width: 100%;
     min-width: min(34rem, 52vw);
-    padding: 0.68rem 0.92rem 0.76rem;
+    min-height: 5.55rem;
+    padding: 0.68rem 0.92rem 0.58rem;
     border: 1px solid color-mix(in srgb, var(--domain-oxide) 14%, var(--ms-rule));
     border-radius: 1.15rem;
     background:
@@ -135,12 +139,19 @@ const sectionAccent = accentVar(navAccent(currentPath));
   }
 
   .ms-terminal-line {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0 0.36rem;
     margin: 0;
-    max-width: 100%;
+    justify-self: start;
+    align-self: start;
+  }
+
+  .ms-command-line {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin: 0;
+    justify-self: end;
+    align-self: end;
+    text-align: right;
   }
 
   .ms-prompt {
@@ -220,9 +231,11 @@ const sectionAccent = accentVar(navAccent(currentPath));
   .ms-landscape {
     position: relative;
     display: block;
-    width: min(100%, 23rem);
-    height: 2.1rem;
-    margin-top: 0.02rem;
+    align-self: center;
+    justify-self: stretch;
+    width: 100%;
+    height: 2.2rem;
+    margin: 0;
     color: var(--ms-wave);
   }
 
@@ -365,20 +378,20 @@ const sectionAccent = accentVar(navAccent(currentPath));
     .ms-equation-badge {
       min-width: 0;
       width: 100%;
+      min-height: 5.1rem;
       border-radius: 0.85rem;
-      padding: 0.62rem 0.78rem 0.7rem;
-    }
-
-    .ms-terminal-line {
-      row-gap: 0.16rem;
+      padding: 0.62rem 0.78rem 0.58rem;
+      gap: 0.14rem 0;
     }
 
     .ms-command {
       white-space: normal;
+      text-align: right;
     }
 
     .ms-landscape {
       width: 100%;
+      height: 2rem;
     }
   }
 
