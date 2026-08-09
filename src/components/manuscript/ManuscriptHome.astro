@@ -31,11 +31,23 @@ const readTimeParts = (rt) => {
         <p class="ms-index-kicker">Notebook</p>
         <h1 id="ms-index-heading">Recent writing</h1>
       </div>
-      <p class="ms-index-note">
-        Research, learnings, and interesting things where physics, computation, and biology meet.
-      </p>
       <a class="ms-index-all" href="/blog/">All posts</a>
     </header>
+
+    <p class="ms-epigraph">
+      Most of what I study is a system deciding what to become &mdash; so is most
+      of what I write.
+    </p>
+
+    <div class="ms-rule-ornament ms-index-rule" aria-hidden="true">
+      <span class="ms-rule-ornament-line"></span>
+      <svg class="ms-rule-ornament-mark" viewBox="0 0 48 12" fill="currentColor">
+        <path d="M24 1 L28.4 6 L24 11 L19.6 6 Z" />
+        <path d="M9 3.4 L11.8 6 L9 8.6 L6.2 6 Z" opacity="0.5" />
+        <path d="M39 3.4 L41.8 6 L39 8.6 L36.2 6 Z" opacity="0.5" />
+      </svg>
+      <span class="ms-rule-ornament-line"></span>
+    </div>
 
     <ol class="ms-index-list" role="list">
       {posts.map((post, index) => {

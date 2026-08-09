@@ -6,20 +6,65 @@ import { buildTimelineItems, stopAccent, stopMeta } from "../../data/aboutTimeli
 
 const items = buildTimelineItems(careerNodes);
 
-let stopIndex = 0;
+let stopCount = 0;
 ---
 
 <main class="about-main">
-  <section class="about-cv-band" aria-label="Curriculum vitae">
-    <div class="about-cv-band-meta">
-      <p class="about-cv-kicker">Curriculum vitae · updated {cvUpdated}</p>
+
+  <div class="ms-rule-ornament about-page-rule" aria-hidden="true" style="margin-bottom: clamp(1.5rem, 3vw, 2.2rem)">
+    <span class="ms-rule-ornament-line"></span>
+    <svg class="ms-rule-ornament-mark" viewBox="0 0 48 12" fill="currentColor">
+      <path d="M24 1 L28.4 6 L24 11 L19.6 6 Z" />
+      <path d="M9 3.4 L11.8 6 L9 8.6 L6.2 6 Z" opacity="0.5" />
+      <path d="M39 3.4 L41.8 6 L39 8.6 L36.2 6 Z" opacity="0.5" />
+    </svg>
+    <span class="ms-rule-ornament-line"></span>
+  </div>
+
+  <section class="about-bio" aria-labelledby="about-bio-heading">
+    <h2 id="about-bio-heading" class="visually-hidden">About</h2>
+
+    <aside class="about-bio-rail" aria-label="Research themes">
+      <p class="about-bio-rail-label">Themes</p>
+      <p>cell fate<br/>behavior genetics<br/>dynamical systems<br/>machine learning</p>
+    </aside>
+
+    <div class="about-bio-prose">
+      <p>
+        I'm at the Jackson Laboratory in Farmington, Connecticut, working on two problems: cell fate
+        decisions and mouse behavior. On the cell side, I care about the geometry of how cells commit to
+        a fate — the trajectories, the basins, what happens when you perturb the system. On the behavior
+        side, it's closer to forward genetics: phenotype mice, find structure in what they do, trace back
+        to the genome.
+      </p>
+      <p>
+        Before this I was a mechatronics engineer, then spent a few years in industry teaching myself
+        physics at night before a PhD at IISER Mohali on dynamical systems and chaos. My first postdoc
+        was with Ulrike Feudel at the Institute for Chemistry and Biology of the Marine Environment in
+        Oldenburg — a small research town in northwest Germany, the North Sea not far, grey skies most
+        of the year. I worked on synchronization in food webs there. Toward the end of that postdoc I
+        was already looking for problems at the intersection of machine learning and dynamical systems —
+        it felt like the natural next direction. Around that time I heard from Bill Ditto at NC State;
+        he was looking for someone to help shape his lab toward AI × physics, which sounded like exactly
+        what I was after. I joined and spent three years there doing that.
+      </p>
+      <p>
+        After working through a range of problems at that intersection, I wanted something with different
+        stakes — real messy data, and work that actually matters to people outside the field. That's what
+        led to JAX.
+      </p>
+      <p class="about-principle">
+        Predrag Cvitanović says a scientist owns the method, not the subject. That's the closest thing to
+        a plan I ever had.
+      </p>
+      <p>
+        What I'm up to now is on the <a href="/research/">research page</a>. (I also drink an indefensible
+        amount of tea—the one variable I've never managed to control.)
+      </p>
     </div>
-    <a class="about-cv-download" href={cvPdf} download>
-      Download PDF
-    </a>
   </section>
 
-  <section class="about-timeline" aria-labelledby="about-timeline-heading">
+  <section class="about-timeline" aria-labelledby="about-timeline-heading" style="margin-top: clamp(2.5rem, 5vw, 3.5rem)">
     <h2 id="about-timeline-heading" class="visually-hidden">Career timeline</h2>
     <div class="about-spine" aria-hidden="true"></div>
 
@@ -28,33 +73,22 @@ let stopIndex = 0;
         if (item.kind === "gap") {
           return (
             <li class="about-gap">
-              <span class="about-gap-marker" aria-hidden="true"></span>
               <p class="about-gap-label">{item.label}</p>
             </li>
           );
         }
 
         const node = item.node;
-        const side = stopIndex % 2 === 0 ? "right" : "left";
         const accent = stopAccent(node.type);
         const meta = stopMeta[node.id];
-        stopIndex += 1;
+        const side = stopCount % 2 === 0 ? "right" : "left";
+        stopCount += 1;
 
         return (
-          <li
-            class:list={[
-              "about-event",
-              `about-event--${side}`,
-              `about-event--${accent}`,
-            ]}
-          >
-            {side === "right" && meta?.whisper && (
-              <p class="about-whisper about-whisper--outer">{meta.whisper}</p>
-            )}
-
+          <li class:list={["about-event", `about-event--${side}`, `about-event--${accent}`]}>
             <span class="about-marker" aria-hidden="true"></span>
 
-            <div class="about-event-body">
+            <div class="about-branch">
               <p class="about-when">{node.period}</p>
               <h3 class="about-role">{node.role}</h3>
               <p class="about-where">
@@ -62,79 +96,33 @@ let stopIndex = 0;
                 <span class="about-where-sep" aria-hidden="true"> · </span>
                 {node.loc}
               </p>
-              {!meta?.research && (
-                <p class="about-note">{node.note}</p>
-              )}
-              {meta?.research && (
-                <p class="about-theme-link">
-                  <a href={meta.research.href}>{meta.research.label}</a>
+              {meta?.theme && (
+                <p class="about-theme">
+                  {meta.href
+                    ? <a href={meta.href}>{meta.theme}</a>
+                    : <span>{meta.theme}</span>}
                 </p>
               )}
             </div>
-
-            {side === "left" && meta?.whisper && (
-              <p class="about-whisper about-whisper--outer">{meta.whisper}</p>
-            )}
           </li>
         );
       })}
     </ol>
   </section>
 
-  <section class="about-bio" aria-labelledby="about-bio-heading">
-    <h2 id="about-bio-heading" class="visually-hidden">About</h2>
-    <p>
-      <strong>About.</strong>
-      {" "}
-      I studied mechatronics engineering—systems built on top of the usual science, motors and control
-      and the rest of it. What stuck wasn't the building so much as what sat underneath. An internship
-      at a physics lab outside my college was the first time I felt that pull clearly: the pleasure of
-      understanding something from first principles, not just making it work. By the time I finished
-      my degree I was still reading physics on my own, a little quantum here, a little classical there,
-      with no real plan beyond knowing I wasn't done.
-    </p>
-    <p>
-      Like a twenty-one-year-old trying to stand on his own feet, I took a corporate job writing database
-      queries. It paid the bills. In the evenings, and often well into the night, I kept at the physics
-      anyway—slowly, without a syllabus—until I was sure enough to jump back into academia. When I
-      finally got into a physics PhD, it felt like arriving somewhere I'd been heading for a long time.
-      IISER Mohali was a new institute still being built in the foothills of the Himalayas—fresh
-      campus, fresh thinking, and at the time one of the few places in India open to someone with an
-      unconventional background like mine. I went for dynamical systems and chaos. That was the part
-      that finally grabbed me and didn't let go.
-    </p>
-    <p>
-      My first postdoc took me to Germany—my first time living there, in a country where physics has
-      deep roots and you feel it without anyone having to say so. I ended up in Oldenburg, a small town
-      in the northwest, in a theoretical ecology lab working on synchronization in food webs. I learned
-      a fair amount of ecology and not quite enough German.
-    </p>
-    <p>
-      Toward the end of that stint I started drifting into machine learning and AI—showing up at
-      conferences more or less at random, without a tidy reason, just because the questions looked
-      interesting. Around then Bill Ditto at NC State was steering his lab from applied chaos toward
-      what he called AI for physics, and looking for someone at that intersection. I happened to be
-      moving in the same direction. I joined, and worked on physics-informed neural networks for
-      chaotic systems.
-    </p>
-    <p>
-      Now I'm at the Jackson Laboratory, carrying the same habits of thought into cell dynamics and
-      animal behavior.
-    </p>
-    <p class="about-principle">
-      Predrag Cvitanović says a scientist owns the method, not the subject. That's the closest thing to
-      a plan I ever had.
-    </p>
-    <p>
-      What I'm up to now is on the <a href="/research/">research page</a>. (I also drink an indefensible
-      amount of tea—the one variable I've never managed to control.)
-    </p>
+  <section class="about-cv-band" aria-label="Curriculum vitae">
+    <div class="about-cv-band-meta">
+      <p class="about-cv-kicker">Curriculum vitae · updated {cvUpdated}</p>
+    </div>
+    <a class="about-cv-download" href={cvPdf} download>
+      Download PDF
+    </a>
   </section>
 </main>
 
 <style>
   .about-main {
-    padding: clamp(1.5rem, 3vw, 2.5rem) 0 clamp(3rem, 6vw, 4.5rem);
+    padding: clamp(1.5rem, 3vw, 2.5rem) 0 clamp(1rem, 2vw, 1.5rem);
   }
 
   .about-cv-band {
@@ -144,9 +132,9 @@ let stopIndex = 0;
     justify-content: space-between;
     gap: 0.85rem 1.5rem;
     max-width: 52rem;
-    margin: 0 auto clamp(1.75rem, 3.5vw, 2.35rem);
-    padding: 0 clamp(0.5rem, 2vw, 1rem) clamp(1.1rem, 2.2vw, 1.35rem);
-    border-bottom: 1px solid var(--ms-rule);
+    margin: clamp(2.5rem, 5vw, 3.5rem) auto 0;
+    padding: clamp(1.1rem, 2.2vw, 1.35rem) clamp(0.5rem, 2vw, 1rem) 0;
+    border-top: 1px solid var(--ms-rule);
   }
 
   .about-cv-band-meta {
@@ -185,20 +173,21 @@ let stopIndex = 0;
     color: var(--ms-primary);
   }
 
+  /* Alternating branch tree */
   .about-timeline {
     position: relative;
-    max-width: 52rem;
+    max-width: 46rem;
     margin: 0 auto;
-    padding: 0 clamp(0.5rem, 2vw, 1rem);
+    padding: 0;
   }
 
   .about-spine {
     position: absolute;
-    top: 0.55rem;
-    bottom: 0.55rem;
+    top: 0.6rem;
+    bottom: 0.6rem;
     left: 50%;
     width: 1px;
-    background: color-mix(in srgb, var(--ms-muted) 22%, transparent);
+    background: color-mix(in srgb, var(--ms-muted) 20%, transparent);
     transform: translateX(-50%);
   }
 
@@ -210,232 +199,271 @@ let stopIndex = 0;
 
   .about-event {
     --stop-accent: var(--ms-secondary);
+    position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 1.65rem minmax(0, 1fr);
-    gap: 0 clamp(1.1rem, 2.4vw, 1.75rem);
-    align-items: start;
-    padding: 0 0 clamp(1.75rem, 3.5vw, 2.35rem);
+    grid-template-columns: 1fr 2.6rem 1fr;
+    align-items: center;
+    padding: 0 0 clamp(1.9rem, 3.8vw, 2.7rem);
   }
 
-  .about-event--oxide {
-    --stop-accent: var(--domain-oxide);
-  }
-
-  .about-event--blue {
-    --stop-accent: var(--domain-blue);
-  }
-
-  .about-event--sage {
-    --stop-accent: var(--domain-sage);
-  }
+  .about-event--oxide { --stop-accent: var(--domain-oxide); }
+  .about-event--blue  { --stop-accent: var(--domain-blue); }
+  .about-event--sage  { --stop-accent: var(--domain-sage); }
 
   .about-event:last-child {
     padding-bottom: 0;
   }
 
+  /* dot on the spine */
   .about-marker {
     grid-column: 2;
     grid-row: 1;
     z-index: 1;
     justify-self: center;
     align-self: center;
-    width: 0.72rem;
-    height: 0.72rem;
+    width: 0.78rem;
+    height: 0.78rem;
     border-radius: 50%;
     background: var(--stop-accent);
     box-shadow:
       0 0 0 2px var(--ms-bg),
-      0 0 0 3px color-mix(in srgb, var(--stop-accent) 65%, transparent);
+      0 0 0 4px color-mix(in srgb, var(--stop-accent) 42%, transparent);
   }
 
-  .about-event-body {
+  /* horizontal branch connector from dot to card */
+  .about-event::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    height: 1px;
+    width: 0.95rem;
+    background: color-mix(in srgb, var(--stop-accent) 40%, transparent);
+    transform: translateY(-50%);
+  }
+
+  .about-event--right::after { left: 50%; margin-left: 0.42rem; }
+  .about-event--left::after  { right: 50%; margin-right: 0.42rem; }
+
+  .about-branch {
     grid-row: 1;
     min-width: 0;
   }
 
-  .about-event--right .about-event-body {
+  .about-event--right .about-branch {
     grid-column: 3;
     text-align: left;
   }
 
-  .about-event--left .about-event-body {
+  .about-event--left .about-branch {
     grid-column: 1;
     text-align: right;
-  }
-
-  .about-whisper--outer {
-    grid-row: 1;
-    align-self: center;
-    margin: 0;
-    max-width: 11ch;
-    font-family: var(--ms-font-mono);
-    font-size: 0.62rem;
-    letter-spacing: 0.03em;
-    line-height: 1.4;
-    color: color-mix(in srgb, var(--ms-muted) 82%, transparent);
-    text-wrap: balance;
-  }
-
-  .about-event--right .about-whisper--outer {
-    grid-column: 1;
-    justify-self: end;
-    padding-right: 0.35rem;
-    text-align: right;
-  }
-
-  .about-event--left .about-whisper--outer {
-    grid-column: 3;
-    justify-self: start;
-    padding-left: 0.35rem;
-    text-align: left;
   }
 
   .about-when {
-    margin: 0 0 0.2rem;
+    margin: 0 0 0.28rem;
     color: var(--stop-accent);
-    font-family: var(--ms-font-display);
-    font-size: clamp(0.92rem, 1.4vw, 1rem);
+    font-family: var(--ms-font-mono);
+    font-size: clamp(0.68rem, 0.9vw, 0.76rem);
     font-weight: 500;
-    line-height: 1.2;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
   }
 
   .about-role {
-    margin: 0 0 0.22rem;
+    margin: 0 0 0.24rem;
     font-family: var(--ms-font-display);
-    font-size: clamp(1.05rem, 1.8vw, 1.2rem);
-    font-weight: 600;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
+    font-size: clamp(1.14rem, 1.9vw, 1.34rem);
+    font-weight: 650;
+    line-height: 1.16;
+    letter-spacing: -0.025em;
     color: var(--ms-primary);
   }
 
   .about-event--oxide .about-role {
-    font-weight: 650;
+    font-weight: 700;
   }
 
   .about-where {
     margin: 0;
-    color: color-mix(in srgb, var(--stop-accent) 42%, var(--ms-muted));
-    font-size: clamp(0.9rem, 1.35vw, 0.98rem);
+    color: color-mix(in srgb, var(--ms-muted) 88%, var(--ms-on-surface));
+    font-size: clamp(0.92rem, 1.3vw, 1rem);
     line-height: 1.45;
   }
 
   .about-where-sep {
-    opacity: 0.72;
+    opacity: 0.5;
+    margin: 0 0.3em;
   }
 
-  .about-note {
-    margin: 0.38rem 0 0;
-    font-size: clamp(0.86rem, 1.28vw, 0.92rem);
-    font-style: italic;
-    line-height: 1.42;
-    color: color-mix(in srgb, var(--ms-muted) 88%, var(--ms-on-surface));
-  }
-
-  .about-event--left .about-note {
-    text-align: right;
-  }
-
-  .about-theme-link {
-    margin: 0.42rem 0 0;
+  .about-theme {
+    margin: 0.5rem 0 0;
     font-family: var(--ms-font-mono);
-    font-size: 0.62rem;
-    letter-spacing: 0.05em;
+    font-size: clamp(0.64rem, 0.88vw, 0.72rem);
+    letter-spacing: 0.08em;
     text-transform: uppercase;
   }
 
-  .about-event--left .about-theme-link {
-    text-align: right;
+  .about-theme a,
+  .about-theme span {
+    color: color-mix(in srgb, var(--stop-accent) 82%, var(--ms-primary));
   }
 
-  .about-theme-link a {
-    color: color-mix(in srgb, var(--stop-accent) 88%, var(--ms-primary));
+  .about-theme a {
     text-decoration: none;
-    border-bottom: 1px solid color-mix(in srgb, var(--stop-accent) 32%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--stop-accent) 30%, transparent);
     transition: color 160ms ease, border-color 160ms ease;
   }
 
-  .about-theme-link a:hover,
-  .about-theme-link a:focus-visible {
+  .about-theme a:hover,
+  .about-theme a:focus-visible {
     color: var(--stop-accent);
     border-color: color-mix(in srgb, var(--stop-accent) 55%, transparent);
   }
 
+  /* interval marker: a small centered label masking the spine */
   .about-gap {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 1.65rem minmax(0, 1fr);
-    align-items: center;
-    padding: 0 0 clamp(1rem, 2.2vw, 1.45rem);
-  }
-
-  .about-gap-marker {
-    grid-column: 2;
-    justify-self: center;
-    width: 0.34rem;
-    height: 0.34rem;
-    border-radius: 50%;
-    background: color-mix(in srgb, var(--ms-muted) 55%, transparent);
-    box-shadow: 0 0 0 2px var(--ms-bg);
+    text-align: center;
+    padding: 0 0 clamp(1.9rem, 3.8vw, 2.7rem);
   }
 
   .about-gap-label {
-    grid-column: 1 / -1;
-    justify-self: center;
+    display: inline-block;
     margin: 0;
-    padding: 0;
+    padding: 0 0.7rem;
+    background: var(--ms-bg);
     font-family: var(--ms-font-mono);
-    font-size: 0.6rem;
+    font-size: clamp(0.6rem, 0.82vw, 0.68rem);
     letter-spacing: 0.04em;
-    text-transform: none;
-    color: color-mix(in srgb, var(--ms-muted) 75%, transparent);
+    color: color-mix(in srgb, var(--ms-muted) 52%, transparent);
   }
 
-  .about-gap-label::before,
-  .about-gap-label::after {
-    content: "·";
-    opacity: 0.4;
-    margin: 0 0.35em;
+  /* Page header */
+  .about-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 0.85rem 2rem;
+    padding: clamp(0.6rem, 1.6vw, 1.2rem) 0 clamp(0.8rem, 1.8vw, 1.2rem);
+    border-bottom: 1px solid var(--ms-rule);
   }
 
-  .about-bio {
-    max-width: 42rem;
-    margin: clamp(3rem, 6vw, 4rem) auto 0;
-    padding: clamp(1.5rem, 3vw, 2rem) clamp(0.5rem, 2vw, 1rem) 0;
-    border-top: 1px solid color-mix(in srgb, var(--ms-muted) 18%, transparent);
+  .about-head-kicker {
+    margin: 0 0 0.32rem;
+    color: var(--ms-muted);
+    font-family: var(--ms-font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
   }
 
-  .about-bio p {
+  .about-head-title {
     margin: 0;
-    font-size: clamp(0.95rem, 1.45vw, 1.02rem);
-    line-height: 1.62;
-    color: var(--ms-on-surface);
+    color: var(--ms-primary);
+    font-family: var(--ms-font-display);
+    font-size: clamp(2rem, 3.8vw, 2.8rem);
+    font-weight: 500;
+    letter-spacing: -0.045em;
+    line-height: 1;
+  }
+
+  .about-head-lede {
+    margin: 0;
+    max-width: 28rem;
+    color: var(--ms-on-surface-variant);
+    font-size: clamp(0.94rem, 1.5vw, 1.06rem);
+    font-style: italic;
+    font-weight: 500;
+    line-height: 1.28;
+    align-self: flex-end;
+  }
+
+  .about-head-rule {
+    margin: clamp(0.8rem, 1.8vw, 1.2rem) 0;
+  }
+
+  /* Bio reading grid */
+  .about-bio {
+    display: grid;
+    grid-template-columns: minmax(7rem, 11rem) minmax(0, 67ch);
+    gap: clamp(1.2rem, 3vw, 2rem);
+    align-items: start;
+  }
+
+  .about-bio-rail {
+    position: sticky;
+    top: 1rem;
+    padding-top: 0.35rem;
+    color: var(--ms-muted);
+    font-family: var(--ms-font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    line-height: 1.45;
+    opacity: 0.72;
+  }
+
+  .about-bio-rail p {
+    margin: 0;
+    font-size: inherit;
+    line-height: 1.5;
+    color: inherit;
     text-wrap: pretty;
   }
 
-  .about-bio p + p {
-    margin-top: 0.85rem;
+  .about-bio-rail-label {
+    margin: 0.75rem 0 0.2rem;
+    color: var(--ms-secondary);
+    font-size: 0.62rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    opacity: 1;
+  }
+
+  .about-bio-rail-label:first-child {
+    margin-top: 0;
+  }
+
+  /* Bio prose */
+  .about-bio-prose {
+    max-width: 67ch;
+    color: var(--ms-on-surface-variant);
+    font-family: var(--ms-font-body);
+    font-size: clamp(1.05rem, 1.45vw, 1.14rem);
+    line-height: 1.78;
+  }
+
+  .about-bio-prose p {
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .about-bio-prose p + p {
+    margin-top: 1.35rem;
+  }
+
+  .about-bio-prose p:first-of-type::first-letter {
+    float: left;
+    margin: 0.08em 0.12em 0 0;
+    color: var(--ms-secondary);
+    font-family: var(--ms-font-display);
+    font-size: 3.35rem;
+    line-height: 0.78;
   }
 
   .about-principle {
     padding-left: 0.85rem;
     border-left: 2px solid color-mix(in srgb, var(--domain-blue) 35%, transparent);
-    color: var(--ms-on-surface-variant);
   }
 
-  .about-bio strong {
-    font-weight: 650;
-    color: var(--ms-primary);
-  }
-
-  .about-bio a {
+  .about-bio-prose a {
     color: var(--domain-blue);
     text-decoration: underline;
     text-decoration-color: color-mix(in srgb, var(--domain-blue) 42%, transparent);
     text-underline-offset: 0.14em;
   }
 
-  .about-bio a:hover,
-  .about-bio a:focus-visible {
+  .about-bio-prose a:hover,
+  .about-bio-prose a:focus-visible {
     color: var(--ms-secondary);
     text-decoration-color: color-mix(in srgb, var(--ms-secondary) 55%, transparent);
   }
@@ -456,9 +484,27 @@ let stopIndex = 0;
     color: color-mix(in srgb, var(--ms-muted) 88%, var(--ms-on-surface-variant));
   }
 
-  @media (max-width: 900px) {
-    .about-whisper--outer {
-      display: none;
+  @media (max-width: 760px) {
+    .about-bio {
+      grid-template-columns: 1fr;
+    }
+
+    .about-bio-rail {
+      position: static;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem 1.5rem;
+      padding: 0 0 0.7rem;
+      border-bottom: 1px solid var(--ms-rule);
+    }
+
+    .about-bio-rail-label {
+      margin: 0;
+      width: 100%;
+    }
+
+    .about-bio-prose p:first-of-type::first-letter {
+      font-size: 2.75rem;
     }
   }
 
@@ -472,49 +518,53 @@ let stopIndex = 0;
       text-align: center;
     }
 
-    .about-timeline {
-      max-width: 34rem;
-      padding-left: 0;
-    }
-
+    /* collapse the tree to a single left rail */
     .about-spine {
-      left: 0.42rem;
+      left: 0.4rem;
       transform: none;
     }
 
-    .about-event,
-    .about-gap {
-      grid-template-columns: 1.65rem minmax(0, 1fr);
-      gap: 0 1rem;
-      padding-bottom: 1.85rem;
+    .about-event {
+      grid-template-columns: 0.8rem 1fr;
+      column-gap: 1.25rem;
+      padding-bottom: 1.9rem;
+      align-items: start;
     }
 
-    .about-marker,
-    .about-gap-marker {
+    .about-marker {
       grid-column: 1;
+      grid-row: 1;
       align-self: start;
-      margin-top: 0.35rem;
+      margin-top: 0.3rem;
+    }
+
+    .about-event::after {
+      left: 0.4rem;
+      right: auto;
+      margin: 0;
+      width: 0.85rem;
+      top: 0.65rem;
+      transform: none;
+    }
+
+    .about-event--right .about-branch,
+    .about-event--left .about-branch {
+      grid-column: 2;
+      text-align: left;
+    }
+
+    .about-gap {
+      text-align: left;
+      padding-left: 2rem;
     }
 
     .about-gap-label {
-      grid-column: 2;
-      justify-self: start;
-    }
-
-    .about-event--right .about-event-body,
-    .about-event--left .about-event-body {
-      grid-column: 2;
-      text-align: left;
-    }
-
-    .about-event--left .about-theme-link,
-    .about-event--left .about-note {
-      text-align: left;
+      padding: 0 0.6rem;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .about-theme-link a {
+    .about-theme a {
       transition: none;
     }
   }

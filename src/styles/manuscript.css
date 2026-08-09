@@ -463,11 +463,47 @@ html.dark .ms-tags {
   transform: translateY(-1px);
 }
 
+.ms-epigraph {
+  max-width: 40rem;
+  margin: clamp(0.1rem, 0.6vw, 0.4rem) 0 clamp(0.9rem, 2vw, 1.4rem);
+  color: var(--ms-on-surface-variant);
+  font-family: var(--ms-font-display);
+  font-size: clamp(1.12rem, 1.7vw, 1.32rem);
+  font-style: italic;
+  font-weight: 450;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  text-wrap: pretty;
+}
+
+/* reusable manuscript divider: a centered lozenge ornament breaks the rule */
+.ms-rule-ornament {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ms-rule-ornament-line {
+  flex: 1;
+  height: 1px;
+  background: var(--ms-rule);
+}
+
+.ms-rule-ornament-mark {
+  flex: 0 0 auto;
+  width: 3rem;
+  height: 0.75rem;
+  color: var(--ms-secondary);
+}
+
+.ms-index-rule {
+  margin-bottom: clamp(0.3rem, 0.9vw, 0.6rem);
+}
+
 .ms-index-list {
   list-style: none;
   margin: 0;
   padding: 0;
-  border-top: 1px solid var(--ms-rule);
 }
 
 .ms-index-entry {
@@ -482,6 +518,10 @@ html.dark .ms-tags {
   align-items: center;
   padding: clamp(1rem, 2.2vw, 1.35rem) 0;
   border-bottom: 1px solid var(--ms-rule);
+}
+
+.ms-index-entry:last-child {
+  border-bottom: none;
 }
 
 .ms-index-hit {

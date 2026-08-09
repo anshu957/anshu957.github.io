@@ -1,24 +1,24 @@
-/** Margin whispers and research links for the About timeline. */
+/** One grounded theme per branch of the About timeline. Optional href links to the research page. */
 
-/** @type {Record<string, { whisper: string, research?: { href: string, label: string } }>} */
+/** @type {Record<string, { theme: string, href?: string }>} */
 export const stopMeta = {
   nsit: {
-    whisper: "structures · circuits · first principles",
+    theme: "mechatronics",
   },
   iiser: {
-    whisper: "master stability · small-world",
-    research: { href: "/research/#theme-physics-ml", label: "dynamical systems" },
+    theme: "dynamical systems",
+    href: "/research/#theme-physics-ml",
   },
   olden: {
-    whisper: "stochastic resonance · North Sea wind",
+    theme: "food-web synchronization",
   },
   ncstate: {
-    whisper: "Hamiltonian priors",
-    research: { href: "/research/#theme-physics-ml", label: "physics-aware ML" },
+    theme: "physics-informed ML",
+    href: "/research/#theme-physics-ml",
   },
   jax: {
-    whisper: "RNA velocity · basin geometry",
-    research: { href: "/research/#theme-cell-fate", label: "cell fate work" },
+    theme: "cell fate & behavior",
+    href: "/research/#theme-cell-fate",
   },
 };
 
