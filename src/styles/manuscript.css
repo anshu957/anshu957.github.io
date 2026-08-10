@@ -485,14 +485,16 @@ html.dark .ms-tags {
 
 .ms-rule-ornament-line {
   flex: 1;
-  height: 1px;
-  background: var(--ms-rule);
+  height: 5px;
+  border-top: 1.5px solid var(--ms-rule);
+  border-bottom: 0.75px solid color-mix(in srgb, var(--ms-rule) 52%, transparent);
+  background: transparent;
 }
 
 .ms-rule-ornament-mark {
   flex: 0 0 auto;
-  width: 3rem;
-  height: 0.75rem;
+  width: 4rem;
+  height: 1rem;
   color: var(--ms-secondary);
 }
 

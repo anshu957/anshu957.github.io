@@ -5,8 +5,11 @@ export const stopMeta = {
   nsit: {
     theme: "mechatronics",
   },
+  hcl: {
+    theme: "enterprise resource planning (SAP)",
+  },
   iiser: {
-    theme: "dynamical systems",
+    theme: "nonlinear dynamical systems",
     href: "/research/#theme-physics-ml",
   },
   olden: {
@@ -17,7 +20,7 @@ export const stopMeta = {
     href: "/research/#theme-physics-ml",
   },
   jax: {
-    theme: "cell fate & behavior",
+    theme: "cell fate and animal behavior",
     href: "/research/#theme-cell-fate",
   },
 };
@@ -48,11 +51,11 @@ export function buildTimelineItems(nodes) {
       const newer = nodes[i];
       const end = yearEnd(older);
       const start = newer.yearStart;
-      if (end !== null && start > end) {
+      if (end !== null && start - end > 1) {
         const delta = start - end;
         items.push({
           kind: "gap",
-          label: `${end}–${start} · Δt ≈ ${delta} yr`,
+          label: `${end}–${start}`,
         });
       }
     }
@@ -61,11 +64,13 @@ export function buildTimelineItems(nodes) {
   return items;
 }
 
-/** @param {"edu"|"research"|"current"} type */
+/** @param {"edu"|"industry"|"research"|"current"} type */
 export function stopAccent(type) {
   switch (type) {
     case "edu":
       return "blue";
+    case "industry":
+      return "gold";
     case "research":
       return "sage";
     case "current":

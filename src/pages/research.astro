@@ -18,17 +18,17 @@ const shelfPublications = publicationShelves.map((shelf) => ({
 
 const themes = [
   {
-    label: "theme 01",
+    label: "Cell fate",
     title: "Cell fate &amp; transcriptomic dynamics",
     body: "I am drawn to the question of how cells commit. The language I use is dynamical systems — attractors, basins of attraction, and vector fields — applied to RNA expression profiles. The goal is a description of cellular decision-making that is richer than a cluster label: one that says something about the forces at work, the stabilities available, and the transitions that remain possible.",
   },
   {
-    label: "theme 02",
+    label: "Behavior",
     title: "Behavioral phenotyping &amp; machine learning",
     body: "At JAX I contribute to tools that make automated mouse behavior analysis practical and genetically informative. This work involves the full stack — video, pose, classifier, genetics — and the recurring challenge is designing systems that scientists actually want to use.",
   },
   {
-    label: "theme 03",
+    label: "Physics-ML",
     title: "Physics-aware scientific machine learning",
     body: "My earlier work asked whether knowing the structure of a physical system — its conservation laws, its symmetries, its phase-space geometry — makes a neural network both more accurate and more honest. The answer was yes, often dramatically so. I continue to think about what it means to build models that remain faithful to mechanism.",
   },
@@ -47,8 +47,18 @@ const themes = [
             <p class="ms-page-kicker">Research</p>
             <h1>Themes &amp; work</h1>
           </div>
-          <p>Current work sits where cellular state, dynamical systems, and scientific machine learning overlap.</p>
+          <p class="ms-page-head-note">Current work sits where cellular state, dynamical systems, and scientific machine learning overlap.</p>
         </header>
+
+        <div class="ms-rule-ornament ms-research-rule" aria-hidden="true">
+          <span class="ms-rule-ornament-line"></span>
+          <svg class="ms-rule-ornament-mark" viewBox="0 0 48 12" fill="currentColor">
+            <path d="M24 1 L28.4 6 L24 11 L19.6 6 Z" />
+            <path d="M9 3.4 L11.8 6 L9 8.6 L6.2 6 Z" opacity="0.5" />
+            <path d="M39 3.4 L41.8 6 L39 8.6 L36.2 6 Z" opacity="0.5" />
+          </svg>
+          <span class="ms-rule-ornament-line"></span>
+        </div>
 
         <div class="research-prose">
           {themes.map((theme, index) => {
@@ -71,6 +81,16 @@ const themes = [
         </div>
       </section>
 
+      <div class="ms-rule-ornament ms-research-rule" aria-hidden="true">
+        <span class="ms-rule-ornament-line"></span>
+        <svg class="ms-rule-ornament-mark" viewBox="0 0 48 12" fill="currentColor">
+          <path d="M24 1 L28.4 6 L24 11 L19.6 6 Z" />
+          <path d="M9 3.4 L11.8 6 L9 8.6 L6.2 6 Z" opacity="0.5" />
+          <path d="M39 3.4 L41.8 6 L39 8.6 L36.2 6 Z" opacity="0.5" />
+        </svg>
+        <span class="ms-rule-ornament-line"></span>
+      </div>
+
       <section class="research-publications" aria-labelledby="publications-heading">
         <header class="research-pub-head">
           <div class="research-section-heading">
@@ -91,7 +111,7 @@ const themes = [
           return (
             <div class="pub-shelf" style={`--shelf-accent: ${accent}`}>
               <p class="pub-shelf-label">{shelf.label}</p>
-              <div class="pub-grid" role="list">
+              <div class="pub-list" role="list">
                 {shelf.items.map((item) => (
                   <ManuscriptPublicationCard
                     item={item}
@@ -122,8 +142,11 @@ const themes = [
     grid-template-columns: minmax(14rem, 0.9fr) minmax(16rem, 1fr);
     gap: clamp(1rem, 3vw, 2rem);
     align-items: end;
-    padding: clamp(0.6rem, 1.6vw, 1.2rem) 0 clamp(0.8rem, 1.8vw, 1.2rem);
-    border-bottom: 1px solid var(--ms-rule);
+    padding: clamp(0.6rem, 1.6vw, 1.2rem) 0 clamp(0.5rem, 1vw, 0.8rem);
+  }
+
+  .ms-research-rule {
+    margin-bottom: clamp(0.4rem, 1vw, 0.7rem);
   }
 
   .ms-page-kicker {
@@ -146,13 +169,18 @@ const themes = [
     line-height: 1;
   }
 
-  .ms-page-head > p {
+  .ms-page-head-note {
     margin: 0;
+    max-width: 28rem;
+    padding-left: 0.9rem;
+    border-left: 1.5px solid color-mix(in srgb, var(--ms-secondary) 48%, transparent);
     color: var(--ms-on-surface-variant);
-    font-size: clamp(0.98rem, 1.6vw, 1.12rem);
+    font-family: var(--ms-font-display);
+    font-size: clamp(1rem, 1.6vw, 1.14rem);
     font-style: italic;
-    font-weight: 500;
-    line-height: 1.32;
+    font-weight: 450;
+    letter-spacing: -0.015em;
+    line-height: 1.55;
     text-wrap: pretty;
   }
 
@@ -230,19 +258,25 @@ const themes = [
   .research-scholar-link {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
+    gap: 0.42rem;
+    padding: 0.44rem 0.95rem;
+    border: 1px solid color-mix(in srgb, var(--ms-rule) 80%, transparent);
+    border-radius: 0.22rem;
     color: var(--ms-on-surface-variant);
     font-family: var(--ms-font-mono);
-    font-size: 0.68rem;
-    letter-spacing: 0.08em;
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.09em;
     text-decoration: none;
     text-transform: uppercase;
-    transition: color 180ms ease;
+    transition: color 180ms ease, border-color 180ms ease, background 180ms ease;
   }
 
   .research-scholar-link:hover,
   .research-scholar-link:focus-visible {
     color: var(--domain-sage);
+    border-color: color-mix(in srgb, var(--domain-sage) 55%, transparent);
+    background: color-mix(in srgb, var(--domain-sage) 7%, var(--ms-sheet));
   }
 
   .research-scholar-arrow {
@@ -254,6 +288,29 @@ const themes = [
     transform: translateX(0.15rem);
   }
 
+  .pub-shelf {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .pub-shelf-label {
+    margin: 0;
+    padding-bottom: 0.38rem;
+    color: var(--shelf-accent, var(--ms-muted));
+    font-family: var(--ms-font-mono);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.82;
+    border-bottom: 1px solid color-mix(in srgb, var(--shelf-accent, var(--ms-rule)) 28%, transparent);
+  }
+
+  .pub-list {
+    display: grid;
+    gap: 0;
+  }
+
   @media (max-width: 760px) {
     .ms-page-head,
     .research-theme {
@@ -262,6 +319,10 @@ const themes = [
 
     .research-theme-body {
       padding-left: 0.72rem;
+    }
+
+    .ms-page-head-note {
+      max-width: 100%;
     }
   }
 

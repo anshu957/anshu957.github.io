@@ -43,6 +43,8 @@ export const publications = [
     theme: "behavior",
     image: "/assets/research/jabs.jpg",
     imageAlt: "JABS pipeline: acquisition, annotation, and genetics modules.",
+    authors: [],
+    links: [],
   },
   {
     title: "MorPhiC Consortium: towards functional characterization of all human genes",
@@ -54,6 +56,8 @@ export const publications = [
     theme: "behavior",
     image: "/assets/research/morphic.jpg",
     imageAlt: "Publication counts per gene, illustrating bias toward well-studied genes.",
+    authors: ["MorPhiC Consortium"],
+    links: [],
   },
   {
     title: "Neuronal diversity can improve machine learning for physics and beyond",
@@ -65,6 +69,8 @@ export const publications = [
     theme: "physics-ml",
     image: "/assets/research/neuronal-diversity.png",
     imageAlt: "Schematic of homogeneous, diverse, and learned-diverse neural networks.",
+    authors: [],
+    links: [],
   },
   {
     title: "Weak-winner phase synchronization: A curious case of weak interactions",
@@ -76,6 +82,8 @@ export const publications = [
     theme: "networks",
     image: "/assets/research/weak-winner.png",
     imageAlt: "Routes to weak-winner synchronization in oscillator chains and networks.",
+    authors: [],
+    links: [],
   },
   {
     title: "Forecasting Hamiltonian dynamics without canonical coordinates",
@@ -87,6 +95,8 @@ export const publications = [
     theme: "physics-ml",
     image: "/assets/research/hamiltonian-forecast.png",
     imageAlt: "NN, HNN, and generalized HNN architectures for Hamiltonian forecasting.",
+    authors: [],
+    links: [],
   },
   {
     title: "Negotiating the separatrix with machine learning",
@@ -98,6 +108,8 @@ export const publications = [
     theme: "physics-ml",
     image: "/assets/research/separatrix-ml.png",
     imageAlt: "Elastic pendulum phase-space forecasts comparing NN and Hamiltonian models.",
+    authors: [],
+    links: [],
   },
   {
     title: "Physics-enhanced neural networks learn order and chaos",
@@ -109,6 +121,8 @@ export const publications = [
     theme: "physics-ml",
     image: "/assets/research/physics-enhanced-nn.jpg",
     imageAlt: "Hénon–Heiles phase-space orbits learned by physics-enhanced neural networks.",
+    authors: [],
+    links: [],
   },
   {
     title: "The scaling of physics-informed machine learning with data and dimensions",
@@ -120,6 +134,8 @@ export const publications = [
     theme: "physics-ml",
     image: "/assets/research/scaling-piml.png",
     imageAlt: "Scaling of conventional and Hamiltonian neural network training costs.",
+    authors: [],
+    links: [],
   },
   {
     title: "Suppression and revival of oscillations through time-varying interaction",
@@ -131,6 +147,8 @@ export const publications = [
     theme: "networks",
     image: "/assets/research/suppression-revival.png",
     imageAlt: "Bifurcation diagram under time-varying similar and dissimilar coupling.",
+    authors: [],
+    links: [],
   },
   {
     title: "Multiple-node basin stability in complex dynamical networks",
@@ -142,6 +160,8 @@ export const publications = [
     theme: "networks",
     image: "/assets/research/basin-stability.png",
     imageAlt: "Schematic of single-node basin stability in a coupled oscillator network.",
+    authors: [],
+    links: [],
   },
   {
     title: "Recovery time after localized perturbations in complex dynamical networks",
@@ -153,6 +173,8 @@ export const publications = [
     theme: "networks",
     image: "/assets/research/recovery-time.png",
     imageAlt: "Scale-free Rössler network with node size proportional to recovery time.",
+    authors: [],
+    links: [],
   },
   {
     title: "Small-world networks exhibit pronounced intermittent synchronization",
@@ -164,6 +186,8 @@ export const publications = [
     theme: "networks",
     image: "/assets/research/small-world-sync.png",
     imageAlt: "Intermittent synchronization in small-world oscillator networks.",
+    authors: [],
+    links: [],
   },
   {
     title: "Are network properties consistent indicators of synchronization?",
@@ -175,6 +199,8 @@ export const publications = [
     theme: "networks",
     image: "/assets/research/network-sync-indicators.png",
     imageAlt: "Network topologies and synchronization measures across network classes.",
+    authors: [],
+    links: [],
   },
   {
     title: "Synchronization in time-varying networks",
@@ -186,6 +212,8 @@ export const publications = [
     theme: "networks",
     image: "/assets/research/time-varying-sync.png",
     imageAlt: "Heatmaps of synchrony fraction versus rewiring frequency and coupling.",
+    authors: [],
+    links: [],
   },
   {
     title: "Taming explosive growth through dynamic random links",
@@ -197,6 +225,8 @@ export const publications = [
     theme: "networks",
     image: "/assets/research/taming-explosive.jpg",
     imageAlt: "Space-time evolution and limit cycles under fast versus slow rewiring.",
+    authors: [],
+    links: [],
   },
 ];
 

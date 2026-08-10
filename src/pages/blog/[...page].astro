@@ -7,9 +7,14 @@ import { siteMeta } from "../../data/site.js";
 import { domainColor, accentVar, tagLabel } from "../../lib/domainColor.js";
 import "../../styles/manuscript.css";
 
-const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
-  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
-);
+export async function getStaticPaths({ paginate }) {
+  const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+    (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+  );
+  return paginate(posts, { pageSize: 5 });
+}
+
+const { page } = Astro.props;
 
 const formatDate = (date) =>
   date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
@@ -19,19 +24,21 @@ const readTimeParts = (rt) => {
   return m ? { minutes: m[1] } : null;
 };
 
-const byYear = posts.reduce((acc, post) => {
+const byYear = page.data.reduce((acc, post) => {
   const year = post.data.date.getFullYear();
   if (!acc[year]) acc[year] = [];
   acc[year].push(post);
   return acc;
 }, {});
 
-const years = Object.keys(byYear)
-  .map(Number)
-  .sort((a, b) => b - a);
+const years = Object.keys(byYear).map(Number).sort((a, b) => b - a);
+
+const pageTitle = page.currentPage === 1
+  ? `Blog | ${siteMeta.name}`
+  : `Blog — Page ${page.currentPage} | ${siteMeta.name}`;
 ---
 
-<BaseLayout title={`Blog | ${siteMeta.name}`} description="Notes and essays on computational biology, nonlinear dynamics, and scientific practice.">
+<BaseLayout title={pageTitle} description="Field notes, reading notes, and whatever runs alongside the work.">
   <div class="manuscript-page">
     <div class="ms-shell">
       <ManuscriptHeader currentPath="/blog" />
@@ -43,10 +50,20 @@ const years = Object.keys(byYear)
             <h1>Notes from the notebook.</h1>
           </div>
           <p class="ms-archive-note">
-            Most of what I study is a system deciding what to become &mdash; so is most of what I write.
+            Field notes, reading notes, and whatever runs alongside the work.
           </p>
-          <p class="ms-archive-count">{posts.length} pieces</p>
+          <p class="ms-archive-count">{page.total} pieces</p>
         </header>
+
+        <div class="ms-rule-ornament ms-archive-rule" aria-hidden="true">
+          <span class="ms-rule-ornament-line"></span>
+          <svg class="ms-rule-ornament-mark" viewBox="0 0 48 12" fill="currentColor">
+            <path d="M24 1 L28.4 6 L24 11 L19.6 6 Z" />
+            <path d="M9 3.4 L11.8 6 L9 8.6 L6.2 6 Z" opacity="0.5" />
+            <path d="M39 3.4 L41.8 6 L39 8.6 L36.2 6 Z" opacity="0.5" />
+          </svg>
+          <span class="ms-rule-ornament-line"></span>
+        </div>
 
         {years.map((year) => (
           <section class="ms-archive-year" aria-labelledby={`year-${year}`}>
@@ -84,7 +101,7 @@ const years = Object.keys(byYear)
                         <span aria-hidden="true">/</span>
                         <span class="ms-archive-domain">{primaryTag}</span>
                       </p>
-                      <h3><a href={`/blog/${post.slug}/`}>{post.data.title}<span aria-hidden="true"> -></span></a></h3>
+                      <h3><a href={`/blog/${post.slug}/`}>{post.data.title}<span aria-hidden="true"> →</span></a></h3>
                       <p>{post.data.description}</p>
                     </article>
                   </li>
@@ -93,6 +110,20 @@ const years = Object.keys(byYear)
             </ol>
           </section>
         ))}
+
+        {page.lastPage > 1 && (
+          <nav class="ms-archive-pagination" aria-label="Pagination">
+            {page.url.prev
+              ? <a class="ms-pagination-btn" href={page.url.prev}>← Newer</a>
+              : <span class="ms-pagination-btn ms-pagination-btn--ghost">← Newer</span>
+            }
+            <span class="ms-pagination-count">{page.currentPage} / {page.lastPage}</span>
+            {page.url.next
+              ? <a class="ms-pagination-btn" href={page.url.next}>Older →</a>
+              : <span class="ms-pagination-btn ms-pagination-btn--ghost">Older →</span>
+            }
+          </nav>
+        )}
       </main>
 
       <ManuscriptFooter />
@@ -125,8 +156,11 @@ const years = Object.keys(byYear)
     grid-template-columns: minmax(14rem, 0.9fr) minmax(16rem, 1fr) auto;
     gap: clamp(1rem, 3vw, 2rem);
     align-items: end;
-    padding: clamp(0.6rem, 1.6vw, 1.2rem) 0 clamp(0.8rem, 1.8vw, 1.2rem);
-    border-bottom: 1px solid var(--ms-rule);
+    padding: clamp(0.6rem, 1.6vw, 1.2rem) 0 clamp(0.5rem, 1vw, 0.8rem);
+  }
+
+  .ms-archive-rule {
+    margin-bottom: clamp(0.4rem, 1vw, 0.7rem);
   }
 
   .ms-archive-kicker {
@@ -150,12 +184,16 @@ const years = Object.keys(byYear)
 
   .ms-archive-note {
     margin: 0;
-    max-width: 28rem;
+    max-width: 26rem;
+    padding-left: 0.9rem;
+    border-left: 1.5px solid color-mix(in srgb, var(--ms-secondary) 48%, transparent);
     color: var(--ms-on-surface-variant);
-    font-size: clamp(0.94rem, 1.5vw, 1.06rem);
+    font-family: var(--ms-font-display);
+    font-size: clamp(1rem, 1.6vw, 1.14rem);
     font-style: italic;
-    font-weight: 500;
-    line-height: 1.28;
+    font-weight: 450;
+    letter-spacing: -0.015em;
+    line-height: 1.55;
     text-wrap: pretty;
   }
 
@@ -171,13 +209,12 @@ const years = Object.keys(byYear)
   }
 
   .ms-archive-year {
-    margin-top: clamp(1.2rem, 2.4vw, 1.8rem);
+    margin-top: clamp(1.4rem, 2.8vw, 2.2rem);
   }
 
   .ms-archive-year-label {
     margin: 0 0 0.35rem;
     padding-bottom: 0.45rem;
-    border-bottom: 1px solid var(--ms-rule);
     color: var(--ms-muted);
     font-family: var(--ms-font-mono);
     font-size: 0.72rem;
@@ -198,11 +235,15 @@ const years = Object.keys(byYear)
     --entry-accent: var(--ms-secondary);
     position: relative;
     display: grid;
-    grid-template-columns: clamp(8rem, 17vw, 12rem) minmax(0, 1fr);
-    gap: 0 clamp(1rem, 2.4vw, 1.55rem);
+    grid-template-columns: clamp(10rem, 22vw, 15rem) minmax(0, 1fr);
+    gap: 0 clamp(1.2rem, 2.8vw, 2rem);
     align-items: center;
-    padding: clamp(1rem, 2.2vw, 1.35rem) 0;
+    padding: clamp(1.4rem, 3vw, 2rem) 0;
     border-bottom: 1px solid var(--ms-rule);
+  }
+
+  .ms-archive-entry:last-child {
+    border-bottom: none;
   }
 
   .ms-archive-hit {
@@ -219,12 +260,12 @@ const years = Object.keys(byYear)
   .ms-archive-plate {
     position: relative;
     margin: 0;
-    aspect-ratio: 1.45 / 1;
+    aspect-ratio: 3 / 2;
     overflow: hidden;
     border: 1px solid color-mix(in srgb, var(--entry-accent) 22%, transparent);
     border-radius: 0.42rem;
     background: color-mix(in srgb, var(--entry-accent) 12%, var(--ms-sheet));
-    box-shadow: 0 10px 22px rgba(74, 52, 41, 0.09);
+    box-shadow: 0 12px 28px rgba(74, 52, 41, 0.1);
   }
 
   .ms-archive-plate img {
@@ -252,7 +293,7 @@ const years = Object.keys(byYear)
 
   .ms-archive-copy {
     min-width: 0;
-    padding-left: clamp(0.75rem, 1.5vw, 0.95rem);
+    padding-left: clamp(1rem, 2vw, 1.3rem);
     border-left: 2px solid color-mix(in srgb, var(--entry-accent) 42%, transparent);
   }
 
@@ -261,7 +302,7 @@ const years = Object.keys(byYear)
     flex-wrap: wrap;
     align-items: center;
     gap: 0.36rem;
-    margin: 0 0 0.36rem;
+    margin: 0 0 0.5rem;
     color: var(--ms-muted);
     font-family: var(--ms-font-mono);
     font-size: 0.64rem;
@@ -299,13 +340,13 @@ const years = Object.keys(byYear)
   }
 
   .ms-archive-copy h3 {
-    margin: 0 0 0.28rem;
+    margin: 0 0 0.4rem;
     color: var(--ms-primary);
     font-family: var(--ms-font-display);
-    font-size: clamp(1.24rem, 2.1vw, 1.58rem);
+    font-size: clamp(1.5rem, 2.6vw, 2rem);
     font-weight: 550;
-    letter-spacing: -0.035em;
-    line-height: 1.12;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
   }
 
   .ms-archive-copy a {
@@ -321,10 +362,53 @@ const years = Object.keys(byYear)
   .ms-archive-copy p:not(.ms-archive-meta) {
     margin: 0;
     color: var(--ms-on-surface-variant);
-    font-size: clamp(0.9rem, 1.4vw, 0.98rem);
+    font-size: clamp(0.95rem, 1.5vw, 1.05rem);
     font-style: italic;
     font-weight: 500;
-    line-height: 1.45;
+    line-height: 1.5;
+  }
+
+  /* pagination */
+  .ms-archive-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: clamp(2rem, 4vw, 3rem);
+  }
+
+  .ms-pagination-btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--ms-rule);
+    border-radius: 0.22rem;
+    color: var(--ms-primary);
+    font-family: var(--ms-font-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 200ms ease, border-color 200ms ease;
+  }
+
+  a.ms-pagination-btn:hover,
+  a.ms-pagination-btn:focus-visible {
+    color: var(--ms-secondary);
+    border-color: var(--ms-secondary);
+  }
+
+  .ms-pagination-btn--ghost {
+    opacity: 0.28;
+    pointer-events: none;
+  }
+
+  .ms-pagination-count {
+    color: var(--ms-muted);
+    font-family: var(--ms-font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.65;
   }
 
   @media (max-width: 760px) {
@@ -339,8 +423,8 @@ const years = Object.keys(byYear)
     }
 
     .ms-archive-entry {
-      grid-template-columns: clamp(7.2rem, 34vw, 8.6rem) minmax(0, 1fr);
-      gap: 0.7rem 0.85rem;
+      grid-template-columns: clamp(8rem, 36vw, 10rem) minmax(0, 1fr);
+      gap: 0.8rem 1rem;
     }
   }
 </style>

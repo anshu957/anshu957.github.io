@@ -5,4 +5,7 @@ import react from "@astrojs/react";
 export default defineConfig({
   site: "https://integrable.space",
   integrations: [react(), mdx()],
+  redirects: {
+    "/": "/blog",
+  },
 });

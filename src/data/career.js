@@ -1,6 +1,6 @@
 /** Career milestones for the About timeline (chronological order). */
 
-/** @typedef {{ id: string, period: string, years: string, role: string, inst: string, loc: string, note: string, yearStart: number, type: "edu"|"research"|"current" }} CareerNode */
+/** @typedef {{ id: string, period: string, years: string, role: string, inst: string, loc: string, note: string, yearStart: number, type: "edu"|"industry"|"research"|"current" }} CareerNode */
 
 /** @type {CareerNode[]} */
 export const careerNodes = [
@@ -14,6 +14,17 @@ export const careerNodes = [
     loc: "Delhi, India",
     note: "Mechatronics engineering.",
     type: "edu",
+  },
+  {
+    id: "hcl",
+    period: "2009–11",
+    years: "2009 – 2011",
+    yearStart: 2009,
+    role: "Associate Consultant",
+    inst: "HCL-Axon",
+    loc: "Bangalore, India",
+    note: "Enterprise software consulting.",
+    type: "industry",
   },
   {
     id: "iiser",
