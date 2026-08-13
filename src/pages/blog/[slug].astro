@@ -43,8 +43,8 @@ const primaryTag = tagLabel(tags[0]);
 
         <header class="ms-article-header">
           <figure class="ms-article-plate">
-            <img src={post.data.image} alt="" loading="eager" decoding="async" />
-            <span class="ms-article-plate-wash" aria-hidden="true"></span>
+            <img class="ms-plate-img ms-plate-img--light" src={post.data.image} alt="" loading="eager" decoding="async" />
+            <img class="ms-plate-img ms-plate-img--dark" src={post.data.image.replace("-card.png", "-card-dark.png")} alt="" loading="eager" decoding="async" />
           </figure>
 
           <div class="ms-article-title-card">
@@ -133,47 +133,32 @@ const primaryTag = tagLabel(tags[0]);
     border-bottom: 1px solid var(--ms-rule);
   }
 
+  /* Quiet paper plate for the post's technical ink figure. Two theme variants of
+     the art (dark-ink / cream-ink) are swapped by the .dark class. */
   .ms-article-plate {
     position: relative;
     margin: 0;
-    aspect-ratio: 1.45 / 1;
+    aspect-ratio: 3 / 2;
     overflow: hidden;
-    border: 1px solid color-mix(in srgb, var(--article-accent) 24%, transparent);
+    padding: clamp(0.5rem, 1.5vw, 1rem);
+    border: 1px solid var(--ms-rule);
     border-radius: 0.46rem;
-    background:
-      radial-gradient(circle at 22% 18%, color-mix(in srgb, var(--article-accent) 20%, transparent), transparent 48%),
-      color-mix(in srgb, var(--ms-sheet) 78%, var(--ms-highlight) 22%);
+    background: color-mix(in srgb, var(--ms-bg) 78%, var(--ms-sheet));
     box-shadow:
-      0 14px 30px var(--ms-shadow),
+      0 12px 26px var(--ms-shadow),
       inset 0 1px 0 var(--ms-inset);
-    transform: rotate(-0.22deg);
   }
 
-  .ms-article-plate img {
+  .ms-plate-img {
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: center 36%;
-    mix-blend-mode: multiply;
-    opacity: 0.98;
-    filter: saturate(1) contrast(1.01) brightness(1.02);
+    object-fit: contain;
   }
 
-  html.dark .ms-article-plate img {
-    mix-blend-mode: normal;
-    opacity: 0.9;
-    filter: saturate(0.96) brightness(0.98) contrast(1.02);
-  }
-
-  .ms-article-plate-wash {
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(90deg, transparent 70%, color-mix(in srgb, var(--ms-sheet) 18%, transparent)),
-      radial-gradient(circle at 86% 12%, color-mix(in srgb, var(--ms-highlight) 20%, transparent), transparent 34%);
-    pointer-events: none;
-  }
+  .ms-plate-img--dark { display: none; }
+  html.dark .ms-plate-img--light { display: none; }
+  html.dark .ms-plate-img--dark { display: block; }
 
   .ms-article-title-card {
     min-width: 0;
@@ -311,8 +296,7 @@ const primaryTag = tagLabel(tags[0]);
     }
 
     .ms-article-plate {
-      aspect-ratio: 1.65 / 1;
-      transform: none;
+      aspect-ratio: 3 / 2;
     }
 
     .ms-article-title-card {
