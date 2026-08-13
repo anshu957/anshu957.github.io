@@ -82,8 +82,8 @@ const pageTitle = page.currentPage === 1
                     <a class="ms-archive-hit" href={`/blog/${post.slug}/`} aria-label={`Read ${post.data.title}`}></a>
 
                     <figure class="ms-archive-plate">
-                      <img src={post.data.image} alt="" loading={index === 0 ? "eager" : "lazy"} decoding="async" />
-                      <span class="ms-archive-plate-wash" aria-hidden="true"></span>
+                      <img class="ms-plate-img ms-plate-img--light" src={post.data.image} alt="" loading={index === 0 ? "eager" : "lazy"} decoding="async" />
+                      <img class="ms-plate-img ms-plate-img--dark" src={post.data.image.replace("-card.png", "-card-dark.png")} alt="" loading={index === 0 ? "eager" : "lazy"} decoding="async" />
                     </figure>
 
                     <article class="ms-archive-copy">
@@ -257,39 +257,30 @@ const pageTitle = page.currentPage === 1
     z-index: 4;
   }
 
+  /* A quiet paper plate holding a technical ink figure. Two theme variants of the
+     art (dark-ink / cream-ink) are swapped by the .dark class. */
   .ms-archive-plate {
     position: relative;
     margin: 0;
     aspect-ratio: 3 / 2;
     overflow: hidden;
-    border: 1px solid color-mix(in srgb, var(--entry-accent) 22%, transparent);
+    padding: clamp(0.4rem, 1.3vw, 0.85rem);
+    border: 1px solid var(--ms-rule);
     border-radius: 0.42rem;
-    background: color-mix(in srgb, var(--entry-accent) 12%, var(--ms-sheet));
-    box-shadow: 0 12px 28px rgba(74, 52, 41, 0.1);
+    background: color-mix(in srgb, var(--ms-bg) 78%, var(--ms-sheet));
+    box-shadow: 0 8px 22px var(--ms-shadow);
   }
 
-  .ms-archive-plate img {
+  .ms-plate-img {
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    mix-blend-mode: multiply;
-    opacity: 0.96;
-    filter: saturate(0.96) contrast(1);
+    object-fit: contain;
   }
 
-  html.dark .ms-archive-plate img {
-    mix-blend-mode: normal;
-    opacity: 0.9;
-    filter: saturate(0.96) brightness(0.98) contrast(1.02);
-  }
-
-  .ms-archive-plate-wash {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, transparent 70%, color-mix(in srgb, var(--ms-sheet) 16%, transparent));
-    pointer-events: none;
-  }
+  .ms-plate-img--dark { display: none; }
+  html.dark .ms-plate-img--light { display: none; }
+  html.dark .ms-plate-img--dark { display: block; }
 
   .ms-archive-copy {
     min-width: 0;

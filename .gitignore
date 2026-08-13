@@ -9,3 +9,5 @@ qa-screenshots/
 .screenshot-*.png
 .claude/
 scratchpad/
+scripts/sketch/manim/media/
+__pycache__/
