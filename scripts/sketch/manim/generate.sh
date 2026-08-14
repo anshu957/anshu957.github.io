@@ -21,9 +21,9 @@ for row in "${posts[@]}"; do
   set -- ${(z)row}
   file=$1; cls=$2; slug=$3; aL=$4; aD=$5
   img="media/images/${file%.py}/${cls}_ManimCE_v0.20.1.png"
-  INK="$INK_LIGHT" ACCENT="$aL" FILL="#f6f2ea" manim -s -qh -t -r 1500,1000 --media_dir media "$file" "$cls" >/dev/null 2>&1
+  INK="$INK_LIGHT" ACCENT="$aL" FILL="#e8ddc4" manim -s -qh -t -r 1500,1000 --media_dir media "$file" "$cls" >/dev/null 2>&1
   cp "$img" "$OUT/${slug}-card.png"
-  INK="$INK_DARK" ACCENT="$aD" FILL="#1a1210" manim -s -qh -t -r 1500,1000 --media_dir media "$file" "$cls" >/dev/null 2>&1
+  INK="$INK_DARK" ACCENT="$aD" FILL="#191212" manim -s -qh -t -r 1500,1000 --media_dir media "$file" "$cls" >/dev/null 2>&1
   cp "$img" "$OUT/${slug}-card-dark.png"
   echo "  ${slug}  (light+dark)"
 done
