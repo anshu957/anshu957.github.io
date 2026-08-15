@@ -267,11 +267,30 @@ const pageTitle = page.currentPage === 1
     padding: clamp(0.4rem, 1.3vw, 0.85rem);
     border: 1px solid var(--ms-rule);
     border-radius: 0.42rem;
-    background: #e8ddc4;
+    background: #f4f0e8;
     box-shadow: 0 8px 22px var(--ms-shadow);
   }
 
+  /* non-uniform aged-paper wash on top: diagonal warm->cool + a top-right dusk
+     glow (like the old cards). Sits above the art so the baked plate colour of
+     the figures still matches underneath — no seam. */
+  .ms-archive-plate::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background:
+      url("/assets/blog/paper-texture.png") center / cover no-repeat,
+      radial-gradient(ellipse 86% 90% at 50% 44%, rgba(255, 255, 255, 0) 32%, rgba(182, 130, 56, 0.48) 100%);
+    mix-blend-mode: multiply;
+  }
+
   html.dark .ms-archive-plate { background: #191212; }
+  html.dark .ms-archive-plate::after {
+    background: radial-gradient(60% 55% at 82% 18%, rgba(212, 176, 106, 0.16), rgba(143, 160, 203, 0.06) 48%, rgba(0, 0, 0, 0) 72%);
+    mix-blend-mode: screen;
+  }
 
   .ms-plate-img {
     display: block;
