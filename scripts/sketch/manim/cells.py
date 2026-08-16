@@ -6,7 +6,7 @@ domain accent. Ink contours on paper plate. 3:2.
 """
 import os
 import numpy as np
-from manim import Scene, VMobject, Polygon, Dot, ManimColor, config
+from manim import Scene, VMobject, Polygon, Dot, Rectangle, ManimColor, config
 
 INK  = ManimColor(os.environ.get("INK",  "#211512"))
 FILL = ManimColor(os.environ.get("FILL", "#f4f0e8"))
@@ -20,8 +20,19 @@ config.pixel_height = 1000
 config.pixel_width  = 1500
 
 B = np.array([-0.72, 0.0, 0.72])
-WIDTH, TOPY, DEPTH, SKEW, ZS = 1.45, 1.32, 1.32, 0.42, 1.55
+ZS       = 1.55
+TOPY     = 1.10   # lower to compensate for u→y shift after rotation
 BASELINE = -1.7
+
+# Rotate the u and t basis vectors 15° to produce a slight side-view.
+# CCW scene rotation (= camera moved 15° clockwise from above):
+#   u-vec (1.45, 0)    → (_UX,  _UY)  right side of cross-sections tilts UP
+#   t-vec (0.42,-1.32) → (_TX,  _TY)  time axis becomes more horizontal
+_c, _s = np.cos(np.radians(15)), np.sin(np.radians(15))
+_UX =  1.45 * _c          #  1.401
+_UY =  1.45 * _s          # +0.375  (positive → right side goes UP)
+_TX =  0.42 * _c + 1.32 * _s   #  0.748
+_TY =  0.42 * _s - 1.32 * _c   # -1.166
 
 
 def spread(t):
@@ -36,11 +47,17 @@ def phi(u, t):
 
 
 def project(u, t):
-    return np.array([u * WIDTH + SKEW * t, (TOPY - DEPTH * t) + phi(u, t) * ZS, 0.0])
+    x = _UX * u + _TX * t
+    y = TOPY + _UY * u + _TY * t + phi(u, t) * ZS
+    return np.array([x, y, 0.0])
 
 
 class Cells(Scene):
     def construct(self):
+        # Solid background so rotated ridgelines never leave transparent gaps
+        self.add(Rectangle(width=config.frame_width, height=config.frame_height,
+                            fill_color=FILL, fill_opacity=1.0, stroke_width=0))
+
         us     = np.concatenate([[-2.7], np.linspace(-1.12, 1.12, 90), [2.7]])
         slices = np.linspace(0, 1, 42)
 
