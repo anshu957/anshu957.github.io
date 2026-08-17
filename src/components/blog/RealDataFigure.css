@@ -1,0 +1,183 @@
+.rdf-figure {
+  margin: clamp(1.6rem, 3vw, 2.2rem) 0;
+  padding: clamp(0.9rem, 2vw, 1.3rem) clamp(0.9rem, 2vw, 1.3rem) 1rem;
+  border: 1px solid var(--ms-rule);
+  border-radius: 0.55rem;
+  background: color-mix(in srgb, var(--ms-sheet) 92%, transparent);
+  box-shadow: 0 10px 26px var(--ms-shadow);
+}
+
+.rdf-canvas-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 620 / 460;
+}
+
+.rdf-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.rdf-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ms-muted);
+  font-family: var(--ms-font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.rdf-tooltip {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.6rem;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--ms-rule);
+  border-radius: 0.35rem;
+  background: var(--ms-sheet);
+  color: var(--ms-on-surface);
+  font-family: var(--ms-font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.03em;
+  pointer-events: none;
+}
+
+.rdf-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-top: 0.6rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--ms-rule);
+}
+
+.rdf-toggle-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.rdf-flow-toggle {
+  align-self: flex-start;
+  padding: 0.35rem 0.8rem;
+  border: 1px solid var(--article-accent, var(--ms-secondary));
+  border-radius: 999px;
+  background: transparent;
+  color: var(--article-accent, var(--ms-secondary));
+  font-family: var(--ms-font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.rdf-flow-toggle:hover {
+  background: var(--article-accent, var(--ms-secondary));
+  color: var(--ms-sheet);
+}
+
+.rdf-flow-toggle--ghost {
+  border-color: var(--ms-rule);
+  color: var(--ms-muted);
+}
+
+.rdf-flow-toggle--ghost:hover {
+  background: var(--ms-rule);
+  color: var(--ms-on-surface);
+}
+
+.rdf-concept-note {
+  margin: 0.1rem 0 0;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--ms-rule);
+  border-radius: 0.4rem;
+  color: var(--ms-muted);
+  font-family: var(--ms-font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+}
+
+.rdf-attractor-label {
+  position: absolute;
+  transform: translate(9px, -50%);
+  padding: 0.1rem 0.4rem;
+  border: 1px solid var(--ms-rule);
+  border-radius: 0.3rem;
+  background: color-mix(in srgb, var(--ms-sheet) 88%, transparent);
+  color: var(--ms-on-surface);
+  font-family: var(--ms-font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.rdf-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.7rem;
+}
+
+.rdf-legend-item {
+  position: relative;
+  padding: 0.12rem 0 0.12rem 1rem;
+  border: none;
+  background: none;
+  color: var(--ms-muted);
+  font-family: var(--ms-font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  opacity: 0.85;
+  transition: opacity 160ms ease;
+}
+
+.rdf-legend-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.42em;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--swatch);
+}
+
+.rdf-legend-item--off {
+  opacity: 0.35;
+  text-decoration: line-through;
+}
+
+.rdf-legend-item:hover {
+  opacity: 1;
+}
+
+.rdf-cite {
+  font-family: var(--ms-font-mono);
+  font-size: 0.75em;
+}
+
+.rdf-cite a {
+  color: var(--article-accent, var(--ms-secondary));
+  text-decoration: none;
+}
+
+.rdf-figure figcaption {
+  margin: 0.7rem 0 0;
+  color: var(--ms-muted);
+  font-family: var(--ms-font-display);
+  font-size: 0.85rem;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.rdf-error {
+  color: var(--ms-muted);
+  font-style: italic;
+}

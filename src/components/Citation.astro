@@ -1,0 +1,28 @@
+---
+interface Props {
+  n: number;
+}
+
+const { n } = Astro.props;
+---
+
+<sup class="cite"><a href={`#ref-${n}`} id={`cite-${n}`}>{n}</a></sup>
+
+<style>
+  .cite {
+    font-family: var(--ms-font-mono, "JetBrains Mono", monospace);
+    font-size: 0.72em;
+    font-weight: 500;
+  }
+
+  .cite a {
+    color: var(--article-accent, var(--ms-secondary));
+    text-decoration: none;
+    padding: 0 0.05em;
+  }
+
+  .cite a:hover,
+  .cite a:focus-visible {
+    text-decoration: underline;
+  }
+</style>

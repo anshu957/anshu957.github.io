@@ -63,7 +63,11 @@ const primaryTag = tagLabel(tags[0]);
         <div class="ms-article-reading-grid">
           <aside class="ms-article-reader-rail" aria-label="Reading details">
             <p class="ms-article-reader-label">tags</p>
-            <p>{tags.slice(0, 3).join(" / ")}</p>
+            <ul class="ms-article-tags">
+              {tags.slice(0, 4).map((t) => (
+                <li class="ms-article-tag" style={`--tag-accent: ${accentVar(domainColor([t]))}`}>{tagLabel(t)}</li>
+              ))}
+            </ul>
           </aside>
 
           <div class="ms-article-prose">
@@ -251,11 +255,41 @@ const primaryTag = tagLabel(tags[0]);
     letter-spacing: 0.04em;
     line-height: 1.45;
     text-transform: uppercase;
-    opacity: 0.72;
   }
 
   .ms-article-reader-rail p {
     margin: 0;
+  }
+
+  .ms-article-tags {
+    list-style: none;
+    margin: 0.55rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .ms-article-tag {
+    --tag-accent: var(--article-accent);
+    padding: 0.24rem 0.62rem;
+    border: 1px solid color-mix(in srgb, var(--tag-accent) 42%, transparent);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--tag-accent) 15%, transparent);
+    color: color-mix(in srgb, var(--tag-accent) 76%, var(--ms-primary));
+    font-family: var(--ms-font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    line-height: 1.35;
+    text-transform: none;
+    white-space: nowrap;
+    transition: background 180ms ease, border-color 180ms ease;
+  }
+
+  html.dark .ms-article-tag {
+    background: color-mix(in srgb, var(--tag-accent) 22%, transparent);
+    color: color-mix(in srgb, var(--tag-accent) 88%, var(--ms-primary));
   }
 
   .ms-article-prose {
@@ -277,6 +311,29 @@ const primaryTag = tagLabel(tags[0]);
 
   .ms-article-prose :global(a) {
     color: var(--article-accent);
+  }
+
+  .ms-article-prose :global(h2),
+  .ms-article-prose :global(h3) {
+    color: var(--ms-primary);
+    text-wrap: balance;
+  }
+
+  .ms-article-prose :global(h2) {
+    margin: clamp(2.4rem, 4vw, 3.1rem) 0 1.05rem;
+    font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+  }
+
+  .ms-article-prose :global(h3) {
+    margin: clamp(1.7rem, 3vw, 2.1rem) 0 0.8rem;
+    font-size: clamp(1.12rem, 1.4vw, 1.26rem);
+  }
+
+  .ms-article-prose :global(blockquote) {
+    padding-left: 1.1rem;
+    border-left: 2px solid color-mix(in srgb, var(--article-accent) 44%, transparent);
+    color: var(--ms-muted);
+    font-style: italic;
   }
 
   .ms-article-prose > :global(:first-child) {
