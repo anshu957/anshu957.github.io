@@ -45,6 +45,7 @@ npm run preview   # serve dist/
 - Motion must respect `prefers-reduced-motion`.
 - Reading width ~67ch; manuscript shell max width in `manuscript.css`.
 - No commits unless the user asks.
+- Git: Anshul is the sole author. When asked to commit, commit directly to `main` and `git push`. Do **not** create feature branches or open PRs for posts or edits.
 
 ## Known noise
 
