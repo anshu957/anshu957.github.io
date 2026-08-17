@@ -1,0 +1,172 @@
+.pl-figure {
+  margin: clamp(1.6rem, 3vw, 2.2rem) 0;
+  padding: clamp(0.9rem, 2vw, 1.3rem) clamp(0.9rem, 2vw, 1.3rem) 1rem;
+  border: 1px solid var(--ms-rule);
+  border-radius: 0.55rem;
+  background: color-mix(in srgb, var(--ms-sheet) 92%, transparent);
+  box-shadow: 0 10px 26px var(--ms-shadow);
+}
+
+.pl-panels {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1rem;
+  max-width: 660px;
+  margin: 0 auto;
+}
+
+.pl-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  flex: 1 1 220px;
+  min-width: 200px;
+}
+
+.pl-panel-title {
+  font-family: var(--ms-font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ms-muted);
+  opacity: 0.65;
+  text-align: center;
+}
+
+.pl-flow-svg {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+.pl-flow-arrow {
+  stroke: var(--ms-etch);
+  stroke-width: 1;
+  opacity: 0.5;
+}
+
+.pl-flow-arrowhead-fill {
+  fill: var(--ms-etch);
+  opacity: 0.7;
+}
+
+.pl-flow-dot {
+  stroke: var(--ms-sheet);
+  stroke-width: 1.4;
+}
+
+.pl-flow-saddle {
+  stroke: var(--ms-primary);
+  stroke-width: 1.4;
+  opacity: 0.8;
+}
+
+.pl-svg {
+  width: 100%;
+  aspect-ratio: 380 / 240;
+}
+
+.pl-band {
+  opacity: 0.07;
+}
+
+.pl-axis {
+  stroke: var(--ms-rule);
+  stroke-width: 1;
+}
+
+.pl-curve {
+  fill: none;
+  stroke: var(--ms-primary);
+  stroke-width: 2;
+  opacity: 0.9;
+}
+
+.pl-hilltop-guide {
+  stroke: var(--ms-muted);
+  stroke-width: 1;
+  stroke-dasharray: 2.5 3;
+  opacity: 0.55;
+}
+
+.pl-hilltop-label {
+  font-family: var(--ms-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.03em;
+  fill: var(--ms-muted);
+  opacity: 0.75;
+  font-style: italic;
+}
+
+.pl-well-label {
+  font-family: var(--ms-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  fill: var(--ms-on-surface-variant);
+  opacity: 0.8;
+}
+
+.pl-ball {
+  stroke: var(--ms-sheet);
+  stroke-width: 1.6;
+}
+
+.pl-axis-label {
+  font-family: var(--ms-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  fill: var(--ms-muted);
+  opacity: 0.6;
+}
+
+.pl-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem 1rem;
+  margin-top: 0.7rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--ms-rule);
+}
+
+.pl-slider {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--ms-muted);
+  font-family: var(--ms-font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+}
+
+.pl-slider input {
+  accent-color: var(--article-accent, var(--ms-secondary));
+  width: 9rem;
+}
+
+.pl-regime {
+  color: var(--ms-muted);
+  font-family: var(--ms-font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.02em;
+  text-align: right;
+}
+
+.pl-figure figcaption {
+  margin: 0.7rem 0 0;
+  color: var(--ms-muted);
+  font-family: var(--ms-font-display);
+  font-size: 0.85rem;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pl-ball-wrap {
+    transition: none !important;
+  }
+}

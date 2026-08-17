@@ -1,0 +1,133 @@
+.tf-figure {
+  margin: clamp(1.6rem, 3vw, 2.2rem) 0;
+  padding: clamp(0.9rem, 2vw, 1.3rem) clamp(0.9rem, 2vw, 1.3rem) 1rem;
+  border: 1px solid var(--ms-rule);
+  border-radius: 0.55rem;
+  background: color-mix(in srgb, var(--ms-sheet) 92%, transparent);
+  box-shadow: 0 10px 26px var(--ms-shadow);
+}
+
+.tf-canvas-wrap {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  aspect-ratio: 480 / 360;
+}
+
+.tf-svg {
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+}
+
+.tf-basin {
+  opacity: 0.14;
+}
+
+.tf-basin-label {
+  font-family: var(--ms-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  fill: var(--ms-muted);
+  opacity: 0.6;
+}
+
+.tf-separatrix {
+  stroke: var(--ms-primary);
+  stroke-width: 1.3;
+  opacity: 0.55;
+}
+
+.tf-arrow {
+  stroke: var(--ms-etch);
+  stroke-width: 1.1;
+  opacity: 0.55;
+}
+
+.tf-arrowhead-fill {
+  fill: var(--ms-etch);
+  opacity: 0.7;
+}
+
+.tf-path {
+  fill: none;
+  stroke-width: 1.8;
+  opacity: 0.9;
+}
+
+.tf-path-start {
+  fill: var(--ms-sheet);
+  stroke: var(--ms-primary);
+  stroke-width: 1.2;
+}
+
+.tf-fixed-dot {
+  stroke: var(--ms-sheet);
+  stroke-width: 1.6;
+}
+
+.tf-saddle-mark {
+  stroke: var(--ms-primary);
+  stroke-width: 1.5;
+  opacity: 0.8;
+}
+
+.tf-label {
+  font-family: var(--ms-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  fill: var(--ms-on-surface-variant);
+  opacity: 0.85;
+}
+
+.tf-label--saddle {
+  fill: var(--ms-muted);
+  opacity: 0.75;
+}
+
+.tf-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  margin-top: 0.6rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--ms-rule);
+}
+
+.tf-hint {
+  color: var(--ms-muted);
+  font-family: var(--ms-font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.tf-button--ghost {
+  padding: 0.4rem 0.85rem;
+  border: 1px solid var(--ms-rule);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ms-muted);
+  font-family: var(--ms-font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.tf-button--ghost:hover {
+  background: var(--ms-rule);
+  color: var(--ms-on-surface);
+}
+
+.tf-figure figcaption {
+  margin: 0.7rem 0 0;
+  color: var(--ms-muted);
+  font-family: var(--ms-font-display);
+  font-size: 0.85rem;
+  font-style: italic;
+  line-height: 1.4;
+}
