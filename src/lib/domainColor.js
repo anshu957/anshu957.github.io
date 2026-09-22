@@ -3,6 +3,8 @@ export const DOMAIN_ACCENTS = {
   blue: "#6b7fb0",
   sage: "#5e7257",
   gold: "#c89a52",
+  teal: "#247876",
+  plum: "#79528d",
 };
 
 export const DOMAIN_CSS_VARS = {
@@ -10,6 +12,8 @@ export const DOMAIN_CSS_VARS = {
   blue: "var(--domain-blue)",
   sage: "var(--domain-sage)",
   gold: "var(--domain-gold)",
+  teal: "var(--domain-teal)",
+  plum: "var(--domain-plum)",
 };
 
 /** Map post tags to one of four meaning-bearing domain accents. */

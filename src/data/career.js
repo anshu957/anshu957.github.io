@@ -1,6 +1,6 @@
 /** Career milestones for the About timeline (chronological order). */
 
-/** @typedef {{ id: string, period: string, years: string, role: string, inst: string, loc: string, note: string, yearStart: number, type: "edu"|"industry"|"research"|"current" }} CareerNode */
+/** @typedef {{ id: string, period: string, years: string, role: string, inst: string, loc: string, note: string, yearStart: number, type: "edu"|"industry"|"research"|"current", accent: "blue"|"gold"|"plum"|"sage"|"teal"|"oxide" }} CareerNode */
 
 /** @type {CareerNode[]} */
 export const careerNodes = [
@@ -14,6 +14,7 @@ export const careerNodes = [
     loc: "Delhi, India",
     note: "Mechatronics engineering.",
     type: "edu",
+    accent: "blue",
   },
   {
     id: "hcl",
@@ -25,6 +26,7 @@ export const careerNodes = [
     loc: "Bangalore, India",
     note: "Enterprise software consulting.",
     type: "industry",
+    accent: "gold",
   },
   {
     id: "iiser",
@@ -36,6 +38,7 @@ export const careerNodes = [
     loc: "Mohali, India",
     note: "Dynamical systems and chaos.",
     type: "edu",
+    accent: "plum",
   },
   {
     id: "olden",
@@ -47,6 +50,7 @@ export const careerNodes = [
     loc: "Oldenburg, Germany",
     note: "Synchronization in ecological food webs.",
     type: "research",
+    accent: "sage",
   },
   {
     id: "ncstate",
@@ -58,6 +62,7 @@ export const careerNodes = [
     loc: "Raleigh, NC",
     note: "Physics-informed machine learning for chaotic systems.",
     type: "research",
+    accent: "teal",
   },
   {
     id: "jax",
@@ -69,5 +74,6 @@ export const careerNodes = [
     loc: "Farmington, CT",
     note: "Cell-fate decisions and mouse behavior.",
     type: "current",
+    accent: "oxide",
   },
 ];

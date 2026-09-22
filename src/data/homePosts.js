@@ -9,7 +9,7 @@ export const fallbackHomePosts = [
       featured: true,
       tags: ["single-cell", "dynamical systems", "rna velocity"],
       readingTime: "4 min read",
-      image: "/assets/blog/watching-cells-decide-card.png",
+      image: "/assets/blog/watching-cells-decide-card.gif",
     },
   },
   {
@@ -22,7 +22,7 @@ export const fallbackHomePosts = [
       featured: false,
       tags: ["notes", "practice", "tea"],
       readingTime: "3 min read",
-      image: "/assets/blog/tea-between-simulations-card.png",
+      image: "/assets/blog/tea-between-simulations-card.gif",
     },
   },
   {
@@ -35,7 +35,7 @@ export const fallbackHomePosts = [
       featured: false,
       tags: ["networks", "physics", "complex systems"],
       readingTime: "5 min read",
-      image: "/assets/blog/small-worlds-at-dusk-card.png",
+      image: "/assets/blog/small-worlds-at-dusk-card.gif",
     },
   },
 ];

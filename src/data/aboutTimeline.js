@@ -64,20 +64,26 @@ export function buildTimelineItems(nodes) {
   return items;
 }
 
-/** @param {"edu"|"industry"|"research"|"current"} type */
-export function stopAccent(type) {
-  switch (type) {
-    case "edu":
-      return "blue";
-    case "industry":
-      return "gold";
-    case "research":
-      return "sage";
+/** @param {string} idOrType */
+export function stopAccent(idOrType) {
+  switch (idOrType) {
+    case "jax":
     case "current":
       return "oxide";
-    default: {
-      const _exhaustive = type;
+    case "ncstate":
+      return "teal";
+    case "olden":
+    case "research":
+      return "sage";
+    case "iiser":
+      return "plum";
+    case "hcl":
+    case "industry":
+      return "gold";
+    case "nsit":
+    case "edu":
+      return "blue";
+    default:
       return "oxide";
-    }
   }
 }

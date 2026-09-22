@@ -27,6 +27,8 @@
   --domain-sage: #5e7257;
   --domain-blue: #6b7fb0;
   --domain-gold: #c89a52;
+  --domain-teal: #247876;
+  --domain-plum: #79528d;
   --illus-stroke: rgba(108, 82, 62, 0.5);
   --illus-fill: rgba(154, 90, 66, 0.3);
   --wave-stroke: rgba(190, 165, 135, 0.35);
@@ -71,5 +73,7 @@ html.dark {
   --domain-sage: #8faa84;
   --domain-blue: #8fa0cb;
   --domain-gold: #d4b06a;
+  --domain-teal: #5ac4be;
+  --domain-plum: #b890ce;
   --wave-stroke: rgba(200, 170, 130, 0.2);
 }

@@ -24,42 +24,26 @@ let stopCount = 0;
   <section class="about-bio" aria-labelledby="about-bio-heading">
     <h2 id="about-bio-heading" class="visually-hidden">About</h2>
 
-    <aside class="about-bio-rail" aria-label="Research themes">
-      <p class="about-bio-rail-label">Themes</p>
-      <p>cell fate<br/>behavior genetics<br/>dynamical systems<br/>machine learning</p>
-    </aside>
-
     <div class="about-bio-prose">
       <p>
-        I'm at the Jackson Laboratory in Farmington, Connecticut, working on two problems: cell fate
-        decisions and mouse behavior. On the cell side, I care about the geometry of how cells commit to
-        a fate — the trajectories, the basins, what happens when you perturb the system. On the behavior
-        side, it's closer to forward genetics: phenotype mice, find structure in what they do, trace back
-        to the genome.
+        I am an Associate Computational Scientist at The Jackson Laboratory in Farmington, Connecticut.
+        My work centers on two areas: using dynamical systems to model cell fate decisions from single-cell
+        genomics, and combining computer vision, machine learning, and mathematical models to quantify mouse
+        behavior from video and connect it to its genetic origins.
       </p>
       <p>
-        Before this I was a mechatronics engineer, then spent a few years in industry teaching myself
-        physics at night before a PhD at IISER Mohali on dynamical systems and chaos. My first postdoc
-        was with Ulrike Feudel at the Institute for Chemistry and Biology of the Marine Environment in
-        Oldenburg — a small research town in northwest Germany, the North Sea not far, grey skies most
-        of the year. I worked on synchronization in food webs there. Toward the end of that postdoc I
-        was already looking for problems at the intersection of machine learning and dynamical systems —
-        it felt like the natural next direction. Around that time I heard from Bill Ditto at NC State;
-        he was looking for someone to help shape his lab toward AI × physics, which sounded like exactly
-        what I was after. I joined and spent three years there doing that.
-      </p>
-      <p>
-        After working through a range of problems at that intersection, I wanted something with different
-        stakes — real messy data, and work that actually matters to people outside the field. That's what
-        led to JAX.
+        I started out in mechatronics engineering, spent two years in a corporate job teaching myself
+        physics at night, and then did a PhD on nonlinear dynamics and chaos. That background shapes how
+        I approach both problems—viewing biological data through the lens of high-dimensional state spaces,
+        attractors, and perturbations.
       </p>
       <p class="about-principle">
-        Predrag Cvitanović says a scientist owns the method, not the subject. That's the closest thing to
-        a plan I ever had.
+        Predrag Cvitanović once remarked that a scientist owns the method, not the subject. That's
+        the closest thing to a plan I've ever had.
       </p>
       <p>
-        What I'm up to now is on the <a href="/research/">research page</a>. (I also drink an indefensible
-        amount of tea—the one variable I've never managed to control.)
+        Publications and preprints are on the <a href="/research/">research page</a>; essays and
+        notes are in the <a href="/blog/">notebook</a>.
       </p>
     </div>
   </section>
@@ -79,17 +63,26 @@ let stopCount = 0;
         }
 
         const node = item.node;
-        const accent = stopAccent(node.type);
+        const accent = node.accent ?? stopAccent(node.id);
+        const isCurrent = node.type === "current" || node.id === "jax";
         const meta = stopMeta[node.id];
         const side = stopCount % 2 === 0 ? "right" : "left";
         stopCount += 1;
 
         return (
-          <li class:list={["about-event", `about-event--${side}`, `about-event--${accent}`]}>
+          <li class:list={[
+            "about-event",
+            `about-event--${side}`,
+            `about-event--${accent}`,
+            isCurrent && "about-event--current"
+          ]}>
             <span class="about-marker" aria-hidden="true"></span>
 
             <div class="about-branch">
-              <p class="about-when">{node.period}</p>
+              <p class="about-when">
+                {isCurrent && <span class="about-live-dot" aria-hidden="true"></span>}
+                {node.period}
+              </p>
               <h3 class="about-role">{node.role}</h3>
               <p class="about-where">
                 {node.inst}
@@ -207,8 +200,11 @@ let stopCount = 0;
   }
 
   .about-event--oxide { --stop-accent: var(--domain-oxide); }
-  .about-event--blue  { --stop-accent: var(--domain-blue); }
+  .about-event--teal  { --stop-accent: var(--domain-teal); }
   .about-event--sage  { --stop-accent: var(--domain-sage); }
+  .about-event--plum  { --stop-accent: var(--domain-plum); }
+  .about-event--gold  { --stop-accent: var(--domain-gold); }
+  .about-event--blue  { --stop-accent: var(--domain-blue); }
 
   .about-event:last-child {
     padding-bottom: 0;
@@ -221,6 +217,7 @@ let stopCount = 0;
     z-index: 1;
     justify-self: center;
     align-self: center;
+    position: relative;
     width: 0.78rem;
     height: 0.78rem;
     border-radius: 50%;
@@ -279,8 +276,104 @@ let stopCount = 0;
     color: var(--ms-primary);
   }
 
-  .about-event--oxide .about-role {
+  .about-event--current .about-role {
     font-weight: 700;
+  }
+
+  /* Current active status milestone */
+  .about-event--current .about-marker {
+    animation: live-marker-blink 2s ease-in-out infinite;
+  }
+
+  .about-event--current .about-marker::before {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 1.5px solid var(--stop-accent);
+    animation: live-radar-ping 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+    pointer-events: none;
+  }
+
+  .about-event--current .about-marker::after {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 1.5px solid var(--stop-accent);
+    animation: live-radar-ping 2.2s cubic-bezier(0, 0, 0.2, 1) 1.1s infinite;
+    pointer-events: none;
+  }
+
+  @keyframes live-radar-ping {
+    0% {
+      transform: scale(1);
+      opacity: 0.9;
+    }
+    60%, 100% {
+      transform: scale(2.6);
+      opacity: 0;
+    }
+  }
+
+  @keyframes live-marker-blink {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1.06);
+      box-shadow:
+        0 0 0 2px var(--ms-bg),
+        0 0 0 5px color-mix(in srgb, var(--stop-accent) 55%, transparent),
+        0 0 14px color-mix(in srgb, var(--stop-accent) 65%, transparent);
+    }
+    50% {
+      opacity: 0.35;
+      transform: scale(0.9);
+      box-shadow:
+        0 0 0 2px var(--ms-bg),
+        0 0 0 2px color-mix(in srgb, var(--stop-accent) 20%, transparent),
+        0 0 2px transparent;
+    }
+  }
+
+  /* Current branch connector line glow */
+  .about-event--current::after {
+    background: color-mix(in srgb, var(--stop-accent) 65%, transparent);
+    animation: live-connector-pulse 2.2s ease-in-out infinite;
+  }
+
+  @keyframes live-connector-pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.35;
+    }
+  }
+
+  /* Blinking live beacon dot in the period label */
+  .about-live-dot {
+    display: inline-block;
+    width: 0.46rem;
+    height: 0.46rem;
+    margin-right: 0.42rem;
+    border-radius: 50%;
+    background: var(--stop-accent);
+    vertical-align: 0.08em;
+    box-shadow: 0 0 8px color-mix(in srgb, var(--stop-accent) 80%, transparent);
+    animation: live-dot-blink 1.4s ease-in-out infinite;
+  }
+
+  @keyframes live-dot-blink {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+      box-shadow: 0 0 8px color-mix(in srgb, var(--stop-accent) 80%, transparent);
+    }
+    50% {
+      opacity: 0.2;
+      transform: scale(0.68);
+      box-shadow: 0 0 0px transparent;
+    }
   }
 
   .about-where {
@@ -382,54 +475,20 @@ let stopCount = 0;
     margin: clamp(0.8rem, 1.8vw, 1.2rem) 0;
   }
 
-  /* Bio reading grid */
+  /* Bio reading */
   .about-bio {
-    display: grid;
-    grid-template-columns: minmax(7rem, 11rem) minmax(0, 67ch);
-    gap: clamp(1.2rem, 3vw, 2rem);
-    align-items: start;
-  }
-
-  .about-bio-rail {
-    position: sticky;
-    top: 1rem;
-    padding-top: 0.35rem;
-    color: var(--ms-muted);
-    font-family: var(--ms-font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.04em;
-    line-height: 1.45;
-    opacity: 0.72;
-  }
-
-  .about-bio-rail p {
-    margin: 0;
-    font-size: inherit;
-    line-height: 1.5;
-    color: inherit;
-    text-wrap: pretty;
-  }
-
-  .about-bio-rail-label {
-    margin: 0.75rem 0 0.2rem;
-    color: var(--ms-secondary);
-    font-size: 0.62rem;
-    letter-spacing: 0.13em;
-    text-transform: uppercase;
-    opacity: 1;
-  }
-
-  .about-bio-rail-label:first-child {
-    margin-top: 0;
+    max-width: 48rem;
+    margin: clamp(2rem, 5vw, 3rem) auto 0;
+    padding: clamp(1rem, 2vw, 1.5rem) clamp(0.5rem, 2vw, 1rem) 0;
   }
 
   /* Bio prose */
   .about-bio-prose {
-    max-width: 67ch;
+    max-width: 72ch;
     color: var(--ms-on-surface-variant);
     font-family: var(--ms-font-body);
-    font-size: clamp(1.05rem, 1.45vw, 1.14rem);
-    line-height: 1.78;
+    font-size: clamp(1.12rem, 1.6vw, 1.22rem);
+    line-height: 1.72;
   }
 
   .about-bio-prose p {
@@ -485,24 +544,6 @@ let stopCount = 0;
   }
 
   @media (max-width: 760px) {
-    .about-bio {
-      grid-template-columns: 1fr;
-    }
-
-    .about-bio-rail {
-      position: static;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.25rem 1.5rem;
-      padding: 0 0 0.7rem;
-      border-bottom: 1px solid var(--ms-rule);
-    }
-
-    .about-bio-rail-label {
-      margin: 0;
-      width: 100%;
-    }
-
     .about-bio-prose p:first-of-type::first-letter {
       font-size: 2.75rem;
     }
@@ -518,9 +559,14 @@ let stopCount = 0;
       text-align: center;
     }
 
-    /* collapse the tree to a single left rail */
+    /* collapse the tree to a single left rail with comfortable gutter for radar ripples */
+    .about-timeline {
+      padding-left: 0.75rem;
+      padding-right: 0.5rem;
+    }
+
     .about-spine {
-      left: 0.4rem;
+      left: 1.15rem;
       transform: none;
     }
 
@@ -539,7 +585,7 @@ let stopCount = 0;
     }
 
     .about-event::after {
-      left: 0.4rem;
+      left: 1.15rem;
       right: auto;
       margin: 0;
       width: 0.85rem;
@@ -555,7 +601,7 @@ let stopCount = 0;
 
     .about-gap {
       text-align: left;
-      padding-left: 2rem;
+      padding-left: 2.75rem;
     }
 
     .about-gap-label {
@@ -566,6 +612,13 @@ let stopCount = 0;
   @media (prefers-reduced-motion: reduce) {
     .about-theme a {
       transition: none;
+    }
+    .about-event--current .about-marker,
+    .about-event--current .about-marker::before,
+    .about-event--current .about-marker::after,
+    .about-event--current::after,
+    .about-live-dot {
+      animation: none !important;
     }
   }
 </style>

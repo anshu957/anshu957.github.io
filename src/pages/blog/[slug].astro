@@ -44,7 +44,7 @@ const primaryTag = tagLabel(tags[0]);
         <header class="ms-article-header">
           <figure class="ms-article-plate">
             <img class="ms-plate-img ms-plate-img--light" src={post.data.image} alt="" loading="eager" decoding="async" />
-            <img class="ms-plate-img ms-plate-img--dark" src={post.data.image.replace("-card.png", "-card-dark.png")} alt="" loading="eager" decoding="async" />
+            <img class="ms-plate-img ms-plate-img--dark" src={post.data.image.replace("-card.gif", "-card-dark.gif").replace("-card.png", "-card-dark.png")} alt="" loading="eager" decoding="async" />
           </figure>
 
           <div class="ms-article-title-card">
@@ -204,14 +204,14 @@ const primaryTag = tagLabel(tags[0]);
   }
 
   .ms-article-title {
-    max-width: 13ch;
-    margin: 0 0 0.55rem;
+    max-width: 22ch;
+    margin: 0 0 0.65rem;
     color: var(--ms-primary);
     font-family: var(--ms-font-display);
-    font-size: clamp(2.45rem, 5.4vw, 4.7rem);
+    font-size: clamp(2.1rem, 4.4vw, 3.4rem);
     font-weight: 550;
-    letter-spacing: -0.06em;
-    line-height: 0.88;
+    letter-spacing: -0.035em;
+    line-height: 1.08;
     text-wrap: balance;
   }
 

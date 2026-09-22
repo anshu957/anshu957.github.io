@@ -106,17 +106,17 @@ const sectionAccent = accentVar(navAccent(currentPath));
     min-width: min(34rem, 52vw);
     min-height: 5.55rem;
     padding: 0.68rem 0.92rem 0.58rem;
-    border: 1px solid color-mix(in srgb, var(--domain-oxide) 14%, var(--ms-rule));
-    border-radius: 1.15rem;
+    border: 1px solid color-mix(in srgb, var(--domain-oxide) 20%, var(--ms-rule));
+    border-radius: 0.38rem;
     background:
       linear-gradient(
         165deg,
-        color-mix(in srgb, var(--ms-sheet) 96%, var(--ms-highlight)),
+        color-mix(in srgb, var(--ms-sheet) 97%, var(--ms-highlight)),
         color-mix(in srgb, var(--domain-oxide) 4%, var(--ms-sheet))
       );
     box-shadow:
-      0 1px 0 var(--ms-inset) inset,
-      0 10px 28px color-mix(in srgb, var(--domain-oxide) 7%, transparent);
+      0 1px 3px var(--ms-shadow),
+      0 0 0 1px color-mix(in srgb, var(--domain-oxide) 8%, transparent) inset;
     font-family: var(--ms-font-mono);
     font-size: clamp(0.84rem, 1.26vw, 0.98rem);
     line-height: 1.35;
@@ -124,16 +124,16 @@ const sectionAccent = accentVar(navAccent(currentPath));
   }
 
   html.dark .ms-equation-badge {
-    border-color: color-mix(in srgb, var(--domain-oxide) 18%, var(--ms-rule));
+    border-color: color-mix(in srgb, var(--domain-oxide) 24%, var(--ms-rule));
     background:
       linear-gradient(
         165deg,
-        color-mix(in srgb, var(--ms-sheet) 94%, #2a1e1a),
+        color-mix(in srgb, var(--ms-sheet) 94%, #221816),
         color-mix(in srgb, var(--domain-oxide) 8%, var(--ms-sheet))
       );
     box-shadow:
-      0 1px 0 var(--ms-inset) inset,
-      0 10px 28px var(--ms-shadow);
+      0 1px 3px var(--ms-shadow),
+      0 0 0 1px color-mix(in srgb, var(--domain-oxide) 10%, transparent) inset;
   }
 
   .ms-terminal-line {
@@ -380,7 +380,7 @@ const sectionAccent = accentVar(navAccent(currentPath));
       min-width: 0;
       width: 100%;
       min-height: 5.1rem;
-      border-radius: 0.85rem;
+      border-radius: 0.38rem;
       padding: 0.62rem 0.78rem 0.58rem;
       gap: 0.14rem 0;
     }

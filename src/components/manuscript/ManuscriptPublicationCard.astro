@@ -9,19 +9,21 @@ const links = item.links ?? [];
 ---
 
 <article
-  class:list={["pub-row", `pub-row--${color}`]}
+  class:list={["pub-row", `pub-row--${color}`, !item.image && "pub-row--no-image"]}
   style={`--pub-accent: ${accent}`}
   role="listitem"
 >
-  <figure class="pub-row-plate">
-    <img
-      src={item.image}
-      alt={item.imageAlt ?? ""}
-      loading="lazy"
-      decoding="async"
-    />
-    <span class="pub-row-wash" aria-hidden="true"></span>
-  </figure>
+  {item.image && (
+    <figure class="pub-row-plate">
+      <img
+        src={item.image}
+        alt={item.imageAlt ?? ""}
+        loading="lazy"
+        decoding="async"
+      />
+      <span class="pub-row-wash" aria-hidden="true"></span>
+    </figure>
+  )}
 
   <div class="pub-row-content">
     <p class="pub-row-rail">
@@ -70,6 +72,10 @@ const links = item.links ?? [];
     border-bottom: none;
   }
 
+  .pub-row--no-image {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   /* figure */
   .pub-row-plate {
     position: relative;
@@ -80,6 +86,20 @@ const links = item.links ?? [];
     border-radius: 0.42rem;
     background: color-mix(in srgb, var(--pub-accent) 10%, var(--ms-sheet));
     box-shadow: 0 8px 22px rgba(74, 52, 41, 0.09);
+    transition:
+      transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      box-shadow 320ms ease,
+      border-color 320ms ease;
+  }
+
+  .pub-row:hover .pub-row-plate {
+    transform: translateY(-3px) scale(1.012);
+    border-color: color-mix(in srgb, var(--pub-accent) 45%, transparent);
+    box-shadow: 0 14px 28px color-mix(in srgb, var(--pub-accent) 18%, rgba(74, 52, 41, 0.12));
+  }
+
+  .pub-row:hover .pub-row-plate img {
+    transform: scale(1.02);
   }
 
   .pub-row-plate img {
@@ -90,6 +110,7 @@ const links = item.links ?? [];
     mix-blend-mode: multiply;
     opacity: 0.96;
     filter: saturate(0.96) contrast(1);
+    transition: transform 340ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
   html.dark .pub-row-plate img {
@@ -116,6 +137,11 @@ const links = item.links ?? [];
     gap: 0.48rem;
     padding-left: clamp(0.8rem, 1.6vw, 1.1rem);
     border-left: 2px solid color-mix(in srgb, var(--pub-accent) 36%, transparent);
+    transition: border-left-color 260ms ease;
+  }
+
+  .pub-row:hover .pub-row-content {
+    border-left-color: var(--pub-accent);
   }
 
   .pub-row-rail {

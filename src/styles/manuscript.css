@@ -35,6 +35,8 @@ html.dark body:has(.manuscript-page) {
   --domain-sage: #5e7257;
   --domain-blue: #6b7fb0;
   --domain-gold: #c89a52;
+  --domain-teal: #247876;
+  --domain-plum: #79528d;
   --ms-container: min(1320px, calc(100vw - 2rem));
   --ms-margin-mobile: clamp(1rem, 3vw, 2.15rem);
   --ms-font-display: "Newsreader", Georgia, serif;
@@ -88,6 +90,8 @@ html.dark .manuscript-page {
   --domain-sage: #8faa84;
   --domain-blue: #8fa0cb;
   --domain-gold: #d4b06a;
+  --domain-teal: #5ac4be;
+  --domain-plum: #b890ce;
   background:
     radial-gradient(circle at 18% 12%, rgba(111, 62, 50, 0.2), transparent 25rem),
     radial-gradient(circle at 82% 28%, rgba(126, 101, 73, 0.13), transparent 23rem),

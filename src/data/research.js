@@ -184,8 +184,6 @@ export const publications = [
     summary:
       "Intermittent sync in Watts–Strogatz Rössler networks beyond master-stability predictions.",
     theme: "networks",
-    image: "/assets/research/small-world-sync.png",
-    imageAlt: "Intermittent synchronization in small-world oscillator networks.",
     authors: [],
     links: [],
   },
@@ -197,8 +195,6 @@ export const publications = [
     summary:
       "Degree, clustering, and path length do not predict sync consistently across network classes.",
     theme: "networks",
-    image: "/assets/research/network-sync-indicators.png",
-    imageAlt: "Network topologies and synchronization measures across network classes.",
     authors: [],
     links: [],
   },
