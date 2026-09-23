@@ -1,4 +1,18 @@
-html {
+/* Site-wide foundation: fonts, non-colour tokens and element defaults.
+   Colours live in tokens.css (generated from palette.json); page styling lives in manuscript.css. */
+@import "@fontsource/crimson-pro/400.css";
+@import "@fontsource/crimson-pro/400-italic.css";
+@import "@fontsource/crimson-pro/500.css";
+@import "@fontsource/crimson-pro/600.css";
+@import "@fontsource/crimson-pro/700.css";
+@import "@fontsource/jetbrains-mono/500.css";
+
+:root {
+  --ms-font-display: "Crimson Pro", Georgia, serif;
+  --ms-font-body: "Crimson Pro", Georgia, serif;
+  --ms-font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --ms-container: min(1320px, calc(100vw - 2rem));
+  --ms-margin-mobile: clamp(1rem, 3vw, 2.15rem);
   color-scheme: light;
   scroll-behavior: smooth;
 }
@@ -16,18 +30,14 @@ html.dark {
 body {
   margin: 0;
   min-height: 100vh;
-  color: var(--ink);
-  font-family: var(--font-body);
+  color: var(--ms-on-surface);
+  font-family: var(--ms-font-body);
   font-size: 18px;
   line-height: 1.75;
   font-kerning: normal;
   text-rendering: optimizeLegibility;
-  background-color: var(--paper);
+  background-color: var(--ms-sheet);
   transition: background 0.4s ease, color 0.4s ease;
-}
-
-html.dark body {
-  background-color: var(--paper);
 }
 
 @media (max-width: 760px) {
@@ -37,7 +47,7 @@ html.dark body {
 }
 
 ::selection {
-  background: rgba(143, 79, 56, 0.16);
+  background: color-mix(in srgb, var(--ms-accent) 16%, transparent);
 }
 
 img {
@@ -59,7 +69,7 @@ select {
 }
 
 :focus-visible {
-  outline: 2px solid rgba(143, 79, 56, 0.4);
+  outline: 2px solid color-mix(in srgb, var(--ms-accent) 55%, transparent);
   outline-offset: 4px;
 }
 
@@ -73,4 +83,84 @@ select {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  color: var(--ms-on-surface);
+  font-family: var(--ms-font-display);
+  font-weight: 500;
+  letter-spacing: -0.024em;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: clamp(2.3rem, 3.85vw, 3.55rem);
+}
+
+h2 {
+  font-size: clamp(1.72rem, 2.8vw, 2.35rem);
+}
+
+h3 {
+  font-size: clamp(1.22rem, 1.55vw, 1.52rem);
+}
+
+p,
+li {
+  text-wrap: pretty;
+}
+
+/* Header cat companion (ManuscriptNavCat -> NavCompanion). */
+.nav-track {
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  min-width: 4rem;
+  min-height: 2.9rem;
+}
+
+.nav-companion {
+  width: clamp(3.5rem, 4vw, 4.25rem);
+  height: clamp(3.5rem, 4vw, 4.25rem);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.nav-companion-art,
+.nav-companion-art canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@media (max-width: 760px) {
+  .nav-track {
+    min-width: 3.2rem;
+    min-height: 2.4rem;
+  }
+
+  .nav-companion {
+    width: 3rem;
+    height: 3rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }

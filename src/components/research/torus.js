@@ -112,8 +112,8 @@ function paint(canvas) {
   const b = canvas._buf;
   if (!b) return;
   const cs = getComputedStyle(canvas);
-  const ink = rgb(cs.getPropertyValue("--ms-on-surface"), "#201916");
-  const sheet = rgb(cs.getPropertyValue("--ms-sheet"), "#fffdf7");
+  const ink = rgb(cs.getPropertyValue("--ms-on-surface"), "#111111");
+  const sheet = rgb(cs.getPropertyValue("--ms-sheet"), "#fffff8");
   const pal = PALETTE.map((n) => rgb(cs.getPropertyValue(`--domain-${n}`), "#6b7fb0"));
   const col = (t) => {
     const x = t * (pal.length - 1), i = Math.min(pal.length - 2, Math.floor(x)), f = x - i;

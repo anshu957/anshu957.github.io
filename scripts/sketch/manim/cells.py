@@ -43,7 +43,7 @@ else:
     A3 = ManimColor(os.environ.get("A3", "#6b7fb0"))  # blue  — right fate
     CONTOUR_OPACITY = 0.68
     CONTOUR_STROKE  = 1.15
-    CELL_CORE_COL   = ManimColor("#211512")
+    CELL_CORE_COL   = INK
 
 # Attractor basin centers in developmental space
 B = np.array([-0.74, 0.0, 0.74])

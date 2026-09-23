@@ -4,7 +4,7 @@ Working notes for AI assistants on this repo. For humans, start with **README.md
 
 ## What this is
 
-Personal academic site for **Anshul Choudhary** — blog-first, manuscript aesthetic (cream/dark, Newsreader, oxide/sage/blue/gold domain colors). CV is a PDF download on **About** only (no `/cv` page).
+Personal academic site for **Anshul Choudhary** — blog-first, manuscript aesthetic (Tufte Ivory: ivory/dark, Crimson Pro, one rubric-red accent, vivid domain colors for categories only). CV is a PDF download on **About** only (no `/cv` page).
 
 ## Commands
 
@@ -20,9 +20,9 @@ npm run preview   # serve dist/
 - **Active UI:** `src/components/manuscript/*` (header, footer, home, about, nav cat).
 - **Content:** `src/content/blog/*.mdx` + `src/content.config.ts`.
 - **Data:** `src/data/site.js`, `career.js`, `aboutTimeline.js`, `research.js`, `cv.js`.
-- **Styles:** Per-page `manuscript.css`; `BaseLayout` also imports `tokens.css`, `base.css`, `editorial.css`, `retro.css`, `global.css` (legacy globals).
+- **Styles:** colours only in `src/styles/palette.json` → `npm run tokens` generates `tokens.css` (+ Manim/TikZ palettes). `BaseLayout` imports `tokens.css` + `base.css`; pages import `manuscript.css`.
 - **Interactivity:** `ThemeToggle.jsx`, `ManuscriptNavCat.jsx` → `NavCompanion.jsx` (dotLottie).
-- **Typography:** Newsreader (manuscript); JetBrains Mono for rails/kickers.
+- **Typography:** Crimson Pro (manuscript); JetBrains Mono for rails/kickers.
 - **Icons:** `BrandIcon.astro` + simple-icons (Scholar, GitHub, ORCID).
 
 ## Pages
@@ -37,7 +37,7 @@ npm run preview   # serve dist/
 
 ## Domain colors
 
-`src/lib/domainColor.js` — oxide / blue / sage / gold from post tags and section paths. Use `accentVar()` in CSS, not hardcoded hex, so dark mode tracks `manuscript.css` tokens.
+`src/lib/domainColor.js` — oxide / blue / sage / gold from post tags. Use `accentVar()` in CSS, never hardcoded hex; values live in `palette.json`.
 
 ## Conventions
 

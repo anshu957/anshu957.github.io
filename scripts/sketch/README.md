@@ -34,12 +34,14 @@ The site maps each post to a domain colour (`src/lib/domainColor.js`). Match it:
 
 | Topic keywords | Domain | Light hex | Dark hex |
 |---|---|---|---|
-| tea / notes / personal / pause | **gold** | `#c89a52` | `#d4b06a` |
-| network / physics / complex / graph | **blue** | `#6b7fb0` | `#8fa0cb` |
-| genomics / single-cell / rna / method / pipeline | **sage** | `#5e7257` | `#8faa84` |
-| (anything else) | **oxide** | `#b85a43` | `#e08872` |
+| tea / notes / personal / pause | **gold** | `#9a6a00` | `#f0c24a` |
+| network / physics / complex / graph | **blue** | `#2450d6` | `#7f9dff` |
+| genomics / single-cell / rna / method / pipeline | **sage** | `#1f7a45` | `#5fe08f` |
+| (anything else) | **oxide** | `#c8361c` | `#ff6a4d` |
 
-Ink is always `#211512` (light mode) / `#f0dcc8` (dark mode).
+These are the site's `--domain-*` tokens. Their values live only in `src/styles/palette.json`; `generate.sh` runs `npm run tokens` and passes them in from the generated `palette.zsh`.
+
+Ink is `--ms-on-surface` (`#111111` light / `#efefe8` dark). `FILL` is the glass plate's sheet, `--ms-sheet` (`#fffff8` / `#1b1b19`).
 
 ---
 
@@ -52,9 +54,9 @@ both light and dark versions:
 ```python
 import os
 from manim import Scene, ManimColor, config
-INK    = ManimColor(os.environ.get("INK", "#211512"))     # linework
-ACCENT = ManimColor(os.environ.get("ACCENT", "#5e7257"))  # the one highlight
-FILL   = ManimColor(os.environ.get("FILL", "#f6f2ea"))    # = plate paper; only
+INK    = ManimColor(os.environ.get("INK", "#111111"))     # linework
+ACCENT = ManimColor(os.environ.get("ACCENT", "#1f7a45"))  # the one highlight
+FILL   = ManimColor(os.environ.get("FILL", "#fffff8"))    # = plate paper; only
                                                           # needed for occlusion
 
 config.frame_height = 2.6                    # 3:2 frame
@@ -113,7 +115,8 @@ Reuse these ideas; each is one of the existing scenes you can copy from:
    with `ACCENT` (use `FILL` only if you need occlusion like the landscape).
 3. **Find the accent** for the post's topic from the table above.
 4. **Register it** in `manim/generate.sh` — add a row to `posts`:
-   `"<file>.py <Class> <slug> <accentLight> <accentDark>"`. The `<slug>` must match
+   `"<file>.py <Class> <slug> ACCENT=SAGE"` (map the scene's colour vars to token
+   names; `generate.sh` fills in the light/dark values). The `<slug>` must match
    the post's `.mdx` filename and its `image:` frontmatter
    (`/assets/blog/<slug>-card.png`).
 5. **Render + look:** `scripts/sketch/manim/generate.sh` writes

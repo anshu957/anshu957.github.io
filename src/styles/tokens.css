@@ -1,79 +1,81 @@
-@import "@fontsource/newsreader/400.css";
-@import "@fontsource/newsreader/500.css";
-@import "@fontsource/newsreader/600.css";
-@import "@fontsource/jetbrains-mono/500.css";
+/* GENERATED from src/styles/palette.json by scripts/tokens/build.mjs. Do not edit; run `npm run tokens`. */
 
 :root {
-  /* Part 1 — canvas tokens (matched to prototype) */
-  --paper: #fdfbf7;
-  --paper-strong: #ffffff;
-  --paper-soft: #fdfbf7;
-  --surface: #fdfbf7;
-  --surface-strong: #ffffff;
-  --ink: #2d2520;
-  --ink-soft: #6a5c54;
-  --ink-faint: rgba(45, 37, 32, 0.7);
-  --line: rgba(45, 37, 32, 0.14);
-  --line-strong: rgba(45, 37, 32, 0.22);
-  --oxide: #8f4f38;
-  --terracotta: #9a6048;
-  --tag-bg: rgba(196, 168, 130, 0.22);
-  --tag-text: #7a4a32;
-  --sage: #5e7257;
-  --gold: #b8894a;
-  --accent-blue: #6b7fb0;
-  /* Domain accents — canonical semantic palette (mirrored on .manuscript-page) */
-  --domain-oxide: #b85a43;
-  --domain-sage: #5e7257;
-  --domain-blue: #6b7fb0;
-  --domain-gold: #c89a52;
-  --domain-teal: #247876;
-  --domain-plum: #79528d;
-  --illus-stroke: rgba(108, 82, 62, 0.5);
-  --illus-fill: rgba(154, 90, 66, 0.3);
-  --wave-stroke: rgba(190, 165, 135, 0.35);
-  --shadow: rgba(98, 74, 54, 0.06);
-  --font-body: "Newsreader", Georgia, serif;
-  --font-display: "Newsreader", Georgia, serif;
-  --font-ui: "Newsreader", Georgia, serif;
-  --site-width: min(1140px, calc(100vw - 4rem));
-  --reading-width: 67ch;
-  --radius-xs: 0.7rem;
-  --radius-sm: 1rem;
-  --radius-md: 1.4rem;
-  --radius-lg: 2rem;
-  --space-1: 0.5rem;
-  --space-2: 0.8rem;
-  --space-3: 1.1rem;
-  --space-4: 1.6rem;
-  --space-5: 2.4rem;
-  --space-6: 3.5rem;
-  --space-7: 5rem;
+  /* surface */
+  --ms-bg: #f4f4ea;
+  --ms-sheet: #fffff8;
+  --ms-highlight: #ffffff;
+  --ms-shell-edge: rgba(17, 17, 17, 0.035);
+  /* ink */
+  --ms-primary: #111111;
+  --ms-on-surface: #111111;
+  --ms-on-surface-variant: #1a1a1a;
+  --ms-muted: #4a4a4a;
+  /* accent */
+  --ms-accent: #a51c30;
+  --ms-accent-strong: #7d1424;
+  --ms-secondary: #a51c30;
+  /* line */
+  --ms-rule: rgba(17, 17, 17, 0.12);
+  --ms-etch: rgba(17, 17, 17, 0.5);
+  --ms-wave: rgba(110, 100, 90, 0.5);
+  /* shadow */
+  --ms-shadow: rgba(30, 30, 20, 0.1);
+  --ms-shadow-strong: rgba(30, 30, 20, 0.14);
+  --ms-inset: rgba(255, 255, 255, 0.62);
+  /* glass */
+  --ms-glass-edge: rgba(255, 255, 255, 0.7);
+  --ms-glass-line: rgba(0, 0, 0, 0.06);
+  --ms-glass-hi: rgba(255, 255, 255, 0.85);
+  --ms-glass-tint: linear-gradient(180deg, rgba(255, 255, 255, 0.35), rgba(240, 240, 228, 0.25));
+  --ms-glass-rim: rgba(255, 255, 255, 1);
+  --ms-glass-under: rgba(0, 0, 0, 0.05);
+  --ms-glass-lift: rgba(0, 0, 0, 0.22);
+  /* domain */
+  --domain-oxide: #c8361c;
+  --domain-sage: #1f7a45;
+  --domain-blue: #2450d6;
+  --domain-gold: #9a6a00;
+  --domain-teal: #00798a;
+  --domain-plum: #7b3fb0;
 }
 
 html.dark {
-  --paper: #1a1210;
-  --paper-strong: #211713;
-  --paper-soft: #1a1210;
-  --surface: #1a1210;
-  --surface-strong: #211713;
-  --ink: #e8d9c4;
-  --ink-soft: #b09a87;
-  --ink-faint: rgba(232, 217, 196, 0.74);
-  --line: rgba(220, 201, 169, 0.12);
-  --line-strong: rgba(220, 201, 169, 0.2);
-  --oxide: #d4705a;
-  --terracotta: #d4705a;
-  --tag-bg: rgba(212, 112, 90, 0.15);
-  --tag-text: #e8b8a8;
-  --sage: #8faa84;
-  --gold: #d4b06a;
-  --accent-blue: #8fa0cb;
-  --domain-oxide: #e08872;
-  --domain-sage: #8faa84;
-  --domain-blue: #8fa0cb;
-  --domain-gold: #d4b06a;
-  --domain-teal: #5ac4be;
-  --domain-plum: #b890ce;
-  --wave-stroke: rgba(200, 170, 130, 0.2);
+  /* surface */
+  --ms-bg: #121212;
+  --ms-sheet: #1b1b19;
+  --ms-highlight: rgba(255, 255, 255, 0.06);
+  --ms-shell-edge: rgba(239, 239, 232, 0.025);
+  /* ink */
+  --ms-primary: #efefe8;
+  --ms-on-surface: #efefe8;
+  --ms-on-surface-variant: #e2e2da;
+  --ms-muted: #a0a09a;
+  /* accent */
+  --ms-accent: #f07a8a;
+  --ms-accent-strong: #ffa9b4;
+  --ms-secondary: #f07a8a;
+  /* line */
+  --ms-rule: rgba(239, 239, 232, 0.14);
+  --ms-etch: rgba(239, 239, 232, 0.42);
+  --ms-wave: rgba(200, 190, 175, 0.3);
+  /* shadow */
+  --ms-shadow: rgba(0, 0, 0, 0.35);
+  --ms-shadow-strong: rgba(0, 0, 0, 0.45);
+  --ms-inset: rgba(255, 255, 255, 0.05);
+  /* glass */
+  --ms-glass-edge: rgba(255, 255, 255, 0.1);
+  --ms-glass-line: rgba(255, 255, 255, 0.04);
+  --ms-glass-hi: rgba(255, 255, 255, 0.09);
+  --ms-glass-tint: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015));
+  --ms-glass-rim: rgba(255, 255, 255, 0.12);
+  --ms-glass-under: rgba(0, 0, 0, 0.4);
+  --ms-glass-lift: rgba(0, 0, 0, 0.8);
+  /* domain */
+  --domain-oxide: #ff6a4d;
+  --domain-sage: #5fe08f;
+  --domain-blue: #7f9dff;
+  --domain-gold: #f0c24a;
+  --domain-teal: #3fd6d0;
+  --domain-plum: #c99cff;
 }

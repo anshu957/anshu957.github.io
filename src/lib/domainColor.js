@@ -1,20 +1,9 @@
-export const DOMAIN_ACCENTS = {
-  oxide: "#b85a43",
-  blue: "#6b7fb0",
-  sage: "#5e7257",
-  gold: "#c89a52",
-  teal: "#247876",
-  plum: "#79528d",
-};
+import palette from "../styles/palette.json";
 
-export const DOMAIN_CSS_VARS = {
-  oxide: "var(--domain-oxide)",
-  blue: "var(--domain-blue)",
-  sage: "var(--domain-sage)",
-  gold: "var(--domain-gold)",
-  teal: "var(--domain-teal)",
-  plum: "var(--domain-plum)",
-};
+/** Domain name -> its CSS variable. The colours themselves live in src/styles/palette.json. */
+export const DOMAIN_CSS_VARS = Object.fromEntries(
+  Object.keys(palette.domain).map((name) => [name, `var(--domain-${name})`]),
+);
 
 /** Map post tags to one of four meaning-bearing domain accents. */
 export function domainColor(tags = []) {
@@ -25,10 +14,6 @@ export function domainColor(tags = []) {
   return "oxide";
 }
 
-export function accentHex(color) {
-  return DOMAIN_ACCENTS[color] ?? DOMAIN_ACCENTS.oxide;
-}
-
 /** Prefer this for CSS custom properties — follows light/dark tokens on .manuscript-page. */
 export function accentVar(color) {
   return DOMAIN_CSS_VARS[color] ?? DOMAIN_CSS_VARS.oxide;
@@ -36,14 +21,6 @@ export function accentVar(color) {
 
 export function tagLabel(tag) {
   return (tag ?? "notes").replace(/-/g, " ");
-}
-
-/** Nav section → dominant accent for active-link tinting. */
-export function navAccent(path = "/") {
-  if (path.startsWith("/blog")) return "gold";
-  if (path.startsWith("/research")) return "sage";
-  if (path.startsWith("/about")) return "blue";
-  return "oxide";
 }
 
 /** Research theme index → domain accent. */

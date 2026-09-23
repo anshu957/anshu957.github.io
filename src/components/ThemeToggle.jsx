@@ -27,7 +27,7 @@ const MoonIcon = () => (
   </svg>
 );
 
-export default function ThemeToggle({ variant = "icon" }) {
+export default function ThemeToggle() {
   const [dark, setDark] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -49,68 +49,25 @@ export default function ThemeToggle({ variant = "icon" }) {
 
   if (!mounted) return null;
 
-  if (variant === "text") {
-    return (
-      <button
-        type="button"
-        className="proto-theme-text"
-        onClick={toggle}
-        aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-      >
-        Dark mode
-      </button>
-    );
-  }
-
-  if (variant === "manuscript") {
-    return (
-      <button
-        type="button"
-        className="ms-theme-switch"
-        onClick={toggle}
-        aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-        aria-pressed={dark}
-      >
-        <span className="ms-theme-track" aria-hidden="true">
-          <span className="ms-theme-end ms-theme-end--sun">
-            <SunIcon />
-          </span>
-          <span className="ms-theme-end ms-theme-end--moon">
-            <MoonIcon />
-          </span>
-          <span className="ms-theme-thumb">
-            {dark ? <MoonIcon /> : <SunIcon />}
-          </span>
-        </span>
-      </button>
-    );
-  }
-
   return (
     <button
+      type="button"
+      className="ms-theme-switch"
       onClick={toggle}
       aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-      style={{
-        width: "2.4rem",
-        height: "2.4rem",
-        borderRadius: "50%",
-        border: `1.5px solid ${dark ? "rgba(136,152,192,0.32)" : "rgba(160,104,32,0.28)"}`,
-        background: dark
-          ? "rgba(136, 152, 192, 0.10)"
-          : "rgba(200, 154, 82, 0.14)",
-        cursor: "pointer",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        color: dark ? "#8898c0" : "#9a6018",
-        transition: "all 280ms ease",
-        boxShadow: dark
-          ? "0 2px 10px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.04)"
-          : "0 2px 10px rgba(200,154,82,0.18), inset 0 1px 0 rgba(255,255,255,0.7)",
-        flexShrink: 0,
-      }}
+      aria-pressed={dark}
     >
-      {dark ? <MoonIcon /> : <SunIcon />}
+      <span className="ms-theme-track" aria-hidden="true">
+        <span className="ms-theme-end ms-theme-end--sun">
+          <SunIcon />
+        </span>
+        <span className="ms-theme-end ms-theme-end--moon">
+          <MoonIcon />
+        </span>
+        <span className="ms-theme-thumb">
+          {dark ? <MoonIcon /> : <SunIcon />}
+        </span>
+      </span>
     </button>
   );
 }

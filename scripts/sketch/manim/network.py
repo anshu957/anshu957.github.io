@@ -36,8 +36,8 @@ if IS_DARK:
     SHORTCUT_OP   = 0.90
 else:
     ACCENT        = ManimColor(os.environ.get("ACCENT", "#6b7fb0"))  # classic dusk cobalt
-    ACCENT_BEAM   = ManimColor("#1b2d56")                           # deep traveling beam
-    ACCENT_PULSE  = ManimColor("#3a528c")                           # active node pulse
+    ACCENT_BEAM   = ManimColor("#10277a")                           # deep traveling beam
+    ACCENT_PULSE  = ManimColor("#4a73ff")                           # active node pulse
     EDGE_BASE_OP  = 0.50
     SHORTCUT_OP   = 0.92
 

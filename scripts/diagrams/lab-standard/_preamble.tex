@@ -1,20 +1,14 @@
+% Colours come from src/styles/palette.json via the generated ../_palette.tex (npm run tokens).
 % Shared house style for the TikZ diagrams. render.sh defines \theme (light|dark) before \input.
 \documentclass{article}
 \usepackage{fontspec}
 \usepackage{tikz}
 \usepackage{fontawesome5}
 \usetikzlibrary{positioning,calc,arrows.meta,fit,backgrounds}
-\setmainfont{Newsreader}[Path=\fontdir, Extension=.ttf, UprightFont=*, ItalicFont=*-Italic, BoldFont=*, BoldFeatures={RawFeature={+wght=600}}]
+\setmainfont{CrimsonPro}[Path=\fontdir, Extension=.ttf, UprightFont=*, ItalicFont=*-Italic, UprightFeatures={RawFeature={+wght=400}}, ItalicFeatures={RawFeature={+wght=400}}, BoldFont=*, BoldFeatures={RawFeature={+wght=600}}, Scale=1.08]
 \setmonofont{JetBrainsMono}[Path=\fontdir, Extension=.ttf, Scale=0.86]
 \newfontfamily\kickerfont{JetBrainsMono}[Path=\fontdir, Extension=.ttf, Scale=0.72, LetterSpace=12]
-\def\darktheme{dark}
-\ifx\theme\darktheme
-  \definecolor{ink}{HTML}{F0DCC8}\definecolor{muted}{HTML}{A88F7F}\definecolor{paper}{HTML}{201713}
-  \definecolor{accent}{HTML}{8FAA84}\definecolor{accentfill}{HTML}{2A3326}\definecolor{oxide}{HTML}{E08872}
-\else
-  \definecolor{ink}{HTML}{211512}\definecolor{muted}{HTML}{66584F}\definecolor{paper}{HTML}{FFFDF7}
-  \definecolor{accent}{HTML}{5E7257}\definecolor{accentfill}{HTML}{E9EEE4}\definecolor{oxide}{HTML}{B85A43}
-\fi
+\input{\fontdir../_palette.tex}
 \tikzset{
   every picture/.style={line cap=round, line join=round, font=\normalsize, text=ink},
   card/.style={draw=ink!70!paper, line width=0.6pt, fill=paper, rounded corners=3pt, align=left,

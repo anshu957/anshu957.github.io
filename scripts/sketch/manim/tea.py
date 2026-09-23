@@ -29,26 +29,26 @@ FILL = ManimColor(FILL_VAL)
 
 if IS_DARK:
     TEA_HUES = [
-        ManimColor("#8e301a"),  # deep pu-erh leaf
-        ManimColor("#b24420"),  # copper tannin
-        ManimColor("#d06130"),  # amber liquor
-        ManimColor("#e27e3e"),  # roasted oolong
-        ManimColor("#efa252"),  # golden malt
-        ManimColor("#f6c46c"),  # honey tips
-        ManimColor("#fbe29a"),  # delicate steam
+        ManimColor("#a8290f"),  # deep pu-erh leaf
+        ManimColor("#d4401a"),  # copper tannin
+        ManimColor("#ff6a3d"),  # amber liquor
+        ManimColor("#ff8c3a"),  # roasted oolong
+        ManimColor("#ffad3d"),  # golden malt
+        ManimColor("#ffcb52"),  # honey tips
+        ManimColor("#ffe68f"),  # delicate steam
     ]
-    ACCENT = ManimColor("#d4b06a")
+    ACCENT = ManimColor("#f0c24a")
 else:
     TEA_HUES = [
-        ManimColor("#44130a"),  # deep pu-erh tannin
-        ManimColor("#661f10"),  # dark steeped tannin
-        ManimColor("#8a341a"),  # assam amber
-        ManimColor("#ad5026"),  # ceylon copper
-        ManimColor("#c57432"),  # roasted oolong
-        ManimColor("#d99644"),  # golden tips
-        ManimColor("#e9bf6a"),  # light infusion
+        ManimColor("#5a1004"),  # deep pu-erh tannin
+        ManimColor("#8a1a06"),  # dark steeped tannin
+        ManimColor("#b8300f"),  # assam amber
+        ManimColor("#d4481a"),  # ceylon copper
+        ManimColor("#e86d1f"),  # roasted oolong
+        ManimColor("#f09a26"),  # golden tips
+        ManimColor("#f5c24a"),  # light infusion
     ]
-    ACCENT = ManimColor("#c89a52")
+    ACCENT = ManimColor("#9a6a00")
 
 # Domain geometry: expanded to fill the complete 3.9 x 2.6 card canvas
 W, H = 1.92, 1.28

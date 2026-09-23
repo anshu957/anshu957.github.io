@@ -4,7 +4,7 @@ This site should feel calm, crafted, and a little strange.
 
 ## What We Are Going For
 
-- warm cream paper, not bright white
+- ivory paper (Tufte Ivory), true-black ink, one rubric-red accent; never grey or faded body text
 - editorial readability first, retro atmosphere second
 - selective retro artifacts, not a full pixel operating system
 - refined serif reading experience with properly typeset symbolic accents

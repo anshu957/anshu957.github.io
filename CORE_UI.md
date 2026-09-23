@@ -8,18 +8,18 @@ This file fixes the visual foundation for the site so future pages stay in one c
 - interactive layer: React islands
 - motion layer: Motion for React
 - content system: Astro content collections + MDX
-- style layers:
-  - [tokens.css](/Users/anshu957/Codex_experiments/MyWebpage/src/styles/tokens.css)
-  - [base.css](/Users/anshu957/Codex_experiments/MyWebpage/src/styles/base.css)
-  - [editorial.css](/Users/anshu957/Codex_experiments/MyWebpage/src/styles/editorial.css)
-  - [retro.css](/Users/anshu957/Codex_experiments/MyWebpage/src/styles/retro.css)
-  - [global.css](/Users/anshu957/Codex_experiments/MyWebpage/src/styles/global.css)
+- style layers (imported by `src/layouts/BaseLayout.astro`, then per page):
+  - `src/styles/palette.json`: the single source of truth for every colour, as `[light, dark]` pairs
+  - `src/styles/tokens.css`: GENERATED from `palette.json` by `npm run tokens` (runs before dev and build); `:root` light, `html.dark` dark. Never edit by hand
+  - `src/styles/base.css`: fonts, non-colour tokens (`--ms-font-*`, `--ms-container`), element defaults
+  - `src/styles/manuscript.css`: the page system (sheet, grain, glass recipes, header, archive, article)
+  - the same generator writes `scripts/sketch/manim/palette.zsh` (card art) and `scripts/diagrams/_palette.tex` (TikZ), so art cannot drift from the site
 
 ## Fixed Library Choices
 
 - `Simple Icons` for local brand icons such as Google Scholar, GitHub, and ORCID
 - `KaTeX` for inline and display math fragments that need real symbolic typography
-- `Newsreader` for body, display, and interface typography
+- `Crimson Pro` (via `@fontsource/crimson-pro`) for body, display, and interface typography; `JetBrains Mono` for dates, tags, kickers and the header badge
 - `dotLottie React` for character-grade companion animation when we need a small ambient character accent
 - custom retro accents are allowed, but they are no longer the primary UI system
 - `TikZ` (LuaLaTeX + `pdftocairo`, build-time only) for post diagrams: `scripts/diagrams/<post>/render.sh` renders each `.tex` to light + dark SVGs in `public/assets/blog/<post>/`, shown by `src/components/blog/Diagram.astro`. Shared style in `_preamble.tex`; icons from `fontawesome5`. Add-on packages matched to TeX Live 2023 live outside the repo in `~/.local/share/texmf-tl2023` (fontawesome5, simpleicons, forest, pgf-umlsd, dirtree). Nothing ships to the browser but the SVGs.
@@ -27,15 +27,20 @@ This file fixes the visual foundation for the site so future pages stay in one c
 
 ## Fixed Font Choices
 
-- display/editorial serif: `Newsreader`
-- body/prose serif: `Newsreader`
+- display/editorial serif: `Crimson Pro`
+- body/prose serif: `Crimson Pro`
+- metadata (dates, tags, kickers, badge): `JetBrains Mono`
 - math typography: `KaTeX`'s bundled math fonts
-- diagrams: glyphs of `Newsreader` + `JetBrains Mono` are baked into each SVG as outlines at render time (TTFs in `scripts/diagrams/fonts/`); not loaded by the site
+- diagrams: glyphs of `Crimson Pro` + `JetBrains Mono` are baked into each SVG as outlines at render time (TTFs in `scripts/diagrams/fonts/`); not loaded by the site
 - utility text should inherit the editorial serif unless there is a deliberate exception
 
 ## Fixed Style Rules
 
-- warm paper background with restrained oxide, sage, and gold accents
+- Tufte Ivory: ivory sheet (`--ms-sheet` #fffff8 / #1b1b19), true-black ink (`--ms-on-surface` #111 / #efefe8), prose at full ink
+- ONE accent, rubric red (`--ms-accent` #a51c30 / #f07a8a): links (always underlined), active nav, drop cap, rules
+- domain colours (`--domain-*`, vivid, all at least 4.5:1 on the sheet) are categorical only: tags, the header badge, research plates, card and diagram art; never nav or links
+- liquid glass (`.ms-glass`, `.ms-glass-plate` in `manuscript.css`) for the header badge and figure plates; glass tokens `--ms-glass-*`
+- change a colour only in `src/styles/palette.json`; card art (`generate.sh`) and diagrams (`_preamble.tex`) read the generated files, then re-render them
 - serif for identity, body, navigation, and post titles
 - the site should read as editorial first and retro second
 - math fragments should be typeset, not improvised with symbol fallbacks

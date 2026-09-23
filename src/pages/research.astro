@@ -49,7 +49,7 @@ const isMe = (name) => /choudhary/i.test(name);
       <div class="rs-areas">
         {areas.map((area) => (
           <section id={`theme-${area.id}`} class="rs-area" style={`--area-accent: ${area.accent}`} aria-labelledby={`title-${area.id}`}>
-            <figure class="rs-plate" style={`--plate-accent: ${area.accent}`}>
+            <figure class="rs-plate ms-glass-plate" style={`--plate-accent: ${area.accent}`}>
               <ResearchPlate kind={area.plate} />
             </figure>
             <div class="rs-area-text">
@@ -224,8 +224,7 @@ const isMe = (name) => /choudhary/i.test(name);
   .rs-plate {
     margin: 0;
     padding: 0.7rem;
-    border: 1px solid var(--ms-rule);
-    background: var(--ms-sheet);
+    overflow: hidden;
   }
 
   .rs-area-title {

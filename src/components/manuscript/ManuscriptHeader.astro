@@ -1,7 +1,6 @@
 ---
 import ThemeToggle from "../ThemeToggle.jsx";
 import ManuscriptNavCat from "./ManuscriptNavCat.jsx";
-import { navAccent, accentVar } from "../../lib/domainColor.js";
 
 const { currentPath = "/" } = Astro.props;
 
@@ -11,11 +10,10 @@ const links = [
   { href: "/blog", label: "Blog" },
 ];
 
-const sectionAccent = accentVar(navAccent(currentPath));
 ---
 
 <header class="ms-header">
-  <div class="ms-equation-badge" aria-label="Site tagline">
+  <div class="ms-equation-badge ms-glass" aria-label="Site tagline">
     <p class="ms-terminal-line">
       <span class="ms-prompt">
         <span class="ms-prompt-user">a957@phase-space</span><span class="ms-prompt-geo">:</span><span class="ms-prompt-path">~</span><span class="ms-prompt-mark">$</span>
@@ -26,10 +24,10 @@ const sectionAccent = accentVar(navAccent(currentPath));
       <svg viewBox="0 0 280 26" preserveAspectRatio="none">
         <defs>
           <radialGradient id="ms-cell-fill" cx="38%" cy="32%" r="72%">
-            <stop offset="0%" stop-color="#eef4e8" />
-            <stop offset="45%" stop-color="#b8c9a8" />
-            <stop offset="88%" stop-color="#5e7257" />
-            <stop offset="100%" stop-color="#46553f" />
+            <stop offset="0%" style="stop-color: color-mix(in srgb, var(--domain-sage) 8%, var(--ms-sheet))" />
+            <stop offset="45%" style="stop-color: color-mix(in srgb, var(--domain-sage) 40%, var(--ms-sheet))" />
+            <stop offset="88%" style="stop-color: var(--domain-sage)" />
+            <stop offset="100%" style="stop-color: color-mix(in srgb, var(--domain-sage) 75%, var(--ms-on-surface))" />
           </radialGradient>
         </defs>
         <path class="ms-landscape-shadow" d="M 6 17.5 C 38 4, 68 22, 101 10.5 S 168 2.5, 210 14 S 258 22, 274 9.5" />
@@ -38,8 +36,8 @@ const sectionAccent = accentVar(navAccent(currentPath));
           d="M 6 16 C 38 3, 68 21, 101 10 S 168 1, 210 13 S 258 21, 274 8"
         />
         <g class="ms-rolling-cell ms-rolling-cell--motion">
-          <circle r="4.2" fill="url(#ms-cell-fill)" stroke="#5e7257" stroke-width="0.55" opacity="0.94" />
-          <circle r="1.35" cx="0.9" cy="-0.7" fill="#3d4f38" opacity="0.62" />
+          <circle r="4.2" fill="url(#ms-cell-fill)" style="stroke: var(--domain-sage)" stroke-width="0.55" opacity="0.94" />
+          <circle r="1.35" cx="0.9" cy="-0.7" style="fill: color-mix(in srgb, var(--domain-sage) 60%, var(--ms-on-surface))" opacity="0.62" />
           <animateMotion
             dur="7.5s"
             repeatCount="indefinite"
@@ -51,8 +49,8 @@ const sectionAccent = accentVar(navAccent(currentPath));
           />
         </g>
         <g class="ms-rolling-cell ms-rolling-cell--static" transform="translate(140, 12)">
-          <circle r="4.2" fill="url(#ms-cell-fill)" stroke="#5e7257" stroke-width="0.55" opacity="0.94" />
-          <circle r="1.35" cx="0.9" cy="-0.7" fill="#3d4f38" opacity="0.62" />
+          <circle r="4.2" fill="url(#ms-cell-fill)" style="stroke: var(--domain-sage)" stroke-width="0.55" opacity="0.94" />
+          <circle r="1.35" cx="0.9" cy="-0.7" style="fill: color-mix(in srgb, var(--domain-sage) 60%, var(--ms-on-surface))" opacity="0.62" />
         </g>
       </svg>
     </span>
@@ -65,7 +63,7 @@ const sectionAccent = accentVar(navAccent(currentPath));
       </span>
     </p>
   </div>
-  <div class="ms-header-nav-stage" style={`--nav-accent: ${sectionAccent}`}>
+  <div class="ms-header-nav-stage">
     <ManuscriptNavCat client:load transition:persist="ms-nav-cat" />
     <nav class="ms-header-nav" aria-label="Primary">
       {links.map((link) => {
@@ -82,7 +80,7 @@ const sectionAccent = accentVar(navAccent(currentPath));
           </a>
         );
       })}
-      <ThemeToggle client:load variant="manuscript" />
+      <ThemeToggle client:load />
     </nav>
   </div>
 </header>
@@ -106,34 +104,11 @@ const sectionAccent = accentVar(navAccent(currentPath));
     min-width: min(34rem, 52vw);
     min-height: 5.55rem;
     padding: 0.68rem 0.92rem 0.58rem;
-    border: 1px solid color-mix(in srgb, var(--domain-oxide) 20%, var(--ms-rule));
-    border-radius: 0.38rem;
-    background:
-      linear-gradient(
-        165deg,
-        color-mix(in srgb, var(--ms-sheet) 97%, var(--ms-highlight)),
-        color-mix(in srgb, var(--domain-oxide) 4%, var(--ms-sheet))
-      );
-    box-shadow:
-      0 1px 3px var(--ms-shadow),
-      0 0 0 1px color-mix(in srgb, var(--domain-oxide) 8%, transparent) inset;
+    border-radius: 1.4rem;
     font-family: var(--ms-font-mono);
     font-size: clamp(0.84rem, 1.26vw, 0.98rem);
     line-height: 1.35;
     color: var(--ms-on-surface-variant);
-  }
-
-  html.dark .ms-equation-badge {
-    border-color: color-mix(in srgb, var(--domain-oxide) 24%, var(--ms-rule));
-    background:
-      linear-gradient(
-        165deg,
-        color-mix(in srgb, var(--ms-sheet) 94%, #221816),
-        color-mix(in srgb, var(--domain-oxide) 8%, var(--ms-sheet))
-      );
-    box-shadow:
-      0 1px 3px var(--ms-shadow),
-      0 0 0 1px color-mix(in srgb, var(--domain-oxide) 10%, transparent) inset;
   }
 
   .ms-terminal-line {
@@ -265,7 +240,7 @@ const sectionAccent = accentVar(navAccent(currentPath));
   }
 
   .ms-rolling-cell {
-    filter: drop-shadow(0 1px 2px rgba(62, 79, 56, 0.22));
+    filter: drop-shadow(0 1px 2px color-mix(in srgb, var(--domain-sage) 30%, transparent));
   }
 
   .ms-rolling-cell--static {
@@ -354,11 +329,11 @@ const sectionAccent = accentVar(navAccent(currentPath));
 
   .ms-header-link:hover,
   .ms-header-link:focus-visible {
-    color: var(--nav-accent, var(--ms-secondary));
+    color: var(--ms-accent);
   }
 
   .ms-header-link--active {
-    color: var(--nav-accent, var(--ms-secondary));
+    color: var(--ms-accent);
   }
 
   @media (max-width: 720px) {

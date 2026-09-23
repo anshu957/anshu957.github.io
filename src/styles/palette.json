@@ -1,0 +1,143 @@
+{
+  "$comment": "Single source of truth for every colour on the site. Each token is [light, dark]. Run `npm run tokens` (also runs before dev/build) to regenerate src/styles/tokens.css, scripts/sketch/manim/palette.zsh and scripts/diagrams/_palette.tex. Never edit those by hand.",
+  "surface": {
+    "ms-bg": [
+      "#f4f4ea",
+      "#121212"
+    ],
+    "ms-sheet": [
+      "#fffff8",
+      "#1b1b19"
+    ],
+    "ms-highlight": [
+      "#ffffff",
+      "rgba(255, 255, 255, 0.06)"
+    ],
+    "ms-shell-edge": [
+      "rgba(17, 17, 17, 0.035)",
+      "rgba(239, 239, 232, 0.025)"
+    ]
+  },
+  "ink": {
+    "ms-primary": [
+      "#111111",
+      "#efefe8"
+    ],
+    "ms-on-surface": [
+      "#111111",
+      "#efefe8"
+    ],
+    "ms-on-surface-variant": [
+      "#1a1a1a",
+      "#e2e2da"
+    ],
+    "ms-muted": [
+      "#4a4a4a",
+      "#a0a09a"
+    ]
+  },
+  "accent": {
+    "ms-accent": [
+      "#a51c30",
+      "#f07a8a"
+    ],
+    "ms-accent-strong": [
+      "#7d1424",
+      "#ffa9b4"
+    ],
+    "ms-secondary": [
+      "#a51c30",
+      "#f07a8a"
+    ]
+  },
+  "line": {
+    "ms-rule": [
+      "rgba(17, 17, 17, 0.12)",
+      "rgba(239, 239, 232, 0.14)"
+    ],
+    "ms-etch": [
+      "rgba(17, 17, 17, 0.5)",
+      "rgba(239, 239, 232, 0.42)"
+    ],
+    "ms-wave": [
+      "rgba(110, 100, 90, 0.5)",
+      "rgba(200, 190, 175, 0.3)"
+    ]
+  },
+  "shadow": {
+    "ms-shadow": [
+      "rgba(30, 30, 20, 0.1)",
+      "rgba(0, 0, 0, 0.35)"
+    ],
+    "ms-shadow-strong": [
+      "rgba(30, 30, 20, 0.14)",
+      "rgba(0, 0, 0, 0.45)"
+    ],
+    "ms-inset": [
+      "rgba(255, 255, 255, 0.62)",
+      "rgba(255, 255, 255, 0.05)"
+    ]
+  },
+  "glass": {
+    "ms-glass-edge": [
+      "rgba(255, 255, 255, 0.7)",
+      "rgba(255, 255, 255, 0.1)"
+    ],
+    "ms-glass-line": [
+      "rgba(0, 0, 0, 0.06)",
+      "rgba(255, 255, 255, 0.04)"
+    ],
+    "ms-glass-hi": [
+      "rgba(255, 255, 255, 0.85)",
+      "rgba(255, 255, 255, 0.09)"
+    ],
+    "ms-glass-tint": [
+      "linear-gradient(180deg, rgba(255, 255, 255, 0.35), rgba(240, 240, 228, 0.25))",
+      "linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015))"
+    ],
+    "ms-glass-rim": [
+      "rgba(255, 255, 255, 1)",
+      "rgba(255, 255, 255, 0.12)"
+    ],
+    "ms-glass-under": [
+      "rgba(0, 0, 0, 0.05)",
+      "rgba(0, 0, 0, 0.4)"
+    ],
+    "ms-glass-lift": [
+      "rgba(0, 0, 0, 0.22)",
+      "rgba(0, 0, 0, 0.8)"
+    ]
+  },
+  "domain": {
+    "oxide": [
+      "#c8361c",
+      "#ff6a4d"
+    ],
+    "sage": [
+      "#1f7a45",
+      "#5fe08f"
+    ],
+    "blue": [
+      "#2450d6",
+      "#7f9dff"
+    ],
+    "gold": [
+      "#9a6a00",
+      "#f0c24a"
+    ],
+    "teal": [
+      "#00798a",
+      "#3fd6d0"
+    ],
+    "plum": [
+      "#7b3fb0",
+      "#c99cff"
+    ]
+  },
+  "diagram": {
+    "accentfill": [
+      "#e6f1ea",
+      "#173322"
+    ]
+  }
+}
