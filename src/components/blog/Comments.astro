@@ -19,7 +19,7 @@ const api = import.meta.env.PUBLIC_COMMENTS_API || siteMeta.commentsApi;
         <input name="name" maxlength="60" autocomplete="name" placeholder="Anonymous" />
       </label>
       <label class="ms-comments-field">
-        <span>Comment</span>
+        <span>Comment <em>(math: $…$ or $$…$$)</em></span>
         <textarea name="body" rows="4" maxlength="5000" required></textarea>
       </label>
       <label class="ms-comments-hp" aria-hidden="true">
@@ -66,6 +66,27 @@ const api = import.meta.env.PUBLIC_COMMENTS_API || siteMeta.commentsApi;
       li.append(meta, body);
       list.append(li);
       empty.hidden = true;
+      if (c.body.includes("$")) typeset(body, c.body);
+    };
+
+    // $$…$$ (display) and $…$ (inline) become KaTeX; everything else stays text nodes.
+    // KaTeX escapes its input and, with trust off, allows no links or raw HTML.
+    const MATH = /\$\$([\s\S]+?)\$\$|\$([^$\n]+?)\$/g;
+    const typeset = async (el: HTMLElement, text: string) => {
+      const { default: katex } = await import("katex");
+      const parts: Node[] = [];
+      let last = 0;
+      for (const m of text.matchAll(MATH)) {
+        parts.push(document.createTextNode(text.slice(last, m.index)));
+        const span = document.createElement("span");
+        span.innerHTML = katex.renderToString(m[1] ?? m[2], {
+          displayMode: m[1] !== undefined, throwOnError: false, trust: false, maxSize: 20, maxExpand: 200,
+        });
+        parts.push(span);
+        last = m.index! + m[0].length;
+      }
+      parts.push(document.createTextNode(text.slice(last)));
+      el.replaceChildren(...parts);
     };
 
     const load = async () => {
