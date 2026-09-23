@@ -1,5 +1,6 @@
 ---
 import CardPlate from "../../components/blog/CardPlate.astro";
+import Comments from "../../components/blog/Comments.astro";
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ManuscriptHeader from "../../components/manuscript/ManuscriptHeader.astro";
@@ -72,6 +73,7 @@ const primaryTag = tagLabel(tags[0]);
 
           <div class="ms-article-prose">
             <Content components={{ Sidenote }} />
+            {post.data.comments && <Comments slug={post.slug} />}
           </div>
         </div>
       </article>

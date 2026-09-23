@@ -1,0 +1,13 @@
+# Comment backend for the blog: a Cloudflare Worker + D1. See README.md.
+name = "blog-comments"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+
+[vars]
+ALLOWED_ORIGINS = "https://anshu957.github.io,http://localhost:4321,http://localhost:4399"
+SITE = "https://anshu957.github.io"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "blog-comments"
+database_id = "fb6d361e-7b1b-457a-9832-8e91eb9bfb13"

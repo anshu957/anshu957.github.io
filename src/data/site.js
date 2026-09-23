@@ -7,6 +7,8 @@ export const siteMeta = {
   institution: "The Jackson Laboratory for Genomic Medicine",
   location: "Farmington, Connecticut",
   email: "anshul.choudhary@jax.org",
+  // Comments API (workers/comments); empty hides the comments section.
+  commentsApi: "https://blog-comments.anshulheaven.workers.dev",
   headerTagline: "Finding beauty in complexity.",
   tagline: "Computational biologist working across genomics, machine learning, and nonlinear dynamics.",
   homeNote:

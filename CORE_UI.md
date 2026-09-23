@@ -23,6 +23,7 @@ This file fixes the visual foundation for the site so future pages stay in one c
 - `dotLottie React` for character-grade companion animation when we need a small ambient character accent
 - custom retro accents are allowed, but they are no longer the primary UI system
 - `TikZ` (LuaLaTeX + `pdftocairo`, build-time only) for post diagrams: `scripts/diagrams/<post>/render.sh` renders each `.tex` to light + dark SVGs in `public/assets/blog/<post>/`, shown by `src/components/blog/Diagram.astro`. Shared style in `_preamble.tex`; icons from `fontawesome5`. Add-on packages matched to TeX Live 2023 live outside the repo in `~/.local/share/texmf-tl2023` (fontawesome5, simpleicons, forest, pgf-umlsd, dirtree). Nothing ships to the browser but the SVGs.
+- Anonymous post comments (no account): `src/components/blog/Comments.astro` (plain DOM, text-only rendering) talking to a Cloudflare Worker + D1 in `workers/comments/` (honeypot, timing and per-IP rate limits; owner deletes via admin token). API base: `siteMeta.commentsApi` (override with `PUBLIC_COMMENTS_API`). Opt out per post with `comments: false`.
 
 ## Fixed Font Choices
 

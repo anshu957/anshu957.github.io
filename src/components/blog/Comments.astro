@@ -1,0 +1,252 @@
+---
+// Anonymous comments, no account needed. Backend: workers/comments (Cloudflare Worker + D1).
+// The API base comes from siteMeta.commentsApi; PUBLIC_COMMENTS_API overrides it for local dev.
+import { siteMeta } from "../../data/site.js";
+
+const { slug } = Astro.props;
+const api = import.meta.env.PUBLIC_COMMENTS_API || siteMeta.commentsApi;
+---
+
+{api && (
+  <section class="ms-comments" aria-labelledby="ms-comments-title" data-api={api} data-slug={slug}>
+    <div id="ms-comments-title" class="ms-comments-label" role="heading" aria-level="2">comments</div>
+    <ol class="ms-comments-list" aria-live="polite"></ol>
+    <div class="ms-comments-empty" hidden>No comments yet.</div>
+
+    <form class="ms-comments-form">
+      <label class="ms-comments-field">
+        <span>Name <em>(optional)</em></span>
+        <input name="name" maxlength="60" autocomplete="name" placeholder="Anonymous" />
+      </label>
+      <label class="ms-comments-field">
+        <span>Comment</span>
+        <textarea name="body" rows="4" maxlength="5000" required></textarea>
+      </label>
+      <label class="ms-comments-hp" aria-hidden="true">
+        Website <input name="website" tabindex="-1" autocomplete="off" />
+      </label>
+      <div class="ms-comments-actions">
+        <button type="submit">Post comment</button>
+        <div class="ms-comments-status" role="status"></div>
+      </div>
+    </form>
+  </section>
+)}
+
+<script>
+  const root = document.querySelector<HTMLElement>(".ms-comments");
+  if (root) {
+    const api = root.dataset.api!.replace(/\/$/, "");
+    const slug = root.dataset.slug!;
+    const list = root.querySelector<HTMLOListElement>(".ms-comments-list")!;
+    const empty = root.querySelector<HTMLElement>(".ms-comments-empty")!;
+    const form = root.querySelector<HTMLFormElement>(".ms-comments-form")!;
+    const status = root.querySelector<HTMLElement>(".ms-comments-status")!;
+    const button = form.querySelector<HTMLButtonElement>("button")!;
+    const opened = Date.now();
+    const fmt = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" });
+
+    type Comment = { id: number; name: string; body: string; created_at: number };
+
+    const render = (c: Comment) => {
+      const li = document.createElement("li");
+      li.className = "ms-comment";
+      const meta = document.createElement("div");
+      meta.className = "ms-comment-meta";
+      const who = document.createElement("span");
+      who.className = "ms-comment-name";
+      who.textContent = c.name;
+      const when = document.createElement("time");
+      when.dateTime = new Date(c.created_at).toISOString();
+      when.textContent = fmt.format(c.created_at);
+      meta.append(who, " · ", when);
+      const body = document.createElement("div");
+      body.className = "ms-comment-body";
+      body.textContent = c.body; // plain text only, never HTML
+      li.append(meta, body);
+      list.append(li);
+      empty.hidden = true;
+    };
+
+    const load = async () => {
+      try {
+        const r = await fetch(`${api}/comments?slug=${encodeURIComponent(slug)}`);
+        const { comments } = await r.json();
+        list.replaceChildren();
+        comments.forEach(render);
+        empty.hidden = comments.length > 0;
+      } catch {
+        empty.hidden = false;
+        empty.textContent = "Comments couldn't be loaded right now.";
+      }
+    };
+
+    // Fetch only when the section gets close to the viewport.
+    const io = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) { io.disconnect(); load(); }
+    }, { rootMargin: "600px" });
+    io.observe(root);
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      button.disabled = true;
+      status.textContent = "Posting…";
+      try {
+        const r = await fetch(`${api}/comments`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            slug,
+            name: fd.get("name"),
+            body: fd.get("body"),
+            website: fd.get("website"),
+            elapsed: Date.now() - opened,
+          }),
+        });
+        const data = await r.json();
+        if (!r.ok) throw new Error(data.error || "Something went wrong.");
+        if (data.comment) render(data.comment);
+        form.reset();
+        status.textContent = "Thanks, your comment is up.";
+      } catch (err) {
+        status.textContent = err instanceof Error ? err.message : "Something went wrong.";
+      } finally {
+        button.disabled = false;
+      }
+    });
+  }
+</script>
+
+<style>
+  .ms-comments {
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--ms-rule);
+  }
+
+  .ms-comments-label {
+    margin: 0 0 1.1rem;
+    color: var(--article-accent, var(--ms-muted));
+    font-family: var(--ms-font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .ms-comments-list {
+    margin: 0 0 1.6rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ms-comments-list :global(.ms-comment) {
+    margin: 0;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--ms-rule);
+  }
+
+  .ms-comments-list :global(.ms-comment-meta) {
+    margin: 0 0 0.3rem;
+    color: var(--ms-muted);
+    font-family: var(--ms-font-mono);
+    font-size: 0.72rem;
+  }
+
+  .ms-comments-list :global(.ms-comment-name) {
+    color: var(--ms-on-surface);
+    font-weight: 600;
+  }
+
+  .ms-comments-list :global(.ms-comment-body) {
+    margin: 0;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .ms-comments-empty {
+    margin: 0 0 1.4rem;
+    color: var(--ms-muted);
+    font-style: italic;
+  }
+
+  .ms-comments-form {
+    display: grid;
+    gap: 0.85rem;
+  }
+
+  .ms-comments-field {
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .ms-comments-field span {
+    color: var(--ms-muted);
+    font-family: var(--ms-font-mono);
+    font-size: 0.72rem;
+  }
+
+  .ms-comments-field input,
+  .ms-comments-field textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.55rem 0.7rem;
+    border: 1px solid var(--ms-rule);
+    border-radius: 0.4rem;
+    background: var(--ms-sheet);
+    color: var(--ms-on-surface);
+    font: inherit;
+    font-size: 1rem;
+  }
+
+  .ms-comments-field textarea {
+    resize: vertical;
+    min-height: 6rem;
+  }
+
+  .ms-comments-field input:focus-visible,
+  .ms-comments-field textarea:focus-visible,
+  .ms-comments-actions button:focus-visible {
+    outline: 2px solid var(--article-accent, var(--ms-primary));
+    outline-offset: 1px;
+  }
+
+  /* Honeypot: invisible to people, filled in by bots. */
+  .ms-comments-hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .ms-comments-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .ms-comments-actions button {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--article-accent, var(--ms-primary));
+    border-radius: 0.4rem;
+    background: color-mix(in srgb, var(--article-accent, var(--ms-primary)) 12%, var(--ms-sheet));
+    color: var(--ms-on-surface);
+    font-family: var(--ms-font-mono);
+    font-size: 0.78rem;
+    cursor: pointer;
+  }
+
+  .ms-comments-actions button:disabled {
+    opacity: 0.6;
+    cursor: progress;
+  }
+
+  .ms-comments-status {
+    margin: 0;
+    color: var(--ms-muted);
+    font-size: 0.85rem;
+  }
+</style>
