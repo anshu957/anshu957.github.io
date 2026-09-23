@@ -137,14 +137,20 @@ function paint(canvas) {
   ctx.putImageData(img, 0, 0);
 }
 
+// One theme watcher for whichever torus canvases are on the current page.
+let themeWatch = null;
+
 export function drawTori(canvas) {
+  if (canvas._started) return;
+  canvas._started = true;
+  themeWatch ??= new MutationObserver(() => document.querySelectorAll("canvas[data-torus]").forEach(paint));
+  themeWatch.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
   const start = () => {
     orbits ??= solve();
     draw(canvas);
     new ResizeObserver(() => {
       if (Math.round(canvas.clientWidth * Math.min(window.devicePixelRatio || 1, 2)) !== canvas._buf?.w) draw(canvas);
     }).observe(canvas);
-    new MutationObserver(() => paint(canvas)).observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
   };
   // Solve only when the plate comes near the viewport.
   const io = new IntersectionObserver((es) => {

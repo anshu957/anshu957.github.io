@@ -113,11 +113,14 @@ const isMe = (name) => /choudhary/i.test(name);
 
     <ManuscriptFooter />
     <script>
-      // Run the oscillator plate only while it is on screen.
+      // Run the oscillator plate only while it is on screen. astro:page-load fires on the first load
+      // and after every client-side navigation (ClientRouter), so a swapped-in page gets observed too.
       const io = new IntersectionObserver((entries) => {
         for (const e of entries) e.target.classList.toggle("rp--live", e.isIntersecting);
       });
-      document.querySelectorAll(".rp--ring").forEach((el) => io.observe(el));
+      document.addEventListener("astro:page-load", () => {
+        document.querySelectorAll(".rp--ring").forEach((el) => io.observe(el));
+      });
     </script>
     </div>
   </div>
