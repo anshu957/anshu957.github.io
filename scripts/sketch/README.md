@@ -87,7 +87,7 @@ Reuse these ideas; each is one of the existing scenes you can copy from:
   oxide) that show on cream *and* dark, and keep them constant across both variants;
   only the ink swaps.
 
-## The three existing scenes (copy the closest one)
+## The existing scenes (copy the closest one)
 
 - `cells.py` (`Cells`) — **Watching Cells Decide**: a Waddington landscape. Stacked
   contours, one valley at the back splitting into several at the front; three cells
@@ -96,6 +96,11 @@ Reuse these ideas; each is one of the existing scenes you can copy from:
   graph in a force-directed layout; long-range shortcuts + hubs in blue.
 - `tea.py` (`Tea`) — **Tea Between Simulations**: a stirred teacup in 3/4 view; the
   tea surface carries a swirling vortex field (amber + oxide).
+- `lab.py` (`Lab`) — **Lab Standard**: loose files drifting on the left get filed, one
+  by one, into a project folder tree on the right. Deliberate exception to "ink + one
+  accent" (requested): files are coloured by kind across all four domain colours
+  (scripts blue, figures oxide, data gold, memory files sage), passed as
+  SAGE/BLUE/OXIDE/GOLD env vars by `generate.sh`. Render alone with `ONLY=lab.py`. Ships as animated WebP (`-card{,-dark}.webp`), not GIFs.
 
 ---
 

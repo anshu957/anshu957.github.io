@@ -26,16 +26,16 @@ export const fallbackHomePosts = [
     },
   },
   {
-    slug: "small-worlds-at-dusk",
+    slug: "lab-standard",
     data: {
-      title: "Small Worlds at Dusk",
-      description: "Why network thinking still helps when the system is noisy, high-dimensional, and only partially observed.",
-      date: new Date("2026-01-07"),
+      title: "How I Organize Research Projects When Working with AI Agents",
+      description: "The folder layout, a few plain files and some small Claude Code hooks that I use to keep a research project reproducible when much of the code is written by an AI agent.",
+      date: new Date("2026-09-22"),
       draft: false,
       featured: false,
-      tags: ["networks", "physics", "complex systems"],
-      readingTime: "5 min read",
-      image: "/assets/blog/small-worlds-at-dusk-card.gif",
+      tags: ["reproducibility", "ai agents", "research software"],
+      readingTime: "15 min read",
+      image: "/assets/blog/lab-standard-card.webp",
     },
   },
 ];

@@ -1,0 +1,36 @@
+% Sessions without and with a shared project memory.
+\input{_preamble}
+\begin{document}
+\diagram{\begin{tikzpicture}[x=1cm,y=1cm]
+  \def\tw{3.0cm}
+  % ---- without
+  \node[head, anchor=north west] (h1) at (0,0) {\kicker{without a shared memory}\\[3pt] every session starts from zero};
+  \foreach \d/\x/\f/\r in {Monday/1.8/usage\_v2.py/-4, Wednesday/6.0/h2\_final\_FINAL.pdf/3, Friday/10.2/compute\_usage()/-2} {
+    \node[card=\tw, anchor=north, align=center] (s) at (\x,-1.35) {\faIcon{robot}\quad \d};
+    \node[draw=muted!80!paper, dashed, rounded corners=3pt, inner xsep=8pt, inner ysep=6pt, text=muted, anchor=north, rotate=\r, font=\ttfamily] (f) at (\x,-2.6) {\faIcon{file}\ \ \f};
+    \draw[ghostline] (s.south) -- (f.north);
+  }
+  \node[lbl, anchor=north] at (6.0,-3.85) {nothing connects them, so each file is a surprise to the next session};
+  \begin{scope}[on background layer]
+    \node[panel, fit={(h1) (-0.1,-4.35) (12.1,-1)}] {};
+  \end{scope}
+  % ---- with
+  \begin{scope}[yshift=-0.4cm]
+  \node[head, text=accent, anchor=north west] (h2) at (0,-5.0) {\kicker{with a shared memory}\\[3pt] every session reads it first, and writes back};
+  \foreach \d/\x/\i in {Monday/1.8/a, Wednesday/6.0/b, Friday/10.2/c} {
+    \node[card=\tw, anchor=north, align=center] (s\i) at (\x,-6.35) {\faIcon{robot}\quad \d};
+  }
+  \node[hot=11.2cm, anchor=north, align=center] (mem) at (6.0,-8.05)
+    {\faIcon{brain}\quad the project's memory\\[2pt]{\ttfamily AGENTS.md \ · \ CONCLUSIONS.md \ · \ WORKLOG.md \ · \ git}};
+  \foreach \x/\i in {1.8/a, 6.0/b, 10.2/c} {
+    \draw[hotline] ($(s\i.south)+(-0.35,0)$) -- ($(mem.north)+(\x-6.0-0.35,0)$);
+    \draw[hotline] ($(mem.north)+(\x-6.0+0.35,0)$) -- ($(s\i.south)+(0.35,0)$);
+  }
+  \node[lbl, anchor=east] at (1.4,-7.5) {reads};
+  \node[lbl, anchor=west] at (2.2,-7.5) {writes};
+  \begin{scope}[on background layer]
+    \node[hotpanel, fit={(h2) (-0.1,-9.35) (12.1,-6)}] {};
+  \end{scope}
+  \end{scope}
+\end{tikzpicture}}
+\end{document}

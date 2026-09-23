@@ -1,0 +1,18 @@
+% The CONCLUSIONS.md ledger: how a claim moves, and how the ledger reaches the agent.
+\input{_preamble}
+\begin{document}
+\diagram{\begin{tikzpicture}[x=1cm,y=1cm]
+  \def\tw{4.6cm}
+  \node[head, anchor=south west] (h) at (0,0.3) {\kicker{the ledger}\\[3pt]{\upshape\ttfamily\color{ink}\faIcon{file-alt}\ \ CONCLUSIONS.md}};
+  \node[card=\tw] (open) at (0,0) {\cardtext{\faIcon{question-circle}\ \ Open}{still being tested}};
+  \node[hot=\tw, below=0.85cm of open.south west, anchor=north west] (est) {\cardtext{\faIcon{check-circle}\ \ Established}{the claim, its evidence, a date}};
+  \node[ghost=\tw, below=0.85cm of est.south west, anchor=north west] (ret) {\cardtext{\faIcon{times-circle}\ \ Retracted}{the claim, and why it was wrong}};
+  \draw[hotline] ($(open.south west)+(0.45,0)$) -- node[lbl, text=accent, right] {verified} ($(est.north west)+(0.45,0)$);
+  \draw[ghostline] ($(est.south west)+(0.45,0)$) -- node[lbl, right] {overturned by evidence} ($(ret.north west)+(0.45,0)$);
+  \begin{scope}[on background layer]
+    \node[hotpanel, fit={(h) (open) (ret)}] (L) {};
+  \end{scope}
+  \node[card=\tw, anchor=north west] (turn) at ($(ret.south west)+(0,-1.55)$) {\cardtext{\faIcon{comment-dots}\ \ every prompt}{the whole ledger, attached to it}};
+  \draw[hotline] (L.south -| turn.north) -- node[lbl, text=accent, right, align=left] {a hook pastes it in,\\ every turn} (turn.north);
+\end{tikzpicture}}
+\end{document}

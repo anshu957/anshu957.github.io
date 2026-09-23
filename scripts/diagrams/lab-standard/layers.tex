@@ -1,0 +1,31 @@
+% How hard each piece of the Lab Standard is to ignore: asks < shows < blocks.
+\input{_preamble}
+\begin{document}
+\diagram{\begin{tikzpicture}[x=1cm,y=1cm]
+  \def\w{4.3cm}
+  % column heads
+  \node[head] at (0,0.25)   {\kicker{asks}\\[3pt] the agent may ignore it};
+  \node[head] at (5.1,0.25) {\kicker{shows}\\[3pt] the agent cannot miss it};
+  \node[head, text=accent] at (10.2,0.25) {\kicker{blocks}\\[3pt] the agent cannot get past it};
+  % asks
+  \node[card=\w] (a1) at (0,0) {\cardtext{CLAUDE.md}{global rules, in every session}};
+  \node[card=\w, below=6pt of a1.south west, anchor=north west] (a2) {\cardtext{AGENTS.md}{the map of this project}};
+  \node[card=\w, below=6pt of a2.south west, anchor=north west] (a3) {\cardtext{/new-experiment}{the run procedure, as a skill}};
+  \node[card=\w, below=6pt of a3.south west, anchor=north west] (a4) {\cardtext{template/}{folders exist from day one}};
+  % shows
+  \node[warm=\w] (s1) at (5.1,0) {\cardtext{SessionStart}{git log, WORKLOG and the ledger, at the start}};
+  \node[warm=\w, below=6pt of s1.south west, anchor=north west] (s2) {\cardtext{UserPromptSubmit}{the ledger, on every prompt}};
+  % blocks
+  \node[hot=\w] (b1) at (10.2,0) {\cardtext{PreToolUse guard}{no files in the root, no edits to data/raw}};
+  \node[hot=\w, below=6pt of b1.south west, anchor=north west] (b2) {\cardtext{Stop gate}{no finishing without a log entry and a commit}};
+  \node[hot=\w, below=6pt of b2.south west, anchor=north west] (b3) {\cardtext{pre-commit: just check}{structure and duplication checks}};
+  % the axis underneath: how binding each layer is
+  \coordinate (L) at ($(a4.south west)+(0,-0.55)$);
+  \coordinate (R) at ($(L -| b3.east)$);
+  \shade[left color=muted!35!paper, right color=accent, draw=none]
+    ($(L)+(0,-0.03)$) rectangle ($(R)+(-0.25,0.03)$);
+  \fill[accent] ($(R)+(-0.3,0.1)$) -- (R) -- ($(R)+(-0.3,-0.1)$) -- cycle;
+  \node[font=\small\itshape, text=muted, anchor=north west, inner sep=0pt] at ($(L)+(0,-0.18)$) {steering: the agent reads it and usually follows it};
+  \node[font=\small\itshape, text=accent, anchor=north east, inner sep=0pt] at ($(R)+(0,-0.18)$) {enforcement: a script says no};
+\end{tikzpicture}}
+\end{document}

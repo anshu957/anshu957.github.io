@@ -1,0 +1,33 @@
+% One session from start to finish: where each hook runs, and what it shows or stops.
+\input{_preamble}
+\begin{document}
+\diagram{\begin{tikzpicture}[x=1cm,y=1cm]
+  \def\U{0.9}\def\H{5.1}\def\G{9.7}\def\R{14.6}\def\E{-11.5}
+  \newcommand{\two}[2]{{\upshape\ttfamily\color{ink}#1}\\ #2}
+  % phase bands
+  \foreach \t/\b/\name in {-0.45/-1.8/start, -1.9/-6.95/during, -7.05/-11.5/finish} {
+    \fill[muted!7!paper, rounded corners=4pt] (-0.3,\t) rectangle (16.0,\b);
+    \node[font=\kickerfont\scriptsize, text=muted, rotate=90, anchor=south] at (-0.35,{(\t+\b)/2}) {\MakeUppercase{\name}};
+  }
+  % actors and lifelines
+  \foreach \x/\ic/\name/\sty in {\U/user/you/card, \H/shield-alt/hooks/hot, \G/robot/agent/card, \R/code-branch/repo/card} {
+    \draw[ink!30!paper, line width=0.6pt, dash pattern=on 2pt off 2pt] (\x,0) -- (\x,\E);
+    \node[\sty=1.6cm, anchor=south, align=center] at (\x,0) {\faIcon{\ic}\ \ \name};
+  }
+  % START
+  \draw[hotline] (\H,-1.45) -- node[lbl, above, align=center] {\two{SessionStart}{git log, WORKLOG and the ledger}} (\G,-1.45);
+  % DURING
+  \draw[line] (\U,-2.45) -- node[lbl, above, pos=0.3] {``compare usage across strains''} (\G,-2.45);
+  \draw[hotline] (\H,-3.55) -- node[lbl, above, align=center] {\two{UserPromptSubmit}{the ledger, again}} (\G,-3.55);
+  \draw[badline, dashed] (\G,-4.65) -- node[lbl, above, align=center] {\two{Write usage\_plot.py}{in the repo root}} (13.95,-4.65);
+  \node[text=oxide] at (14.25,-4.65) {\faIcon{ban}};
+  \draw[badline] (\H,-5.75) -- node[lbl, above, align=center] {\two{PreToolUse}{blocked: it goes in experiments/}} (\G,-5.75);
+  \draw[line] (\G,-6.6) -- node[lbl, above] {{\upshape\ttfamily\color{ink}Write exp-0015/run.py}} (\R,-6.6);
+  % FINISH
+  \draw[line] (\G,-7.6) -- node[lbl, above] {``I'm done''} (\H,-7.6);
+  \draw[badline] (\H,-8.7) -- node[lbl, above, align=center] {\two{Stop}{not logged, not committed}} (\G,-8.7);
+  \draw[line] (\G,-9.55) -- node[lbl, above] {append to WORKLOG, git commit} (\R,-9.55);
+  \draw[line] (\G,-10.35) -- node[lbl, above] {``I'm done''} (\H,-10.35);
+  \draw[hotline] (\H,-11.15) -- node[lbl, text=accent, above] {\faIcon{check}\ \ allowed} (\U,-11.15);
+\end{tikzpicture}}
+\end{document}

@@ -1,0 +1,39 @@
+% One run folder, and what its manifest records.
+\input{_preamble}
+\begin{document}
+\diagram{\begin{tikzpicture}[x=1cm,y=-0.74cm]
+  % ---- left: the folder
+  \node[head, anchor=south west] (h1) at (0,-0.8) {\kicker{one run, one folder}\\[3pt]{\upshape\ttfamily\color{ink}\faIcon{folder-open}\ \ experiments/exp-0012\_h2-by-syllable/}};
+  \fill[accentfill, rounded corners=3pt] (-0.12,3-0.42) rectangle (7.62,3+0.42);
+  \foreach \r/\ic/\name/\gloss/\col in {
+      0/file-alt/README.md/{the hypothesis}/ink,
+      1/cog/config.yaml/{kappa, seed, inputs}/ink,
+      2/file-code/run.py/{imports src/, no logic of its own}/ink,
+      3/fingerprint/manifest.json/{written by the run itself}/accent,
+      4/chart-bar/metrics.json/{}/ink,
+      5/file-image/{figures/h2\_by\_syllable.pdf}/{}/ink,
+      6/terminal/{slurm-48213.out, .err}/{}/ink} {
+    \node[text=\col, anchor=center, inner sep=0pt] at (0.2,\r) {\faIcon{\ic}};
+    \node[text=\col, anchor=west, inner sep=0pt, font=\ttfamily] (n\r) at (0.55,\r) {\name};
+    \node[lbl, anchor=east, inner sep=0pt] at (7.5,\r) {\gloss};
+  }
+  \begin{scope}[on background layer]
+    \node[panel, fit={(h1) (-0.2,-0.8) (7.7,6.5)}] {};
+  \end{scope}
+  % ---- right: what the manifest pins down
+  \node[head, text=accent, anchor=south west] (h2) at (9.3,0.45) {\kicker{what the manifest pins down}\\[3pt] enough to rerun it, or to say why it can't be};
+  \foreach \r/\ic/\txt in {
+      1/code-branch/{git commit {\ttfamily a3f9c21}, and any diff},
+      2/box-open/{the conda environment, as a lock file},
+      3/dice/{the seed and the fully resolved config},
+      4/hashtag/{a sha256 of every input and output},
+      5/server/{the host and the SLURM job id}} {
+    \node[text=accent, anchor=center, inner sep=0pt] at (9.55,\r) {\faIcon{\ic}};
+    \node[anchor=west, inner sep=0pt] at (9.95,\r) {\txt};
+  }
+  \begin{scope}[on background layer]
+    \node[hotpanel, fit={(h2) (9.2,0.5) (15.45,5.5)}] (P) {};
+  \end{scope}
+  \draw[hotline] (7.62,3) -- node[lbl, text=accent, above] {records} (P.west |- 0,3);
+\end{tikzpicture}}
+\end{document}

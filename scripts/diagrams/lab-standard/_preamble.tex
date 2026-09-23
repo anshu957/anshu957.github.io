@@ -1,0 +1,46 @@
+% Shared house style for the TikZ diagrams. render.sh defines \theme (light|dark) before \input.
+\documentclass{article}
+\usepackage{fontspec}
+\usepackage{tikz}
+\usepackage{fontawesome5}
+\usetikzlibrary{positioning,calc,arrows.meta,fit,backgrounds}
+\setmainfont{Newsreader}[Path=\fontdir, Extension=.ttf, UprightFont=*, ItalicFont=*-Italic, BoldFont=*, BoldFeatures={RawFeature={+wght=600}}]
+\setmonofont{JetBrainsMono}[Path=\fontdir, Extension=.ttf, Scale=0.86]
+\newfontfamily\kickerfont{JetBrainsMono}[Path=\fontdir, Extension=.ttf, Scale=0.72, LetterSpace=12]
+\def\darktheme{dark}
+\ifx\theme\darktheme
+  \definecolor{ink}{HTML}{F0DCC8}\definecolor{muted}{HTML}{A88F7F}\definecolor{paper}{HTML}{201713}
+  \definecolor{accent}{HTML}{8FAA84}\definecolor{accentfill}{HTML}{2A3326}\definecolor{oxide}{HTML}{E08872}
+\else
+  \definecolor{ink}{HTML}{211512}\definecolor{muted}{HTML}{66584F}\definecolor{paper}{HTML}{FFFDF7}
+  \definecolor{accent}{HTML}{5E7257}\definecolor{accentfill}{HTML}{E9EEE4}\definecolor{oxide}{HTML}{B85A43}
+\fi
+\tikzset{
+  every picture/.style={line cap=round, line join=round, font=\normalsize, text=ink},
+  card/.style={draw=ink!70!paper, line width=0.6pt, fill=paper, rounded corners=3pt, align=left,
+               text width=#1, inner xsep=7pt, inner ysep=5.5pt, anchor=north west},
+  card/.default=3.9cm,
+  hot/.style={card=#1, draw=accent, line width=1.1pt, fill=accentfill},
+  hot/.default=3.9cm,
+  ghost/.style={card=#1, draw=muted!80!paper, dashed, fill=none, text=muted},
+  ghost/.default=3.9cm,
+  panel/.style={draw=muted!45!paper, line width=0.5pt, rounded corners=5pt, inner sep=9pt},
+  hotpanel/.style={panel, draw=accent!75!paper, line width=0.9pt},
+  line/.style={-{Stealth[length=5pt,width=4.2pt]}, line width=0.7pt, draw=ink!70!paper},
+  hotline/.style={line, draw=accent, line width=1pt},
+  ghostline/.style={line, draw=muted!80!paper, dashed},
+  badline/.style={line, draw=oxide, line width=1pt},
+  lbl/.style={font=\small\itshape, text=muted, inner sep=2.5pt},
+  head/.style={font=\itshape, text=muted, anchor=south west, inner sep=0pt, align=left},
+  warm/.style={card=#1, draw=accent!60!paper, fill=accentfill!50!paper},
+  warm/.default=3.9cm,
+}
+\newcommand{\kicker}[1]{{\kickerfont\MakeUppercase{#1}}}
+\newcommand{\ico}[1]{\makebox[1.25em][l]{#1}}
+\newcommand{\cardtext}[2]{{\ttfamily #1}\\[1pt]{\small\itshape\color{muted}#2}}
+% Crop the page to the picture: typeset it into a box and ship that box as the page.
+\newcommand{\diagram}[1]{%
+  \setbox0\hbox{#1}%
+  \pagewidth=\dimexpr\wd0+8pt\relax \pageheight=\dimexpr\ht0+\dp0+8pt\relax
+  \hoffset=-1in \voffset=-1in
+  \shipout\vbox{\kern4pt\hbox{\kern4pt\box0}}}

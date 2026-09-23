@@ -1,0 +1,60 @@
+---
+// A borrowed comic (e.g. xkcd, CC BY-NC 2.5) with its attribution in the caption.
+// Desktop: floats into the right margin like a Sidenote (it sits beside the paragraph that follows it).
+// Below 981px: an inline centred figure.
+const { src, alt, title, width = 266 } = Astro.props;
+---
+
+<figure class="comic-figure">
+  <img src={src} alt={alt} title={title} style={`max-width: ${width}px`} loading="lazy" decoding="async" />
+  <figcaption><slot /></figcaption>
+</figure>
+
+<style>
+  .comic-figure {
+    float: right;
+    clear: right;
+    width: min(15rem, 28vw);
+    margin: 0.3rem max(-17rem, -24vw) 1rem 1.25rem;
+  }
+
+  .comic-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    padding: 0.45rem;
+    border: 1px solid var(--ms-rule);
+    border-radius: 0.45rem;
+    background: #fff;
+  }
+
+  :global(html.dark) .comic-figure img {
+    filter: brightness(0.82);
+  }
+
+  figcaption {
+    margin: 0.55rem 0 0;
+    color: var(--ms-muted);
+    font-family: var(--ms-font-display);
+    font-size: 0.8rem;
+    font-style: italic;
+    line-height: 1.34;
+    text-wrap: pretty;
+  }
+
+  @media (max-width: 980px) {
+    .comic-figure {
+      float: none;
+      width: auto;
+      margin: clamp(1.6rem, 3vw, 2.2rem) 0;
+      text-align: center;
+    }
+
+    figcaption {
+      margin: 0.7rem auto 0;
+      max-width: 34rem;
+      font-size: 0.85rem;
+    }
+  }
+</style>

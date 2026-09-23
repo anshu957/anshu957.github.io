@@ -22,12 +22,14 @@ This file fixes the visual foundation for the site so future pages stay in one c
 - `Newsreader` for body, display, and interface typography
 - `dotLottie React` for character-grade companion animation when we need a small ambient character accent
 - custom retro accents are allowed, but they are no longer the primary UI system
+- `TikZ` (LuaLaTeX + `pdftocairo`, build-time only) for post diagrams: `scripts/diagrams/<post>/render.sh` renders each `.tex` to light + dark SVGs in `public/assets/blog/<post>/`, shown by `src/components/blog/Diagram.astro`. Shared style in `_preamble.tex`; icons from `fontawesome5`. Add-on packages matched to TeX Live 2023 live outside the repo in `~/.local/share/texmf-tl2023` (fontawesome5, simpleicons, forest, pgf-umlsd, dirtree). Nothing ships to the browser but the SVGs.
 
 ## Fixed Font Choices
 
 - display/editorial serif: `Newsreader`
 - body/prose serif: `Newsreader`
 - math typography: `KaTeX`'s bundled math fonts
+- diagrams: glyphs of `Newsreader` + `JetBrains Mono` are baked into each SVG as outlines at render time (TTFs in `scripts/diagrams/fonts/`); not loaded by the site
 - utility text should inherit the editorial serif unless there is a deliberate exception
 
 ## Fixed Style Rules

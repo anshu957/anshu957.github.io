@@ -1,0 +1,78 @@
+---
+// A TikZ diagram (scripts/diagrams/<post>/render.sh) with light and dark SVGs.
+const { post, name, alt, width, wide = false } = Astro.props;
+const base = `/assets/blog/${post}/${name}`;
+const style = width ? `max-width: ${width}px` : undefined;
+---
+
+<figure class:list={["d2-figure", { "d2-figure--wide": wide }]}>
+  <a class="d2-link" href={`${base}.svg`} target="_blank" rel="noopener" aria-label="Open diagram full size">
+  <img class="d2-img d2-img--light" src={`${base}.svg`} alt={alt} style={style} loading="lazy" decoding="async" />
+  <img class="d2-img d2-img--dark" src={`${base}-dark.svg`} alt="" aria-hidden="true" style={style} loading="lazy" decoding="async" />
+  </a>
+  <figcaption><slot /></figcaption>
+</figure>
+
+<style>
+  .d2-figure {
+    margin: clamp(1.6rem, 3vw, 2.2rem) 0;
+    padding: clamp(0.9rem, 2vw, 1.3rem) clamp(0.9rem, 2vw, 1.3rem) 1rem;
+    border: 1px solid var(--ms-rule);
+    border-radius: 0.55rem;
+    background: color-mix(in srgb, var(--ms-sheet) 92%, transparent);
+    box-shadow: 0 10px 26px var(--ms-shadow);
+  }
+
+  /* Wide diagrams borrow the sidenote gutter on desktop (same offset as Sidenote.astro). */
+  @media (min-width: 981px) {
+    .d2-figure--wide {
+      clear: right;
+      margin-right: max(-17rem, -24vw);
+    }
+  }
+
+  .d2-link {
+    display: block;
+    cursor: zoom-in;
+  }
+
+  /* On phones, wide diagrams keep a legible size and scroll sideways inside the figure. */
+  @media (max-width: 640px) {
+    .d2-figure--wide .d2-link {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .d2-figure--wide .d2-img {
+      width: 620px;
+      max-width: none;
+    }
+  }
+
+  .d2-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .d2-img--dark {
+    display: none;
+  }
+
+  :global(html.dark) .d2-img--light {
+    display: none;
+  }
+
+  :global(html.dark) .d2-img--dark {
+    display: block;
+  }
+
+  figcaption {
+    margin: 0.7rem 0 0;
+    color: var(--ms-muted);
+    font-family: var(--ms-font-display);
+    font-size: 0.85rem;
+    font-style: italic;
+    line-height: 1.4;
+  }
+</style>

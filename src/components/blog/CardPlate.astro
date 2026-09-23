@@ -1,0 +1,10 @@
+---
+// A post's card art (PNG, GIF or animated WebP) in both themes: `<name>-card.<ext>`
+// and `<name>-card-dark.<ext>`, swapped by `html.dark`.
+const { image, eager = false } = Astro.props;
+const dark = image.replace(/-card\./, "-card-dark.");
+const loading = eager ? "eager" : "lazy";
+---
+
+<img class="ms-plate-img ms-plate-img--light" src={image} alt="" loading={loading} decoding="async" />
+<img class="ms-plate-img ms-plate-img--dark" src={dark} alt="" loading={loading} decoding="async" />

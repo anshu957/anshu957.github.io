@@ -1,0 +1,40 @@
+% A second definition of "usage" inside an experiment, versus one imported definition.
+\input{_preamble}
+\begin{document}
+\diagram{\begin{tikzpicture}[x=1cm,y=1cm]
+  \def\tw{3.9cm}
+  \def\A{0}\def\B{5.75}\def\C{11.5}
+  % ---- what happened
+  \node[head, anchor=south west] (h1) at (0,1.0) {\kicker{what happened}\\[3pt] two definitions of the same thing};
+  \node[card=\tw, anchor=west] (src) at (\A,0) {\cardtext{src/moseq\_bxd/usage.py}{defines syllable\_usage()}};
+  \node[card=\tw, anchor=west] (a) at (\B,0) {\cardtext{\faIcon{flask}\ exp-0009}{imports it}};
+  \node[card=\tw, anchor=west] (ua) at (\C,0) {usage = share of\\ syllable instances};
+  \node[ghost=\tw, anchor=west] (b) at (\B,-1.75) {\cardtext{\faIcon{flask}\ exp-0014/run.py}{its own compute\_usage()}};
+  \node[ghost=\tw, anchor=west] (ub) at (\C,-1.75) {usage = share of\\ frames};
+  \node[lbl, anchor=east, align=right] (why) at ($(b.west)+(-0.45,0)$) {a new session didn't\\ look in src/};
+  \draw[line] (src) -- node[lbl, above] {import} (a);
+  \draw[line] (a) -- (ua);
+  \draw[ghostline] (why) -- (b);
+  \draw[ghostline] (b) -- node[lbl, above] {rewrote it} (ub);
+  \draw[badline, {Stealth[length=5pt,width=4.2pt]}-{Stealth[length=5pt,width=4.2pt]}] (ua) -- node[lbl, text=oxide, right] {\faIcon{not-equal}\ disagree} (ub);
+  \begin{scope}[on background layer]
+    \node[panel, fit={(h1) (-0.1,-2.6) (16.4,0.5)}] {};
+  \end{scope}
+  % ---- the rule
+  \begin{scope}[yshift=-5.0cm]
+  \node[head, text=accent, anchor=south west] (h2) at (0,0.75) {\kicker{the rule}\\[3pt] one definition, imported everywhere};
+  \node[hot=\tw, anchor=west] (src2) at (\A,-0.875) {\cardtext{src/moseq\_bxd/usage.py}{defines syllable\_usage(), tested}};
+  \node[card=\tw, anchor=west] (a2) at (\B,0) {\cardtext{\faIcon{flask}\ exp-0009}{imports it}};
+  \node[card=\tw, anchor=west] (b2) at (\B,-1.75) {\cardtext{\faIcon{flask}\ exp-0014}{imports it}};
+  \node[hot=\tw, anchor=west] (u2) at (\C,-0.875) {same usage,\\ everywhere};
+  \draw[hotline] (src2.east) -- node[lbl, text=accent, above, sloped] {import} (a2.west);
+  \draw[hotline] (src2.east) -- node[lbl, text=accent, below, sloped] {import} (b2.west);
+  \draw[hotline] (a2.east) -- (u2.west);
+  \draw[hotline] (b2.east) -- (u2.west);
+  \node[lbl, anchor=north west, align=left] at (\A,-2.7) {\faIcon{search}\ \ {\upshape\ttfamily just check} flags a function body copied out of src/ (a real rewrite, with a new definition, needs a test that pins it down)};
+  \begin{scope}[on background layer]
+    \node[hotpanel, fit={(h2) (-0.1,-3.25) (16.4,0.5)}] {};
+  \end{scope}
+  \end{scope}
+\end{tikzpicture}}
+\end{document}

@@ -1,4 +1,5 @@
 ---
+import CardPlate from "../../components/blog/CardPlate.astro";
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ManuscriptHeader from "../../components/manuscript/ManuscriptHeader.astro";
@@ -19,7 +20,7 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 const formatDate = (date) =>
-  date.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+  date.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
 
 const tags = post.data.tags ?? [];
 const color = domainColor(tags);
@@ -43,8 +44,7 @@ const primaryTag = tagLabel(tags[0]);
 
         <header class="ms-article-header">
           <figure class="ms-article-plate">
-            <img class="ms-plate-img ms-plate-img--light" src={post.data.image} alt="" loading="eager" decoding="async" />
-            <img class="ms-plate-img ms-plate-img--dark" src={post.data.image.replace("-card.gif", "-card-dark.gif").replace("-card.png", "-card-dark.png")} alt="" loading="eager" decoding="async" />
+            <CardPlate image={post.data.image} eager />
           </figure>
 
           <div class="ms-article-title-card">
@@ -172,16 +172,16 @@ const primaryTag = tagLabel(tags[0]);
     mix-blend-mode: screen;
   }
 
-  .ms-plate-img {
+  :global(.ms-plate-img) {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: contain;
   }
 
-  .ms-plate-img--dark { display: none; }
-  html.dark .ms-plate-img--light { display: none; }
-  html.dark .ms-plate-img--dark { display: block; }
+  :global(.ms-plate-img--dark) { display: none; }
+  html.dark :global(.ms-plate-img--light) { display: none; }
+  html.dark :global(.ms-plate-img--dark) { display: block; }
 
   .ms-article-title-card {
     min-width: 0;
@@ -340,7 +340,26 @@ const primaryTag = tagLabel(tags[0]);
     margin-top: 0;
   }
 
-  .ms-article-prose :global(p:first-of-type::first-letter) {
+  .ms-article-prose :global(pre.astro-code) {
+    margin: 1.2rem 0 1.5rem;
+    padding: 0.85rem 1rem;
+    overflow-x: auto;
+    border: 1px solid var(--ms-rule);
+    border-radius: 0.45rem;
+    background: color-mix(in srgb, var(--article-accent) 5%, var(--ms-sheet));
+    font-size: 0.78rem;
+    line-height: 1.55;
+  }
+
+  .ms-article-prose :global(pre.astro-code span) {
+    color: var(--shiki-light);
+  }
+
+  :global(html.dark) .ms-article-prose :global(pre.astro-code span) {
+    color: var(--shiki-dark);
+  }
+
+  .ms-article-prose > :global(p:first-of-type::first-letter) {
     float: left;
     margin: 0.08em 0.12em 0 0;
     color: var(--article-accent);
@@ -356,7 +375,7 @@ const primaryTag = tagLabel(tags[0]);
     }
 
     .ms-article-reading-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
 
     .ms-article-reader-rail {
@@ -389,7 +408,7 @@ const primaryTag = tagLabel(tags[0]);
       line-height: 1.68;
     }
 
-    .ms-article-prose :global(p:first-of-type::first-letter) {
+    .ms-article-prose > :global(p:first-of-type::first-letter) {
       font-size: 2.75rem;
     }
   }
