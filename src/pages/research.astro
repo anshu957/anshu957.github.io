@@ -1,131 +1,124 @@
 ---
+import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ManuscriptHeader from "../components/manuscript/ManuscriptHeader.astro";
 import ManuscriptFooter from "../components/manuscript/ManuscriptFooter.astro";
-import ManuscriptPublicationCard from "../components/manuscript/ManuscriptPublicationCard.astro";
+import ResearchPlate from "../components/research/ResearchPlate.astro";
 import { siteMeta, profileLinks } from "../data/site.js";
-import { publications, publicationShelves, publicationThemeLabel } from "../data/research.js";
-import { themeDomain, accentVar } from "../lib/domainColor.js";
+import { researchAreas, publications, shortAuthor } from "../data/research.js";
+import { accentVar } from "../lib/domainColor.js";
 import "../styles/manuscript.css";
 
 const scholarLink = profileLinks.find((link) => link.icon === "scholar");
-const shelfPublications = publicationShelves.map((shelf) => ({
-  ...shelf,
-  items: publications
-    .filter((item) => item.theme === shelf.id)
-    .sort((a, b) => b.year - a.year),
-}));
+const posts = await getCollection("blog", ({ data }) => !data.draft);
+const postBySlug = Object.fromEntries(posts.map((p) => [p.slug, p]));
 
-const themes = [
-  {
-    label: "Cell fate",
-    title: "Cell fate &amp; transcriptomic dynamics",
-    body: "I am drawn to the question of how cells commit. The language I use is dynamical systems — attractors, basins of attraction, and vector fields — applied to RNA expression profiles. The goal is a description of cellular decision-making that is richer than a cluster label: one that says something about the forces at work, the stabilities available, and the transitions that remain possible.",
-  },
-  {
-    label: "Behavior",
-    title: "Behavioral phenotyping &amp; machine learning",
-    body: "At JAX I contribute to tools that make automated mouse behavior analysis practical and genetically informative. This work involves the full stack — video, pose, classifier, genetics — and the recurring challenge is designing systems that scientists actually want to use.",
-  },
-  {
-    label: "Physics-ML",
-    title: "Physics-aware scientific machine learning",
-    body: "My earlier work asked whether knowing the structure of a physical system — its conservation laws, its symmetries, its phase-space geometry — makes a neural network both more accurate and more honest. The answer was yes, often dramatically so. I continue to think about what it means to build models that remain faithful to mechanism.",
-  },
-];
+const areas = researchAreas.map((area, index) => {
+  const papers = publications.filter((p) => p.area === area.id).sort((a, b) => b.year - a.year);
+  return {
+    ...area,
+    number: String(index + 1).padStart(2, "0"),
+    accent: accentVar(area.accent),
+    papers,
+    posts: area.posts.map((slug) => postBySlug[slug]).filter(Boolean),
+  };
+});
+
+const isMe = (name) => /choudhary/i.test(name);
 ---
 
-<BaseLayout title={`Research | ${siteMeta.name}`} description="Research themes and selected publications by Anshul Choudhary.">
+<BaseLayout title={`Research | ${siteMeta.name}`} description="Research areas and publications by Anshul Choudhary.">
   <div class="manuscript-page">
     <div class="ms-shell">
       <ManuscriptHeader currentPath="/research" />
 
     <main class="ms-research-page">
-      <section class="research-themes">
-        <header class="ms-page-head">
-          <div>
-            <p class="ms-page-kicker">Research</p>
-            <h1>Themes &amp; work</h1>
-          </div>
-          <p class="ms-page-head-note">Current work sits where cellular state, dynamical systems, and scientific machine learning overlap.</p>
-        </header>
+      <header class="ms-page-head">
+        <h1>Research</h1>
+      </header>
 
-        <div class="ms-rule-ornament ms-research-rule" aria-hidden="true">
-          <span class="ms-rule-ornament-line"></span>
-          <svg class="ms-rule-ornament-mark" viewBox="0 0 48 12" fill="currentColor">
-            <path d="M24 1 L28.4 6 L24 11 L19.6 6 Z" />
-            <path d="M9 3.4 L11.8 6 L9 8.6 L6.2 6 Z" opacity="0.5" />
-            <path d="M39 3.4 L41.8 6 L39 8.6 L36.2 6 Z" opacity="0.5" />
-          </svg>
-          <span class="ms-rule-ornament-line"></span>
-        </div>
+      <nav class="rs-index" aria-label="Research areas">
+        {areas.map((area) => (
+          <a class="rs-index-item" href={`#theme-${area.id}`} style={`--area-accent: ${area.accent}`}>
+            <span class="rs-index-num">{area.number}</span>
+            <span class="rs-index-label">{area.label}</span>
+          </a>
+        ))}
+      </nav>
 
-        <div class="research-prose">
-          {themes.map((theme, index) => {
-            const color = themeDomain[index] ?? "oxide";
-            const accent = accentVar(color);
-            return (
-              <div
-                id={index === 0 ? "theme-cell-fate" : index === 1 ? "theme-behavior" : "theme-physics-ml"}
-                class:list={["research-theme", `research-theme--${color}`]}
-                style={`--theme-accent: ${accent}`}
-              >
-                <p class="research-theme-label">{theme.label}</p>
-                <div class="research-theme-body">
-                  <h3 class="research-theme-title" set:html={theme.title} />
-                  <p>{theme.body}</p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      <div class="ms-rule-ornament ms-research-rule" aria-hidden="true">
-        <span class="ms-rule-ornament-line"></span>
-        <svg class="ms-rule-ornament-mark" viewBox="0 0 48 12" fill="currentColor">
-          <path d="M24 1 L28.4 6 L24 11 L19.6 6 Z" />
-          <path d="M9 3.4 L11.8 6 L9 8.6 L6.2 6 Z" opacity="0.5" />
-          <path d="M39 3.4 L41.8 6 L39 8.6 L36.2 6 Z" opacity="0.5" />
-        </svg>
-        <span class="ms-rule-ornament-line"></span>
+      <div class="rs-areas">
+        {areas.map((area) => (
+          <section id={`theme-${area.id}`} class="rs-area" style={`--area-accent: ${area.accent}`} aria-labelledby={`title-${area.id}`}>
+            <figure class="rs-plate" style={`--plate-accent: ${area.accent}`}>
+              <ResearchPlate kind={area.plate} />
+            </figure>
+            <div class="rs-area-text">
+              <h2 id={`title-${area.id}`} class="rs-area-title">{area.title}</h2>
+              <p class="rs-area-body">{area.body}</p>
+              <ul class="rs-area-links">
+                {area.papers.length > 0 && (
+                  <li><a href={`#papers-${area.id}`}>{area.papers.length} paper{area.papers.length > 1 ? "s" : ""} <span aria-hidden="true">↓</span></a></li>
+                )}
+                {(area.links ?? []).map((link) => (
+                  <li><a href={link.href} target="_blank" rel="noreferrer">{link.label} <span aria-hidden="true">↗</span></a></li>
+                ))}
+                {area.posts.map((post) => (
+                  <li><a href={`/blog/${post.slug}/`}>Essay: {post.data.title} <span aria-hidden="true">→</span></a></li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        ))}
       </div>
 
-      <section class="research-publications" aria-labelledby="publications-heading">
-        <header class="research-pub-head">
-          <div class="research-section-heading">
-            <p class="ms-page-kicker">Selected publications</p>
-            <h2 id="publications-heading">Papers</h2>
-          </div>
+      <section class="rs-pubs" aria-labelledby="publications-heading">
+        <header class="rs-pubs-head">
+          <h2 id="publications-heading">Papers</h2>
           {scholarLink && (
-            <a class="research-scholar-link" href={scholarLink.href} target="_blank" rel="noreferrer">
-              Full list on Google Scholar
-              <span class="research-scholar-arrow" aria-hidden="true">→</span>
+            <a class="rs-scholar" href={scholarLink.href} target="_blank" rel="noreferrer">
+              Google Scholar <span aria-hidden="true">→</span>
             </a>
           )}
         </header>
 
-        {shelfPublications.map((shelf) => {
-          if (shelf.items.length === 0) return null;
-          const accent = accentVar(shelf.accent);
-          return (
-            <div class="pub-shelf" style={`--shelf-accent: ${accent}`}>
-              <p class="pub-shelf-label">{shelf.label}</p>
-              <div class="pub-list" role="list">
-                {shelf.items.map((item) => (
-                  <ManuscriptPublicationCard
-                    item={item}
-                    themeLabel={publicationThemeLabel(item.theme)}
-                  />
-                ))}
-              </div>
-            </div>
-          );
-        })}
+        {areas.filter((area) => area.papers.length).map((area) => (
+          <div id={`papers-${area.id}`} class="rs-shelf" style={`--area-accent: ${area.accent}`}>
+            <h3 class="rs-shelf-label"><span>{area.number}</span> {area.label}</h3>
+            <ol class="rs-pub-list">
+              {area.papers.map((paper, i) => (
+                <li class="rs-pub">
+                  <span class:list={["rs-pub-year", { "rs-pub-year--repeat": i > 0 && area.papers[i - 1].year === paper.year }]}>{paper.year}</span>
+                  <div class="rs-pub-main">
+                    <a class="rs-pub-title" href={`https://doi.org/${paper.doi}`} target="_blank" rel="noreferrer">{paper.title}</a>
+                    <p class="rs-pub-authors">
+                      {paper.authors.map((name, j) => (
+                        <>{j > 0 && ", "}{isMe(name) ? <strong>{shortAuthor(name)}</strong> : shortAuthor(name)}</>
+                      ))}
+                      {paper.note && <span class="rs-pub-note"> ({paper.note})</span>}
+                    </p>
+                    <p class="rs-pub-meta"><em>{paper.venue}</em><span aria-hidden="true"> · </span>{paper.summary}</p>
+                    {paper.links.length > 0 && (
+                      <p class="rs-pub-links">
+                        {paper.links.map((link) => <a href={link.href} target="_blank" rel="noreferrer">{link.label}</a>)}
+                      </p>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        ))}
       </section>
     </main>
 
     <ManuscriptFooter />
+    <script>
+      // Run the oscillator plate only while it is on screen.
+      const io = new IntersectionObserver((entries) => {
+        for (const e of entries) e.target.classList.toggle("rp--live", e.isIntersecting);
+      });
+      document.querySelectorAll(".rp--ring").forEach((el) => io.observe(el));
+    </script>
     </div>
   </div>
 </BaseLayout>
@@ -133,7 +126,7 @@ const themes = [
 <style>
   .ms-research-page {
     display: grid;
-    gap: clamp(2rem, 4vw, 3rem);
+    gap: clamp(1.6rem, 3.4vw, 2.6rem);
     padding: clamp(1rem, 2.3vw, 1.8rem) 0 clamp(3rem, 6vw, 4.8rem);
   }
 
@@ -142,24 +135,12 @@ const themes = [
     grid-template-columns: minmax(14rem, 0.9fr) minmax(16rem, 1fr);
     gap: clamp(1rem, 3vw, 2rem);
     align-items: end;
-    padding: clamp(0.6rem, 1.6vw, 1.2rem) 0 clamp(0.5rem, 1vw, 0.8rem);
+    padding: clamp(0.6rem, 1.6vw, 1.2rem) 0 0;
   }
 
-  .ms-research-rule {
-    margin-bottom: clamp(0.4rem, 1vw, 0.7rem);
-  }
-
-  .ms-page-kicker {
-    margin: 0 0 0.32rem;
-    color: var(--ms-muted);
-    font-family: var(--ms-font-mono);
-    font-size: 0.68rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-  }
 
   .ms-page-head h1,
-  .research-section-heading h2 {
+  .rs-pubs-head h2 {
     margin: 0;
     color: var(--ms-primary);
     font-family: var(--ms-font-display);
@@ -169,81 +150,132 @@ const themes = [
     line-height: 1;
   }
 
-  .ms-page-head-note {
-    margin: 0;
-    max-width: 28rem;
-    padding-left: 0.9rem;
-    border-left: 1.5px solid color-mix(in srgb, var(--ms-secondary) 48%, transparent);
-    color: var(--ms-on-surface-variant);
-    font-family: var(--ms-font-display);
-    font-size: clamp(1rem, 1.6vw, 1.14rem);
-    font-style: italic;
-    font-weight: 450;
-    letter-spacing: -0.015em;
-    line-height: 1.55;
-    text-wrap: pretty;
+  /* Area index: four numbered tabs, each underlined in its area's colour. */
+  /* Accent as text: mixed toward ink so gold and sage stay legible on cream. */
+  .rs-index-item,
+  .rs-area,
+  .rs-shelf {
+    --area-ink: color-mix(in srgb, var(--area-accent) 58%, var(--ms-on-surface));
   }
 
-  .research-themes {
+  .rs-index {
     display: grid;
-    gap: 1.4rem;
-  }
-
-  .research-prose {
-    display: grid;
-    gap: 0;
-    max-width: 72rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     border-top: 1px solid var(--ms-rule);
-  }
-
-  .research-theme {
-    --theme-accent: var(--ms-secondary);
-    display: grid;
-    grid-template-columns: minmax(7rem, 10rem) minmax(0, 1fr);
-    gap: clamp(1rem, 2.4vw, 1.6rem);
-    padding: clamp(1rem, 2.2vw, 1.35rem) 0;
     border-bottom: 1px solid var(--ms-rule);
   }
 
-  .research-theme-body {
-    padding-left: clamp(0.75rem, 1.5vw, 0.95rem);
-    border-left: 2px solid color-mix(in srgb, var(--theme-accent) 42%, transparent);
+  .rs-index-item {
+    display: grid;
+    gap: 0.15rem;
+    padding: 0.75rem 0.9rem 0.8rem;
+    border-left: 1px solid var(--ms-rule);
+    box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--area-accent) 70%, transparent);
+    color: var(--ms-on-surface);
+    text-decoration: none;
+    transition: background 180ms ease;
   }
 
-  .research-theme-label {
-    margin: 0.18rem 0 0;
-    color: var(--theme-accent);
+  .rs-index-item:first-child {
+    border-left: 0;
+  }
+
+  .rs-index-item:hover,
+  .rs-index-item:focus-visible {
+    background: color-mix(in srgb, var(--area-accent) 8%, transparent);
+  }
+
+  .rs-index-num,
+  .rs-shelf-label span {
+    color: var(--area-ink);
     font-family: var(--ms-font-mono);
-    font-size: 0.66rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    opacity: 0.82;
+    font-weight: 600;
   }
 
-  .research-theme-title {
-    margin: 0 0 0.3rem;
+  .rs-index-num {
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .rs-index-label {
+    font-family: var(--ms-font-display);
+    font-size: 1.02rem;
+    line-height: 1.25;
+  }
+
+  .rs-areas {
+    display: grid;
+  }
+
+  .rs-area {
+    display: grid;
+    grid-template-columns: minmax(15rem, 22rem) minmax(0, 1fr);
+    gap: clamp(1.4rem, 3.5vw, 3rem);
+    align-items: start;
+    padding: clamp(1.6rem, 3.4vw, 2.6rem) 0;
+    border-bottom: 1px solid var(--ms-rule);
+    scroll-margin-top: 1rem;
+  }
+
+  .rs-plate {
+    margin: 0;
+    padding: 0.7rem;
+    border: 1px solid var(--ms-rule);
+    background: var(--ms-sheet);
+  }
+
+  .rs-area-title {
+    margin: 0 0 0.8rem;
     color: var(--ms-primary);
     font-family: var(--ms-font-display);
-    font-weight: 600;
-    font-size: clamp(1.18rem, 2vw, 1.42rem);
-    letter-spacing: -0.025em;
-    line-height: 1.3;
+    font-size: clamp(1.45rem, 2.6vw, 1.9rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
   }
 
-  .research-theme-body p {
+  .rs-area-body {
     margin: 0;
+    max-width: 62ch;
     color: var(--ms-on-surface-variant);
-    font-size: clamp(1rem, 1.4vw, 1.08rem);
-    line-height: 1.72;
+    font-size: clamp(1rem, 1.4vw, 1.06rem);
+    line-height: 1.7;
     text-wrap: pretty;
   }
 
-  .research-publications {
-    display: grid;
-    gap: clamp(1.4rem, 3vw, 2rem);
+  .rs-area-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.2rem;
+    margin: 0.95rem 0 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--ms-font-mono);
+    font-size: 0.74rem;
   }
 
-  .research-pub-head {
+  .rs-area-links a,
+  .rs-pub-links a {
+    color: var(--ms-on-surface);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--area-accent) 70%, transparent);
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 0.22em;
+  }
+
+  .rs-area-links a:hover,
+  .rs-pub-links a:hover {
+    color: var(--area-ink);
+  }
+
+  .rs-pubs {
+    display: grid;
+    gap: clamp(1.2rem, 2.6vw, 1.8rem);
+    padding-top: clamp(0.6rem, 1.6vw, 1.2rem);
+  }
+
+  .rs-pubs-head {
     display: flex;
     flex-wrap: wrap;
     align-items: end;
@@ -251,83 +283,165 @@ const themes = [
     gap: 0.75rem 1.5rem;
   }
 
-  .research-section-heading h2 {
+  .rs-pubs-head h2 {
     font-size: clamp(1.8rem, 3.4vw, 2.55rem);
   }
 
-  .research-scholar-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.42rem;
-    padding: 0.44rem 0.95rem;
-    border: 1px solid color-mix(in srgb, var(--ms-rule) 80%, transparent);
-    border-radius: 0.22rem;
+  .rs-scholar {
     color: var(--ms-on-surface-variant);
     font-family: var(--ms-font-mono);
-    font-size: 0.66rem;
-    font-weight: 600;
-    letter-spacing: 0.09em;
-    text-decoration: none;
-    text-transform: uppercase;
-    transition: color 180ms ease, border-color 180ms ease, background 180ms ease;
+    font-size: 0.74rem;
+    text-underline-offset: 0.22em;
   }
 
-  .research-scholar-link:hover,
-  .research-scholar-link:focus-visible {
-    color: var(--domain-sage);
-    border-color: color-mix(in srgb, var(--domain-sage) 55%, transparent);
-    background: color-mix(in srgb, var(--domain-sage) 7%, var(--ms-sheet));
-  }
-
-  .research-scholar-arrow {
-    transition: transform 180ms ease;
-  }
-
-  .research-scholar-link:hover .research-scholar-arrow,
-  .research-scholar-link:focus-visible .research-scholar-arrow {
-    transform: translateX(0.15rem);
-  }
-
-  .pub-shelf {
+  /* Shelves sit on the same grid as the areas: label under the plate column, list under the text. */
+  .rs-shelf {
     display: grid;
-    gap: 0.6rem;
+    grid-template-columns: minmax(15rem, 22rem) minmax(0, 1fr);
+    gap: clamp(1.4rem, 3.5vw, 3rem);
+    align-items: start;
+    scroll-margin-top: 1rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--ms-rule);
   }
 
-  .pub-shelf-label {
+  .rs-shelf-label {
+    position: sticky;
+    top: 1rem;
     margin: 0;
-    padding-bottom: 0.38rem;
-    color: var(--shelf-accent, var(--ms-muted));
+    padding-top: 1.05rem;
+    color: var(--ms-muted);
     font-family: var(--ms-font-mono);
     font-size: 0.68rem;
-    font-weight: 600;
+    font-weight: 500;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    opacity: 0.82;
-    border-bottom: 1px solid color-mix(in srgb, var(--shelf-accent, var(--ms-rule)) 28%, transparent);
   }
 
-  .pub-list {
+  .rs-pub-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rs-pub {
     display: grid;
-    gap: 0;
+    grid-template-columns: 4rem minmax(0, 1fr);
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--ms-rule) 70%, transparent);
   }
 
-  @media (max-width: 760px) {
-    .ms-page-head,
-    .research-theme {
+  .rs-pub-year {
+    padding-top: 0.25rem;
+    color: var(--area-ink);
+    font-family: var(--ms-font-mono);
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+
+  .rs-pub-year--repeat {
+    visibility: hidden;
+  }
+
+  .rs-pub-main {
+    max-width: 68ch;
+  }
+
+  .rs-pub-title {
+    color: var(--ms-primary);
+    font-family: var(--ms-font-display);
+    font-size: clamp(1.08rem, 1.7vw, 1.2rem);
+    font-weight: 500;
+    line-height: 1.32;
+    text-decoration: none;
+  }
+
+  .rs-pub-title:hover,
+  .rs-pub-title:focus-visible {
+    text-decoration: underline;
+    text-decoration-color: var(--area-accent);
+    text-underline-offset: 0.2em;
+  }
+
+  .rs-pub-authors,
+  .rs-pub-meta,
+  .rs-pub-links {
+    margin: 0.28rem 0 0;
+    color: var(--ms-on-surface-variant);
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+
+  .rs-pub-authors strong {
+    color: var(--ms-on-surface);
+    font-weight: 650;
+  }
+
+  .rs-pub-note {
+    color: var(--ms-muted);
+  }
+
+  .rs-pub-meta em {
+    color: var(--ms-on-surface);
+  }
+
+  .rs-pub-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.3rem 1rem;
+    font-family: var(--ms-font-mono);
+    font-size: 0.72rem;
+  }
+
+  @media (max-width: 860px) {
+    .rs-shelf,
+    .rs-area {
       grid-template-columns: 1fr;
     }
 
-    .research-theme-body {
-      padding-left: 0.72rem;
+    .rs-plate {
+      max-width: 26rem;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .ms-page-head {
+      grid-template-columns: 1fr;
     }
 
-    .ms-page-head-note {
-      max-width: 100%;
+    /* Accent as text: mixed toward ink so gold and sage stay legible on cream. */
+  .rs-index-item,
+  .rs-area,
+  .rs-shelf {
+    --area-ink: color-mix(in srgb, var(--area-accent) 58%, var(--ms-on-surface));
+  }
+
+  .rs-index {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .rs-index-item:nth-child(3) {
+      border-left: 0;
+    }
+
+    .rs-index-item:nth-child(n + 3) {
+      border-top: 1px solid var(--ms-rule);
+    }
+
+    .rs-pub {
+      grid-template-columns: 1fr;
+      gap: 0.2rem;
+    }
+
+    .rs-pub-year--repeat {
+      display: none;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .research-scholar-arrow {
+    .rs-index-item {
       transition: none;
     }
   }

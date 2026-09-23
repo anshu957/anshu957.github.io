@@ -10,10 +10,11 @@ export const stopMeta = {
   },
   iiser: {
     theme: "nonlinear dynamical systems",
-    href: "/research/#theme-physics-ml",
+    href: "/research/#theme-networks",
   },
   olden: {
     theme: "food-web synchronization",
+    href: "/research/#theme-networks",
   },
   ncstate: {
     theme: "physics-informed ML",
