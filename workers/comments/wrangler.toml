@@ -4,8 +4,8 @@ main = "src/index.js"
 compatibility_date = "2026-09-01"
 
 [vars]
-ALLOWED_ORIGINS = "https://anshu957.github.io,http://localhost:4321,http://localhost:4399"
-SITE = "https://anshu957.github.io"
+ALLOWED_ORIGINS = "https://integrable.space,https://anshu957.github.io,http://localhost:4321,http://localhost:4399"
+SITE = "https://integrable.space"
 
 [[d1_databases]]
 binding = "DB"
