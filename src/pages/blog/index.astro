@@ -49,7 +49,8 @@ const projects = Object.keys(PROJECTS)
   .map((name) => ({ name, accent: accentVar(PROJECTS[name]) }));
 
 // One contribution calendar per year: a column per week (Monday first), a square per day.
-const byDay = Object.groupBy(entries, (e) => e.day);
+const byDay = {};
+for (const e of entries) (byDay[e.day] ??= []).push(e);
 const calendars = years.map((year) => {
   const jan1 = new Date(Date.UTC(year, 0, 1));
   const lead = (jan1.getUTCDay() + 6) % 7;
