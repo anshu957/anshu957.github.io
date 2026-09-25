@@ -1,16 +1,24 @@
 /* Site-wide foundation: fonts, non-colour tokens and element defaults.
    Colours live in tokens.css (generated from palette.json); page styling lives in manuscript.css. */
-@import "@fontsource/crimson-pro/400.css";
-@import "@fontsource/crimson-pro/400-italic.css";
-@import "@fontsource/crimson-pro/500.css";
-@import "@fontsource/crimson-pro/600.css";
-@import "@fontsource/crimson-pro/700.css";
+@import "@fontsource-variable/literata/opsz.css";
+@import "@fontsource-variable/literata/opsz-italic.css";
 @import "@fontsource/jetbrains-mono/500.css";
 
 :root {
-  --ms-font-display: "Crimson Pro", Georgia, serif;
-  --ms-font-body: "Crimson Pro", Georgia, serif;
+  --ms-font-display: "Literata Variable", Georgia, serif;
+  --ms-font-body: "Literata Variable", Georgia, serif;
   --ms-font-mono: "JetBrains Mono", ui-monospace, monospace;
+  /* Type scale: every font-size on the site uses one of these steps. */
+  --fs-label: 0.75rem;   /* 12px  mono kickers, dates, tags */
+  --fs-note: 0.9375rem;  /* 15px  sidenotes, captions, references */
+  --fs-small: 1.0625rem; /* 17px  secondary text, deks, paper details */
+  --fs-body: 1.125rem;   /* 18px  reading text */
+  --fs-lede: 1.3125rem;  /* 21px  ledes, nav, list titles */
+  --fs-h3: clamp(1.35rem, 1.8vw, 1.6rem);
+  --fs-h2: clamp(1.75rem, 3vw, 2.4rem);
+  --fs-h1: clamp(2.2rem, 4vw, 3.2rem);
+  --lh-body: 1.75;       /* reading text on every page */
+  --ms-plate-w: 22rem;   /* card / plate width wherever post or theme art sits beside text */
   --ms-container: min(1320px, calc(100vw - 2rem));
   --ms-margin-mobile: clamp(1rem, 3vw, 2.15rem);
   color-scheme: light;
@@ -32,18 +40,12 @@ body {
   min-height: 100vh;
   color: var(--ms-on-surface);
   font-family: var(--ms-font-body);
-  font-size: 18px;
-  line-height: 1.75;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
   font-kerning: normal;
   text-rendering: optimizeLegibility;
   background-color: var(--ms-sheet);
   transition: background 0.4s ease, color 0.4s ease;
-}
-
-@media (max-width: 760px) {
-  body {
-    font-size: 17px;
-  }
 }
 
 ::selection {
@@ -99,15 +101,15 @@ h4 {
 }
 
 h1 {
-  font-size: clamp(2.3rem, 3.85vw, 3.55rem);
+  font-size: var(--fs-h1);
 }
 
 h2 {
-  font-size: clamp(1.72rem, 2.8vw, 2.35rem);
+  font-size: var(--fs-h2);
 }
 
 h3 {
-  font-size: clamp(1.22rem, 1.55vw, 1.52rem);
+  font-size: var(--fs-h3);
 }
 
 p,

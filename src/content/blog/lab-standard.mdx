@@ -116,7 +116,7 @@ The rule that takes care of the first kind of mess is simple: everything a singl
   The contents of one run folder. The manifest is written by the run itself and records enough to reproduce it, or at least to explain why it can't be.
 </Diagram>
 
-The file that makes this about reproducibility and not just tidiness is `manifest.json`. Every run writes one automatically. It records the git commit of the code (plus any uncommitted changes, as a diff), the exact conda environment, the random seed, the fully resolved config, a sha256 hash of every input and output file, and the machine and SLURM job it ran on.
+The reproducibility part comes from `manifest.json`. Every run writes one automatically. It records the git commit of the code (plus any uncommitted changes, as a diff), the exact conda environment, the random seed, the fully resolved config, a sha256 hash of every input and output file, and the machine and SLURM job it ran on.
 
 <Sidenote mark="sha256">
   A hash is a short fingerprint of a file's contents. Change one byte and the fingerprint changes completely, so two matching hashes mean you have the very same file and not just one with the same name.

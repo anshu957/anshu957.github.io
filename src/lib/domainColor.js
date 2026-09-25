@@ -32,7 +32,7 @@ export function publicationDomain(item) {
   if (item.theme === "physics-ml") return "blue";
   if (item.theme === "networks") return "oxide";
 
-  const t = `${item.title} ${item.venue} ${item.summary ?? ""}`.toLowerCase();
+  const t = `${item.title} ${item.venue}`.toLowerCase();
   if (/behavior|jabs|mouse|phenotyp|genom|morphic/.test(t)) return "sage";
   if (/neural|machine learning|hamiltonian|physics|nonlinear/.test(t)) return "blue";
   if (/network|dynamical|synchron|basin|perturb/.test(t)) return "oxide";

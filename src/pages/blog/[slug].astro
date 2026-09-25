@@ -7,7 +7,7 @@ import ManuscriptHeader from "../../components/manuscript/ManuscriptHeader.astro
 import ManuscriptFooter from "../../components/manuscript/ManuscriptFooter.astro";
 import Sidenote from "../../components/Sidenote.astro";
 import { siteMeta } from "../../data/site.js";
-import { domainColor, accentVar, tagLabel } from "../../lib/domainColor.js";
+import { domainColor, tagLabel } from "../../lib/domainColor.js";
 import "../../styles/manuscript.css";
 
 export async function getStaticPaths() {
@@ -26,6 +26,8 @@ const formatDate = (date) =>
 const tags = post.data.tags ?? [];
 const color = domainColor(tags);
 const primaryTag = tagLabel(tags[0]);
+// Keywords keep their acronyms upright: "rna velocity" -> "RNA velocity".
+const keyword = (t) => tagLabel(t).replace(/\b(rna|dna|ai|ml)\b/gi, (m) => m.toUpperCase());
 ---
 
 <BaseLayout title={`${post.data.title} | ${siteMeta.name}`} description={post.data.description}>
@@ -62,12 +64,8 @@ const primaryTag = tagLabel(tags[0]);
 
         <div class="ms-article-reading-grid">
           <aside class="ms-article-reader-rail" aria-label="Reading details">
-            <p class="ms-article-reader-label">tags</p>
-            <ul class="ms-article-tags">
-              {tags.slice(0, 4).map((t) => (
-                <li class="ms-article-tag" style={`--tag-accent: ${accentVar(domainColor([t]))}`}>{tagLabel(t)}</li>
-              ))}
-            </ul>
+            <p class="ms-article-reader-label">Keywords</p>
+            <p class="ms-article-tags">{tags.slice(0, 4).map(keyword).join("; ")}</p>
           </aside>
 
           <div class="ms-article-prose">
@@ -97,7 +95,7 @@ const primaryTag = tagLabel(tags[0]);
     margin-bottom: clamp(0.85rem, 1.8vw, 1.2rem);
     color: var(--ms-muted);
     font-family: var(--ms-font-mono);
-    font-size: 0.64rem;
+    font-size: var(--fs-label);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     opacity: 0.62;
@@ -172,7 +170,7 @@ const primaryTag = tagLabel(tags[0]);
     margin: 0 0 0.55rem;
     color: var(--article-accent);
     font-family: var(--ms-font-mono);
-    font-size: clamp(0.62rem, 1vw, 0.68rem);
+    font-size: var(--fs-label);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     opacity: 0.8;
@@ -183,7 +181,7 @@ const primaryTag = tagLabel(tags[0]);
     margin: 0 0 0.65rem;
     color: var(--ms-primary);
     font-family: var(--ms-font-display);
-    font-size: clamp(2.1rem, 4.4vw, 3.4rem);
+    font-size: var(--fs-h1);
     font-weight: 550;
     letter-spacing: -0.035em;
     line-height: 1.08;
@@ -195,7 +193,7 @@ const primaryTag = tagLabel(tags[0]);
     margin: 0;
     color: var(--ms-on-surface-variant);
     font-family: var(--ms-font-body);
-    font-size: clamp(1rem, 1.45vw, 1.12rem);
+    font-size: var(--fs-body);
     font-style: italic;
     font-weight: 500;
     line-height: 1.32;
@@ -206,7 +204,7 @@ const primaryTag = tagLabel(tags[0]);
     margin: 0 0 0.32rem;
     color: var(--article-accent);
     font-family: var(--ms-font-mono);
-    font-size: 0.62rem;
+    font-size: var(--fs-label);
     letter-spacing: 0.13em;
     text-transform: uppercase;
   }
@@ -226,7 +224,7 @@ const primaryTag = tagLabel(tags[0]);
     padding-top: 0.35rem;
     color: var(--ms-muted);
     font-family: var(--ms-font-mono);
-    font-size: 0.72rem;
+    font-size: var(--fs-label);
     letter-spacing: 0.04em;
     line-height: 1.45;
     text-transform: uppercase;
@@ -236,35 +234,15 @@ const primaryTag = tagLabel(tags[0]);
     margin: 0;
   }
 
+  /* Keywords, set the way a journal article lists them. */
   .ms-article-tags {
-    list-style: none;
     margin: 0.55rem 0 0;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-  }
-
-  .ms-article-tag {
-    --tag-accent: var(--article-accent);
-    padding: 0.24rem 0.62rem;
-    border: 1px solid color-mix(in srgb, var(--tag-accent) 42%, transparent);
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--tag-accent) 15%, transparent);
-    color: color-mix(in srgb, var(--tag-accent) 76%, var(--ms-primary));
-    font-family: var(--ms-font-mono);
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.01em;
-    line-height: 1.35;
+    color: var(--ms-on-surface-variant);
+    font-family: var(--ms-font-body);
+    font-size: var(--fs-note);
+    letter-spacing: normal;
+    line-height: 1.5;
     text-transform: none;
-    white-space: nowrap;
-    transition: background 180ms ease, border-color 180ms ease;
-  }
-
-  html.dark .ms-article-tag {
-    background: color-mix(in srgb, var(--tag-accent) 22%, transparent);
-    color: color-mix(in srgb, var(--tag-accent) 88%, var(--ms-primary));
   }
 
   .ms-article-prose {
@@ -273,8 +251,8 @@ const primaryTag = tagLabel(tags[0]);
     max-width: 67ch;
     color: var(--ms-on-surface-variant);
     font-family: var(--ms-font-body);
-    font-size: clamp(1.05rem, 1.45vw, 1.14rem);
-    line-height: 1.78;
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
   }
 
   .ms-article-prose :global(p),
@@ -303,12 +281,12 @@ const primaryTag = tagLabel(tags[0]);
 
   .ms-article-prose :global(h2) {
     margin: clamp(2.4rem, 4vw, 3.1rem) 0 1.05rem;
-    font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+    font-size: var(--fs-h2);
   }
 
   .ms-article-prose :global(h3) {
     margin: clamp(1.7rem, 3vw, 2.1rem) 0 0.8rem;
-    font-size: clamp(1.12rem, 1.4vw, 1.26rem);
+    font-size: var(--fs-lede);
   }
 
   .ms-article-prose :global(blockquote) {
@@ -329,7 +307,7 @@ const primaryTag = tagLabel(tags[0]);
     border: 1px solid var(--ms-rule);
     border-radius: 0.45rem;
     background: color-mix(in srgb, var(--article-accent) 5%, var(--ms-sheet));
-    font-size: 0.78rem;
+    font-size: var(--fs-label);
     line-height: 1.55;
   }
 
@@ -381,12 +359,12 @@ const primaryTag = tagLabel(tags[0]);
     }
 
     .ms-article-title {
-      font-size: clamp(2rem, 11vw, 2.8rem);
+      font-size: var(--fs-h1);
       max-width: 16ch;
     }
 
     .ms-article-prose {
-      font-size: 1rem;
+      font-size: var(--fs-small);
       line-height: 1.68;
     }
 

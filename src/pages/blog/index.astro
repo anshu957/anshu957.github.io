@@ -1,0 +1,813 @@
+---
+import CardPlate from "../../components/blog/CardPlate.astro";
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ManuscriptHeader from "../../components/manuscript/ManuscriptHeader.astro";
+import ManuscriptFooter from "../../components/manuscript/ManuscriptFooter.astro";
+import { siteMeta } from "../../data/site.js";
+import { accentVar, tagLabel } from "../../lib/domainColor.js";
+import "../../styles/manuscript.css";
+
+// Each entry belongs to one line of work, read from its tags.
+const PROJECTS = { "Cell fate": "sage", "Networks": "oxide", "Research practice": "blue", "Notes": "gold" };
+const project = (tags = []) => {
+  const t = tags.join(" ").toLowerCase();
+  if (/cell fate|single-cell|rna/.test(t)) return "Cell fate";
+  if (/reproduc|software|ai agents|practice/.test(t)) return "Research practice";
+  if (/network|physics|complex/.test(t)) return "Networks";
+  return "Notes";
+};
+
+const utc = (d, o) => d.toLocaleDateString("en-US", { ...o, timeZone: "UTC" });
+const iso = (d) => d.toISOString().slice(0, 10);
+
+// Entries are numbered in the order they were written; the contents lists them newest first.
+const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.date.getTime() - b.data.date.getTime(),
+);
+const entries = posts
+  .map((post, i) => {
+    const name = project(post.data.tags);
+    return {
+      post,
+      no: i + 1,
+      project: name,
+      accent: accentVar(PROJECTS[name]),
+      day: iso(post.data.date),
+      year: post.data.date.getUTCFullYear(),
+      date: utc(post.data.date, { day: "numeric", month: "short", year: "numeric" }),
+      short: utc(post.data.date, { day: "numeric", month: "short" }),
+      mins: (post.data.readingTime ?? "").match(/\d+/)?.[0],
+    };
+  })
+  .reverse();
+
+const years = [...new Set(entries.map((e) => e.year))];
+const byYear = years.map((year) => ({ year, items: entries.filter((e) => e.year === year) }));
+const projects = Object.keys(PROJECTS)
+  .filter((name) => entries.some((e) => e.project === name))
+  .map((name) => ({ name, accent: accentVar(PROJECTS[name]) }));
+
+// One contribution calendar per year: a column per week (Monday first), a square per day.
+const byDay = Object.groupBy(entries, (e) => e.day);
+const calendars = years.map((year) => {
+  const jan1 = new Date(Date.UTC(year, 0, 1));
+  const lead = (jan1.getUTCDay() + 6) % 7;
+  const days = (Date.UTC(year + 1, 0, 1) - jan1.getTime()) / 864e5;
+  const weeks = Math.ceil((lead + days) / 7);
+  const cells = Array.from({ length: weeks * 7 }, (_, k) => {
+    const d = new Date(jan1.getTime() + (k - lead) * 864e5);
+    if (d.getUTCFullYear() !== year) return { out: true };
+    return { day: iso(d), label: utc(d, { day: "numeric", month: "short", year: "numeric" }), items: byDay[iso(d)] ?? [] };
+  });
+  const months = Array.from({ length: 12 }, (_, m) => ({
+    name: utc(new Date(Date.UTC(year, m, 1)), { month: "short" }),
+    week: Math.floor((lead + (Date.UTC(year, m, 1) - jan1.getTime()) / 864e5) / 7) + 1,
+  }));
+  return { year, weeks, cells, months };
+});
+
+const pad = (n) => String(n).padStart(3, "0");
+---
+
+<BaseLayout title={`Blog | ${siteMeta.name}`} description={`Blog posts by ${siteMeta.name}.`}>
+  <div class="manuscript-page">
+    <div class="ms-shell">
+      <ManuscriptHeader currentPath="/blog" />
+
+      <main class="ms-archive">
+        <header class="ms-archive-head">
+          <p class="ms-archive-kicker">Archive</p>
+          <h1>Notes from the notebook.</h1>
+        </header>
+
+        <!-- An open spiral notebook, two A4 pages. The left page is the contents and never turns;
+             the right page shows whichever entry the reader points at. -->
+        <section class="lab" aria-label="Notebook">
+          <div class="lab-book">
+            <div class="lab-page lab-page--left">
+              <label class="lab-find">
+                <span class="lab-key">Find</span>
+                <input type="search" placeholder="a word from a title…" autocomplete="off" spellcheck="false" />
+              </label>
+
+              <div class="lab-cal">
+                <div class="lab-cal-head">
+                  <span class="lab-key lab-cal-year">{years[0]}</span>
+                  <div class="lab-years" role="group" aria-label="Year">
+                    <button type="button" data-year="" aria-pressed="true">All</button>
+                    {years.map((y) => <button type="button" data-year={y} aria-pressed="false">{y}</button>)}
+                  </div>
+                </div>
+                {calendars.map((c, i) => (
+                  <div class="lab-cal-year-block" data-cal={c.year} hidden={i !== 0}>
+                    <div class="lab-cal-body" style={`--weeks: ${c.weeks}`}>
+                      <div class="lab-cal-months" aria-hidden="true">
+                        {c.months.map((m) => <span style={`grid-column: ${m.week}`}>{m.name}</span>)}
+                      </div>
+                      <div class="lab-cal-wd" aria-hidden="true"><span>Mon</span><span>Wed</span><span>Fri</span></div>
+                      <div class="lab-cal-days">
+                        {c.cells.map((cell) =>
+                          cell.out ? <i class="is-out"></i>
+                          : cell.items.length ? (
+                            <a href={`/blog/${cell.items[0].post.slug}/`} data-no={cell.items[0].no}
+                              style={`--entry-accent: ${cell.items[0].accent}`}
+                              title={`${cell.label} · ${cell.items.map((e) => e.post.data.title).join(" · ")}`}
+                              aria-label={`${cell.label}: ${cell.items[0].post.data.title}`}></a>
+                          ) : <i title={cell.label}></i>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div class="lab-filters" role="group" aria-label="Project">
+                <button type="button" data-project="" aria-pressed="true">All {entries.length}</button>
+                {projects.map((p) => (
+                  <button type="button" data-project={p.name} aria-pressed="false" style={`--entry-accent: ${p.accent}`}>
+                    <span class="lab-dot"></span>{p.name}
+                  </button>
+                ))}
+              </div>
+
+              <nav class="lab-contents" aria-label="Contents">
+                {byYear.map((g) => (
+                  <section class:list={["lab-year", { "lab-year--split": g.items.length > 12 }]} data-year={g.year}>
+                    <h2>{g.year}</h2>
+                    <ol>
+                      {g.items.map((e) => (
+                        <li data-no={e.no} data-project={e.project} data-title={e.post.data.title.toLowerCase()}>
+                          <a href={`/blog/${e.post.slug}/`} style={`--entry-accent: ${e.accent}`}>
+                            <span class="lab-dot"></span>
+                            <span class="lab-item-title">{e.post.data.title}</span>
+                            <span class="lab-item-date">{e.short}</span>
+                          </a>
+                        </li>
+                      ))}
+                    </ol>
+                  </section>
+                ))}
+                <p class="lab-none" hidden>Nothing in the book matches that.</p>
+              </nav>
+            </div>
+
+            <div class="lab-page lab-page--right">
+              {entries.map((e, i) => (
+                <article class="lab-entry" data-entry={e.no} hidden={i !== 0} style={`--entry-accent: ${e.accent}`}>
+                  <div class="lab-entry-top">
+                    <span class="lab-no" aria-label={`Entry ${e.no}`}>{pad(e.no)}</span>
+                    <time class="lab-entry-date" datetime={e.day}>{e.date}</time>
+                  </div>
+                  <h3 class="lab-entry-title"><a href={`/blog/${e.post.slug}/`}>{e.post.data.title}</a></h3>
+                  <p class="lab-dek">{e.post.data.description}</p>
+                  <div class="lab-figure">
+                    <span class="lab-plate"><CardPlate image={e.post.data.image} eager={i === 0} /></span>
+                  </div>
+                  <dl class="lab-facts">
+                    <div><dt>Project</dt><dd><span class="lab-dot"></span>{e.project}</dd></div>
+                    <div><dt>Length</dt><dd>{e.mins ? `${e.mins} min` : "—"}</dd></div>
+                    <div><dt>Tags</dt><dd>{(e.post.data.tags ?? []).slice(0, 2).map(tagLabel).join(", ")}</dd></div>
+                  </dl>
+                  <a class="lab-read" href={`/blog/${e.post.slug}/`}>Read the entry →</a>
+                </article>
+              ))}
+            </div>
+
+            <span class="lab-spiral" aria-hidden="true"></span>
+          </div>
+        </section>
+      </main>
+
+      <ManuscriptFooter />
+    </div>
+  </div>
+  <script>
+    // The contents page: filter by a word, a project or a year; point at a line or a day to show
+    // that entry on the right page. Links still go straight to the post.
+    let teardown: AbortController | undefined;
+
+    document.addEventListener("astro:page-load", () => {
+      teardown?.abort();
+      const book = document.querySelector<HTMLElement>(".lab-book");
+      if (!book) return;
+      teardown = new AbortController();
+      const { signal } = teardown;
+
+      const $$ = <T extends Element>(s: string) => [...book.querySelectorAll<T>(s)];
+      const input = book.querySelector<HTMLInputElement>(".lab-find input")!;
+      const rows = $$<HTMLLIElement>(".lab-contents li");
+      const cells = $$<HTMLAnchorElement>(".lab-cal-days a");
+      const latest = $$<HTMLElement>("[data-cal]")[0]?.dataset.cal ?? "";
+      const state = { q: "", project: "", year: "" };
+      let current = rows[0]?.dataset.no;
+
+      const matches = (el: HTMLElement) => {
+        const row = rows.find((r) => r.dataset.no === el.dataset.no)!;
+        return (!state.project || row.dataset.project === state.project) && (!state.q || row.dataset.title!.includes(state.q));
+      };
+
+      const show = (no?: string) => {
+        if (!no || no === current) return;
+        current = no;
+        $$<HTMLElement>("[data-entry]").forEach((a) => (a.hidden = a.dataset.entry !== no));
+        [...rows, ...cells].forEach((el) => el.classList.toggle("is-on", el.dataset.no === no));
+      };
+
+      const draw = () => {
+        const year = state.year || latest;
+        book.querySelector(".lab-cal-year")!.textContent = year;
+        $$<HTMLElement>("[data-cal]").forEach((c) => (c.hidden = c.dataset.cal !== year));
+        $$<HTMLButtonElement>("[data-year]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.year === state.year)));
+        $$<HTMLButtonElement>("[data-project]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.project === state.project)));
+        rows.forEach((r) => (r.hidden = !matches(r) || (!!state.year && !r.closest(`[data-year="${state.year}"]`))));
+        $$<HTMLElement>(".lab-year").forEach((s) => (s.hidden = !s.querySelector("li:not([hidden])")));
+        book.querySelector<HTMLElement>(".lab-none")!.hidden = rows.some((r) => !r.hidden);
+        cells.forEach((c) => c.classList.toggle("is-dim", !matches(c)));
+      };
+
+      input.addEventListener("input", () => { state.q = input.value.trim().toLowerCase(); draw(); }, { signal });
+      book.addEventListener("click", (ev) => {
+        const b = (ev.target as Element).closest<HTMLButtonElement>("button[data-year], button[data-project]");
+        if (!b) return;
+        if (b.dataset.year !== undefined) state.year = b.dataset.year;
+        else state.project = b.dataset.project ?? "";
+        draw();
+      }, { signal });
+      const point = (ev: Event) => show((ev.target as Element).closest<HTMLElement>("[data-no]")?.dataset.no);
+      book.addEventListener("pointerover", point, { signal });
+      book.addEventListener("focusin", point, { signal });
+
+      rows[0]?.classList.add("is-on");
+      cells.find((c) => c.dataset.no === current)?.classList.add("is-on");
+    });
+  </script>
+</BaseLayout>
+
+<style>
+  .ms-archive {
+    position: relative;
+    padding: clamp(1rem, 2.3vw, 1.8rem) 0 clamp(3rem, 6vw, 4.8rem);
+  }
+
+  .ms-archive-head {
+    padding: clamp(0.6rem, 1.6vw, 1.2rem) 0 clamp(1.4rem, 3vw, 2.2rem);
+  }
+
+  .ms-archive-kicker {
+    margin: 0 0 0.32rem;
+    color: var(--ms-muted);
+    font-family: var(--ms-font-mono);
+    font-size: var(--fs-label);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .ms-archive-head h1 {
+    margin: 0;
+    color: var(--ms-primary);
+    font-family: var(--ms-font-display);
+    font-size: var(--fs-h1);
+    font-weight: 500;
+    letter-spacing: -0.045em;
+    line-height: 1;
+  }
+
+  /* An open, spiral-bound notebook: two A4 pages (210 × 297) about a coil, as wide as the shell. */
+  .lab {
+    --g: 1.25rem;
+    --lab-grid: color-mix(in srgb, var(--ms-on-surface) 7%, transparent);
+    --lab-form: color-mix(in srgb, var(--ms-on-surface) 45%, transparent);
+    --lab-wire: color-mix(in srgb, var(--ms-on-surface) 58%, var(--ms-bg));
+    --lab-hole: color-mix(in srgb, var(--ms-on-surface) 20%, var(--ms-bg));
+    --lab-empty: color-mix(in srgb, var(--ms-on-surface) 6%, transparent);
+  }
+
+  .lab-book {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    margin-inline: auto;
+    container-type: inline-size;
+  }
+
+  /* The pages underneath, just visible at the foot of the open book. */
+  .lab-book::before {
+    content: "";
+    grid-area: 1 / 1 / 2 / 3;
+    border-radius: 0.7rem;
+    background: var(--ms-sheet);
+    box-shadow: 0 0 0 1px var(--ms-rule), 0 26px 44px -28px var(--ms-shadow-strong);
+    transform: translateY(5px);
+  }
+
+  .lab-page {
+    grid-row: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: calc(50cqi * 297 / 210);
+    padding: 2.8rem 3rem 2.4rem;
+    box-shadow: 0 0 0 1px var(--ms-rule);
+  }
+
+  /* Punched holes along the spine edge, and a faint shade where the page curves into the coil. */
+  .lab-page--left {
+    grid-column: 1;
+    padding-right: 3.8rem;
+    border-radius: 0.7rem 0 0 0.7rem;
+    background:
+      radial-gradient(circle at 0.95rem 50%, var(--lab-hole) 0.28rem, transparent 0.32rem) right 0 top 0.3rem / 2rem 1.6rem repeat-y,
+      linear-gradient(90deg, transparent 90%, color-mix(in srgb, var(--ms-on-surface) 6%, transparent)),
+      var(--ms-sheet);
+  }
+
+  .lab-page--right {
+    grid-column: 2;
+    padding-left: 3.8rem;
+    border-radius: 0 0.7rem 0.7rem 0;
+    background:
+      radial-gradient(circle at 1.05rem 50%, var(--lab-hole) 0.28rem, transparent 0.32rem) 0 0.3rem / 2rem 1.6rem repeat-y,
+      linear-gradient(270deg, transparent 90%, color-mix(in srgb, var(--ms-on-surface) 6%, transparent)),
+      var(--ms-sheet);
+  }
+
+  .lab-spiral {
+    position: absolute;
+    z-index: 5;
+    top: 0.3rem;
+    bottom: 0.5rem;
+    left: calc(50% - 1.15rem);
+    width: 2.3rem;
+    background: var(--lab-wire);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='37' height='26'%3E%3Cpath d='M34 13.5C34 9 3 6.5 3 11.5s31 6 31 2' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") 0 0 / 2.3rem 1.6rem repeat-y;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='37' height='26'%3E%3Cpath d='M34 13.5C34 9 3 6.5 3 11.5s31 6 31 2' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") 0 0 / 2.3rem 1.6rem repeat-y;
+    pointer-events: none;
+  }
+
+  /* Shared marks. */
+  .lab-key,
+  .lab-facts dt {
+    color: var(--ms-primary);
+    font-family: var(--ms-font-mono);
+    font-size: var(--fs-label);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .lab-dot {
+    flex: none;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--entry-accent);
+  }
+
+  .lab button {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ms-muted);
+    font-family: var(--ms-font-mono);
+    font-size: var(--fs-label);
+    letter-spacing: 0.04em;
+    cursor: pointer;
+  }
+
+  .lab button:hover,
+  .lab button[aria-pressed="true"] {
+    color: var(--ms-primary);
+  }
+
+  .lab button[aria-pressed="true"] {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+  }
+
+  /* Find. */
+  .lab-find {
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid var(--ms-on-surface);
+  }
+
+  .lab-find input {
+    flex: 1;
+    min-width: 0;
+    padding: 0.1rem 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: var(--ms-on-surface);
+    font-family: var(--ms-font-body);
+    font-size: var(--fs-body);
+    font-style: italic;
+  }
+
+  .lab-find input::placeholder {
+    color: color-mix(in srgb, var(--ms-on-surface) 40%, transparent);
+  }
+
+  .lab-find:focus-within {
+    border-bottom-color: var(--ms-accent);
+  }
+
+  /* The contribution calendar. */
+  .lab-cal {
+    margin: 1.1rem 0 0.2rem;
+  }
+
+  .lab-cal-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.5rem;
+  }
+
+  .lab-years {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.2rem 0.7rem;
+  }
+
+  .lab-cal-body {
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 1fr);
+    gap: 0.25rem 0.35rem;
+    color: var(--ms-muted);
+    font-family: var(--ms-font-mono);
+    font-size: var(--fs-label);
+    line-height: 1;
+  }
+
+  .lab-cal-months,
+  .lab-cal-days {
+    display: grid;
+    grid-template-columns: repeat(var(--weeks), minmax(0, 1fr));
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .lab-cal-months {
+    grid-area: 1 / 2;
+  }
+
+  .lab-cal-wd { grid-area: 2 / 1; }
+  .lab-cal-days { grid-area: 2 / 2; }
+
+  .lab-cal-months span {
+    grid-row: 1;
+    white-space: nowrap;
+  }
+
+  /* Mon, Wed, Fri label rows 1, 3, 5 of 7. */
+  .lab-cal-wd {
+    display: grid;
+    grid-template-rows: repeat(7, minmax(0, 1fr));
+    gap: 2px;
+  }
+
+  .lab-cal-wd span {
+    align-self: center;
+  }
+
+  .lab-cal-wd span:nth-child(2) { grid-row: 3; }
+  .lab-cal-wd span:nth-child(3) { grid-row: 5; }
+
+  .lab-cal-days {
+    grid-template-rows: repeat(7, auto);
+    grid-auto-flow: column;
+  }
+
+  .lab-cal-days > * {
+    aspect-ratio: 1;
+    border-radius: 2px;
+    background: var(--lab-empty);
+  }
+
+  .lab-cal-days .is-out {
+    visibility: hidden;
+  }
+
+  .lab-cal-days a {
+    background: color-mix(in srgb, var(--entry-accent) 72%, var(--ms-sheet));
+    transition: background-color 200ms ease;
+  }
+
+  .lab-cal-days a.is-dim {
+    background: color-mix(in srgb, var(--entry-accent) 18%, var(--ms-sheet));
+  }
+
+  .lab-cal-days a:hover,
+  .lab-cal-days a:focus-visible,
+  .lab-cal-days a.is-on {
+    outline: 1.5px solid var(--ms-on-surface);
+    outline-offset: 1px;
+  }
+
+
+  /* Project filters. */
+  .lab-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 1rem;
+    margin: 1.1rem 0 0.8rem;
+  }
+
+  .lab-filters button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  /* The contents: a year at a time, two columns each. It fills what's left of the page and
+     scrolls inside it, so the page keeps its A4 shape however many entries there are. */
+  .lab-contents {
+    flex: 1 1 0;
+    min-height: 0;
+    overflow-y: auto;
+    contain: size;
+    scrollbar-width: thin;
+    scrollbar-color: var(--ms-rule) transparent;
+  }
+
+  .lab-year h2 {
+    margin: 0 0 0.3rem;
+    padding: 0.7rem 0 0.3rem;
+    border-bottom: 1px solid var(--lab-form);
+    color: var(--ms-primary);
+    font-family: var(--ms-font-mono);
+    font-size: var(--fs-label);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+
+  .lab-year:first-child h2 {
+    padding-top: 0;
+  }
+
+  .lab-year ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* A year with many entries splits into two columns; a short one keeps whole titles. */
+  .lab-year--split ol {
+    columns: 2;
+    column-gap: 1.6rem;
+    column-rule: 1px solid var(--ms-rule);
+  }
+
+  .lab-year li {
+    break-inside: avoid;
+  }
+
+  .lab-year a {
+    display: flex;
+    align-items: baseline;
+    gap: 0.45rem;
+    padding: 0.08rem 0;
+    color: var(--ms-on-surface);
+    font-size: var(--fs-small);
+    line-height: 1.6;
+    text-decoration: none;
+  }
+
+  .lab-year .lab-dot {
+    width: 0.45rem;
+    height: 0.45rem;
+    transform: translateY(-0.1rem);
+  }
+
+  .lab-item-title {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    transition: color 200ms ease, text-decoration-color 200ms ease;
+  }
+
+  .lab-item-date {
+    flex: none;
+    color: var(--ms-muted);
+    font-family: var(--ms-font-mono);
+    font-size: var(--fs-label);
+  }
+
+  .lab-year a:hover .lab-item-title,
+  .lab-year a:focus-visible .lab-item-title,
+  .lab-year li.is-on .lab-item-title {
+    color: var(--ms-accent);
+    text-decoration-color: var(--ms-accent);
+  }
+
+  .lab-none {
+    margin: 1rem 0 0;
+    color: var(--ms-muted);
+    font-size: var(--fs-note);
+    font-style: italic;
+  }
+
+  /* The entry page. */
+  .lab-entry {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  .lab-entry[hidden] {
+    display: none;
+  }
+
+  .lab-entry-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .lab-no {
+    color: color-mix(in srgb, var(--ms-on-surface) 18%, transparent);
+    font-family: var(--ms-font-display);
+    font-size: var(--fs-h1);
+    font-weight: 400;
+    letter-spacing: -0.04em;
+    line-height: 0.9;
+  }
+
+  .lab-entry-date {
+    color: var(--ms-muted);
+    font-family: var(--ms-font-mono);
+    font-size: var(--fs-label);
+    letter-spacing: 0.06em;
+  }
+
+  .lab-entry-title {
+    margin: 1.2rem 0 0.8rem;
+    font-family: var(--ms-font-display);
+    font-size: var(--fs-h2);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+
+  .lab-entry-title a {
+    color: var(--ms-primary);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.14em;
+    transition: text-decoration-color 200ms ease;
+  }
+
+  .lab-entry-title a:hover,
+  .lab-entry-title a:focus-visible {
+    text-decoration-color: var(--ms-accent);
+  }
+
+  .lab-dek {
+    margin: 0;
+    color: var(--ms-on-surface);
+    font-size: var(--fs-body);
+    line-height: 1.5;
+  }
+
+  .lab-figure {
+    margin: 1.2rem 0;
+    padding: calc(var(--g) * 0.65);
+    border: 1px solid var(--lab-form);
+    background:
+      linear-gradient(var(--lab-grid) 1px, transparent 1px) 0 0 / var(--g) var(--g),
+      linear-gradient(90deg, var(--lab-grid) 1px, transparent 1px) 0 0 / var(--g) var(--g);
+  }
+
+  .lab-plate {
+    display: block;
+    aspect-ratio: 3 / 2;
+  }
+
+  .lab-plate :global(.ms-plate-img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+  }
+
+  .lab-plate :global(.ms-plate-img--dark) { display: none; }
+  :global(html.dark) .lab-plate :global(.ms-plate-img) { mix-blend-mode: screen; }
+  :global(html.dark) .lab-plate :global(.ms-plate-img--light) { display: none; }
+  :global(html.dark) .lab-plate :global(.ms-plate-img--dark) { display: block; }
+
+  .lab-facts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: auto 0 0;
+    border-block: 1px solid var(--lab-form);
+  }
+
+  .lab-facts div {
+    display: grid;
+    align-content: start;
+    gap: 0.35rem;
+    padding: 0.55rem 0;
+  }
+
+  .lab-facts div + div {
+    padding-left: 0.9rem;
+    border-left: 1px solid var(--ms-rule);
+  }
+
+  .lab-facts dt {
+    color: var(--ms-muted);
+  }
+
+  .lab-facts dd {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin: 0;
+    color: var(--ms-on-surface);
+    font-size: var(--fs-small);
+  }
+
+  .lab-read {
+    align-self: flex-end;
+    margin-top: 0.9rem;
+    color: var(--ms-accent);
+    font-size: var(--fs-small);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  .lab-read:hover {
+    color: var(--ms-accent-strong);
+  }
+
+  /* Small screens: the contents is the page. It grows instead of scrolling, and titles wrap.
+     The preview page is dropped, since there is no pointing without a pointer. */
+  @media (max-width: 760px) {
+    .lab-book {
+      display: block;
+      width: 100%;
+    }
+
+    .lab-book::before,
+    .lab-spiral,
+    .lab-page--right {
+      display: none;
+    }
+
+    .lab-page {
+      min-height: 0;
+      padding: 1.3rem 1.1rem 1.4rem;
+      border-radius: 0.6rem;
+      background: var(--ms-sheet);
+    }
+
+    .lab-contents {
+      flex: none;
+      contain: none;
+      overflow: visible;
+    }
+
+    .lab-year--split ol {
+      columns: 1;
+    }
+
+    .lab-item-title {
+      white-space: normal;
+    }
+
+    .lab-cal-wd {
+      display: none;
+    }
+
+    .lab-cal-body {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .lab-cal-months { grid-area: 1 / 1; }
+    .lab-cal-days { grid-area: 2 / 1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lab * {
+      transition: none !important;
+    }
+  }
+</style>

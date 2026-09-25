@@ -33,9 +33,8 @@ let stopCount = 0;
       </p>
       <p>
         I started out in mechatronics engineering, spent two years in a corporate job teaching myself
-        physics at night, and then did a PhD on nonlinear dynamics and chaos. That background shapes how
-        I approach both problems—viewing biological data through the lens of high-dimensional state spaces,
-        attractors, and perturbations.
+        physics at night, and then did a PhD on nonlinear dynamics and chaos. That is why, in both problems,
+        I end up thinking about biological data in terms of state spaces, attractors and perturbations.
       </p>
       <p class="about-principle">
         Predrag Cvitanović once remarked that a scientist owns the method, not the subject. That's
@@ -137,7 +136,7 @@ let stopCount = 0;
   .about-cv-kicker {
     margin: 0;
     font-family: var(--ms-font-mono);
-    font-size: 0.66rem;
+    font-size: var(--fs-label);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--ms-accent);
@@ -151,7 +150,7 @@ let stopCount = 0;
     background: color-mix(in srgb, var(--ms-accent) 8%, var(--ms-sheet));
     color: var(--ms-accent);
     font-family: var(--ms-font-mono);
-    font-size: 0.64rem;
+    font-size: var(--fs-label);
     font-weight: 500;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -228,20 +227,22 @@ let stopCount = 0;
   }
 
   /* horizontal branch connector from dot to card */
-  .about-event::after {
+  /* sits on the branch, which shares the marker's row centre */
+  .about-branch::before {
     content: "";
     position: absolute;
     top: 50%;
     height: 1px;
-    width: 0.95rem;
+    width: 0.88rem;
     background: color-mix(in srgb, var(--stop-accent) 40%, transparent);
     transform: translateY(-50%);
   }
 
-  .about-event--right::after { left: 50%; margin-left: 0.42rem; }
-  .about-event--left::after  { right: 50%; margin-right: 0.42rem; }
+  .about-event--right .about-branch::before { right: 100%; }
+  .about-event--left .about-branch::before  { left: 100%; }
 
   .about-branch {
+    position: relative;
     grid-row: 1;
     min-width: 0;
   }
@@ -260,7 +261,7 @@ let stopCount = 0;
     margin: 0 0 0.28rem;
     color: var(--stop-accent);
     font-family: var(--ms-font-mono);
-    font-size: clamp(0.68rem, 0.9vw, 0.76rem);
+    font-size: var(--fs-label);
     font-weight: 500;
     letter-spacing: 0.07em;
     text-transform: uppercase;
@@ -269,7 +270,7 @@ let stopCount = 0;
   .about-role {
     margin: 0 0 0.24rem;
     font-family: var(--ms-font-display);
-    font-size: clamp(1.14rem, 1.9vw, 1.34rem);
+    font-size: var(--fs-lede);
     font-weight: 650;
     line-height: 1.16;
     letter-spacing: -0.025em;
@@ -336,7 +337,7 @@ let stopCount = 0;
   }
 
   /* Current branch connector line glow */
-  .about-event--current::after {
+  .about-event--current .about-branch::before {
     background: color-mix(in srgb, var(--stop-accent) 65%, transparent);
     animation: live-connector-pulse 2.2s ease-in-out infinite;
   }
@@ -379,7 +380,7 @@ let stopCount = 0;
   .about-where {
     margin: 0;
     color: color-mix(in srgb, var(--ms-muted) 88%, var(--ms-on-surface));
-    font-size: clamp(0.92rem, 1.3vw, 1rem);
+    font-size: var(--fs-small);
     line-height: 1.45;
   }
 
@@ -391,7 +392,7 @@ let stopCount = 0;
   .about-theme {
     margin: 0.5rem 0 0;
     font-family: var(--ms-font-mono);
-    font-size: clamp(0.64rem, 0.88vw, 0.72rem);
+    font-size: var(--fs-label);
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
@@ -425,7 +426,7 @@ let stopCount = 0;
     padding: 0 0.7rem;
     background: var(--ms-bg);
     font-family: var(--ms-font-mono);
-    font-size: clamp(0.6rem, 0.82vw, 0.68rem);
+    font-size: var(--fs-label);
     letter-spacing: 0.04em;
     color: color-mix(in srgb, var(--ms-muted) 52%, transparent);
   }
@@ -445,7 +446,7 @@ let stopCount = 0;
     margin: 0 0 0.32rem;
     color: var(--ms-muted);
     font-family: var(--ms-font-mono);
-    font-size: 0.68rem;
+    font-size: var(--fs-label);
     letter-spacing: 0.16em;
     text-transform: uppercase;
   }
@@ -454,7 +455,7 @@ let stopCount = 0;
     margin: 0;
     color: var(--ms-primary);
     font-family: var(--ms-font-display);
-    font-size: clamp(2rem, 3.8vw, 2.8rem);
+    font-size: var(--fs-h1);
     font-weight: 500;
     letter-spacing: -0.045em;
     line-height: 1;
@@ -464,7 +465,7 @@ let stopCount = 0;
     margin: 0;
     max-width: 28rem;
     color: var(--ms-on-surface-variant);
-    font-size: clamp(0.94rem, 1.5vw, 1.06rem);
+    font-size: var(--fs-small);
     font-style: italic;
     font-weight: 500;
     line-height: 1.28;
@@ -484,11 +485,11 @@ let stopCount = 0;
 
   /* Bio prose */
   .about-bio-prose {
-    max-width: 72ch;
+    max-width: 67ch;
     color: var(--ms-on-surface-variant);
     font-family: var(--ms-font-body);
-    font-size: clamp(1.12rem, 1.6vw, 1.22rem);
-    line-height: 1.72;
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
   }
 
   .about-bio-prose p {
@@ -505,7 +506,7 @@ let stopCount = 0;
     margin: 0.08em 0.12em 0 0;
     color: var(--ms-secondary);
     font-family: var(--ms-font-display);
-    font-size: 3.35rem;
+    font-size: 2.9rem;
     line-height: 0.78;
   }
 
@@ -545,7 +546,7 @@ let stopCount = 0;
 
   @media (max-width: 760px) {
     .about-bio-prose p:first-of-type::first-letter {
-      font-size: 2.75rem;
+      font-size: 2.4rem;
     }
   }
 
@@ -584,13 +585,12 @@ let stopCount = 0;
       margin-top: 0.3rem;
     }
 
-    .about-event::after {
-      left: 1.15rem;
-      right: auto;
-      margin: 0;
+    .about-event--right .about-branch::before,
+    .about-event--left .about-branch::before {
+      left: auto;
+      right: calc(100% + 0.05rem);
       width: 0.85rem;
-      top: 0.65rem;
-      transform: none;
+      top: 0.69rem;
     }
 
     .about-event--right .about-branch,
@@ -616,7 +616,7 @@ let stopCount = 0;
     .about-event--current .about-marker,
     .about-event--current .about-marker::before,
     .about-event--current .about-marker::after,
-    .about-event--current::after,
+    .about-event--current .about-branch::before,
     .about-live-dot {
       animation: none !important;
     }

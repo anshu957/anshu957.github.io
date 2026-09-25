@@ -17,7 +17,7 @@ export const researchAreas = [
     label: "Behavior & genetics",
     title: "Behavioral phenotyping & machine learning",
     body: "At JAX I led JABS (the JAX Animal Behavior System, with Vivek Kumar's lab). It is an open platform that takes you from video of a mouse to its pose, then to behavior classifiers, and finally to genetics. A lot of the work is in the plumbing between those steps, and the part I care about most is making it something other labs actually pick up and use.",
-    links: [{ label: "JABS on GitHub", href: "https://github.com/KumarLabJax/JABS-behavior-classifier" }],
+    links: [{ label: "code", href: "https://github.com/KumarLabJax/JABS-behavior-classifier" }],
     accent: "sage",
     plate: "pose",
     posts: [],
@@ -69,7 +69,6 @@ export const publications = [
     "venue": "eLife",
     "year": 2025,
     "doi": "10.7554/eLife.107259",
-    "summary": "Open platform for mouse behavior acquisition, annotation, classifier sharing, and downstream genetic analysis.",
     "area": "behavior",
     "links": [
       {
@@ -86,7 +85,6 @@ export const publications = [
     "venue": "Nature",
     "year": 2025,
     "doi": "10.1038/s41586-024-08243-w",
-    "summary": "Consortium perspective on cataloging molecular phenotypes of null alleles across human protein-coding genes.",
     "area": "cell-fate",
     "note": "A. Choudhary is a consortium member",
         "links": []
@@ -103,7 +101,6 @@ export const publications = [
     "venue": "Scientific Reports",
     "year": 2023,
     "doi": "10.1038/s41598-023-40766-6",
-    "summary": "Learned neuronal diversity improves nonlinear regression and physics-informed prediction.",
     "area": "physics-ml",
     "links": [
       {
@@ -126,7 +123,6 @@ export const publications = [
     "venue": "Physical Review Research",
     "year": 2021,
     "doi": "10.1103/physrevresearch.3.023144",
-    "summary": "Weakly coupled oscillators can synchronize while strongly coupled neighbors remain drifting.",
     "area": "networks",
     "links": [
       {
@@ -148,7 +144,6 @@ export const publications = [
     "venue": "Nonlinear Dynamics",
     "year": 2021,
     "doi": "10.1007/s11071-020-06185-2",
-    "summary": "Generalized Hamiltonian neural networks forecast dynamics beyond canonical phase-space coordinates.",
     "area": "physics-ml",
     "links": [
       {
@@ -169,7 +164,6 @@ export const publications = [
     "venue": "Nonlinear Theory and Its Applications, IEICE",
     "year": 2021,
     "doi": "10.1587/nolta.12.134",
-    "summary": "Hamiltonian neural networks cross separatrices that trap conventional forecasters.",
     "area": "physics-ml",
     "links": []
   },
@@ -186,7 +180,6 @@ export const publications = [
     "venue": "Physical Review E",
     "year": 2020,
     "doi": "10.1103/physreve.101.062207",
-    "summary": "Hamiltonian structure helps neural networks learn phase-space orbits through order–chaos transitions.",
     "area": "physics-ml",
     "links": [
       {
@@ -207,7 +200,6 @@ export const publications = [
     "venue": "Chaos, Solitons & Fractals: X",
     "year": 2020,
     "doi": "10.1016/j.csfx.2020.100046",
-    "summary": "How data volume and phase-space dimension affect physics-informed learning performance.",
     "area": "physics-ml",
     "links": []
   },
@@ -222,7 +214,6 @@ export const publications = [
     "venue": "Chaos, Solitons & Fractals",
     "year": 2019,
     "doi": "10.1016/j.chaos.2018.11.026",
-    "summary": "Periodically switched coupling suppresses and revives collective oscillations.",
     "area": "networks",
     "links": []
   },
@@ -238,7 +229,6 @@ export const publications = [
     "venue": "Physical Review E",
     "year": 2017,
     "doi": "10.1103/physreve.95.032317",
-    "summary": "Framework for stability under simultaneous perturbations across multiple network nodes.",
     "area": "networks",
     "links": []
   },
@@ -254,7 +244,6 @@ export const publications = [
     "venue": "New Journal of Physics",
     "year": 2017,
     "doi": "10.1088/1367-2630/aa7fab",
-    "summary": "Node recovery times scale with degree in heterogeneous oscillator networks.",
     "area": "networks",
     "links": []
   },
@@ -270,7 +259,6 @@ export const publications = [
     "venue": "Chaos",
     "year": 2017,
     "doi": "10.1063/1.5002883",
-    "summary": "Intermittent sync in Watts–Strogatz Rössler networks beyond master-stability predictions.",
     "area": "networks",
     "links": []
   },
@@ -285,7 +273,6 @@ export const publications = [
     "venue": "Europhysics Letters",
     "year": 2017,
     "doi": "10.1209/0295-5075/117/20003",
-    "summary": "Degree, clustering, and path length do not predict sync consistently across network classes.",
     "area": "networks",
     "links": []
   },
@@ -301,7 +288,6 @@ export const publications = [
     "venue": "Physical Review E",
     "year": 2014,
     "doi": "10.1103/PhysRevE.90.022812",
-    "summary": "Rewiring frequency and coupling strength shape synchrony in adaptive networks.",
     "area": "networks",
     "links": []
   },
@@ -315,7 +301,6 @@ export const publications = [
     "venue": "Scientific Reports",
     "year": 2014,
     "doi": "10.1038/srep04308",
-    "summary": "Dynamic random rewiring suppresses finite-time blow-up in coupled oscillator systems.",
     "area": "networks",
     "links": []
   }

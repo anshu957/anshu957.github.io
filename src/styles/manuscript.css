@@ -1,7 +1,7 @@
 body:has(.manuscript-page) {
   background: var(--ms-bg, #f4f4ea);
-  font-family: "Crimson Pro", Georgia, serif;
-  font-size: 16px;
+  font-family: var(--ms-font-body);
+  font-size: var(--fs-small);
   line-height: 1.6;
 }
 
@@ -14,7 +14,7 @@ html.dark body:has(.manuscript-page) {
   background: var(--ms-bg);
   color: var(--ms-on-surface);
   font-family: var(--ms-font-body);
-  font-size: 16px;
+  font-size: var(--fs-small);
   line-height: 1.6;
   min-height: 100vh;
   position: relative;
@@ -123,7 +123,7 @@ html.dark .ms-shell {
 
 .ms-marginalia {
   font-family: var(--ms-font-mono);
-  font-size: 11px;
+  font-size: var(--fs-label);
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--ms-muted);
@@ -162,7 +162,7 @@ html.dark .ms-shell {
   justify-content: center;
   gap: 0.42rem;
   font-family: var(--ms-font-mono);
-  font-size: clamp(0.68rem, 1.3vw, 0.75rem);
+  font-size: var(--fs-label);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: color-mix(in srgb, var(--domain-oxide) 78%, var(--ms-primary));
@@ -184,7 +184,7 @@ html.dark .ms-tags {
   background: transparent;
   color: var(--ms-primary);
   font-family: var(--ms-font-body);
-  font-size: 0.94rem;
+  font-size: var(--fs-note);
   font-weight: 650;
   line-height: 1;
   cursor: pointer;
@@ -391,7 +391,7 @@ html.dark .ms-tags {
   margin: 0 0 0.32rem;
   color: var(--ms-muted);
   font-family: var(--ms-font-mono);
-  font-size: 0.68rem;
+  font-size: var(--fs-label);
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
@@ -399,7 +399,7 @@ html.dark .ms-tags {
 .ms-index-head h1 {
   margin: 0;
   font-family: var(--ms-font-display);
-  font-size: clamp(1.95rem, 3.8vw, 2.8rem);
+  font-size: var(--fs-h1);
   font-weight: 500;
   letter-spacing: -0.045em;
   line-height: 1;
@@ -411,40 +411,11 @@ html.dark .ms-tags {
   margin: 0;
   max-width: 27rem;
   color: var(--ms-on-surface-variant);
-  font-size: clamp(0.94rem, 1.5vw, 1.05rem);
+  font-size: var(--fs-small);
   font-style: italic;
   font-weight: 500;
   line-height: 1.28;
   text-wrap: pretty;
-}
-
-.ms-index-all {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  justify-self: end;
-  margin-bottom: 0.08rem;
-  padding: 0.42rem 0.62rem;
-  border: 1px solid color-mix(in srgb, var(--ms-secondary) 28%, transparent);
-  border-radius: 999px;
-  color: var(--ms-secondary);
-  font-family: var(--ms-font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  text-decoration: none;
-  text-transform: uppercase;
-  transition: background 180ms ease, border-color 180ms ease, transform 180ms ease;
-}
-
-.ms-index-all::after {
-  content: "->";
-}
-
-.ms-index-all:hover,
-.ms-index-all:focus-visible {
-  background: color-mix(in srgb, var(--ms-secondary) 10%, transparent);
-  border-color: color-mix(in srgb, var(--ms-secondary) 54%, transparent);
-  transform: translateY(-1px);
 }
 
 .ms-epigraph {
@@ -452,7 +423,7 @@ html.dark .ms-tags {
   margin: clamp(0.1rem, 0.6vw, 0.4rem) 0 clamp(0.9rem, 2vw, 1.4rem);
   color: var(--ms-on-surface-variant);
   font-family: var(--ms-font-display);
-  font-size: clamp(1.12rem, 1.7vw, 1.32rem);
+  font-size: var(--fs-lede);
   font-style: italic;
   font-weight: 450;
   line-height: 1.4;
@@ -613,7 +584,7 @@ html.dark .ms-index-entry:hover .ms-index-image {
   gap: 0.36rem;
   margin: 0 0 0.38rem;
   font-family: var(--ms-font-mono);
-  font-size: 0.66rem;
+  font-size: var(--fs-label);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: color-mix(in srgb, var(--ms-muted) 88%, var(--ms-primary));
@@ -632,7 +603,7 @@ html.dark .ms-index-entry:hover .ms-index-image {
   border-radius: 0.24rem;
   background: color-mix(in srgb, var(--entry-accent) 11%, var(--ms-sheet));
   color: var(--entry-accent);
-  font-size: 0.72rem;
+  font-size: var(--fs-label);
   font-weight: 650;
   letter-spacing: 0.03em;
   line-height: 1;
@@ -658,7 +629,7 @@ html.dark .ms-index-entry:hover .ms-index-image {
 .ms-index-title {
   margin: 0 0 0.32rem;
   font-family: var(--ms-font-display);
-  font-size: clamp(1.22rem, 2.05vw, 1.55rem);
+  font-size: var(--fs-h3);
   font-weight: 500;
   line-height: 1.13;
   letter-spacing: -0.032em;
@@ -711,7 +682,7 @@ html.dark .ms-index-entry:hover .ms-index-image {
 .ms-index-desc {
   margin: 0;
   max-width: 42rem;
-  font-size: clamp(0.9rem, 1.42vw, 0.98rem);
+  font-size: var(--fs-note);
   font-style: italic;
   font-weight: 500;
   line-height: 1.48;
@@ -753,10 +724,6 @@ html.dark .ms-index-entry:hover .ms-index-image {
     gap: 0.7rem;
   }
 
-  .ms-index-all {
-    justify-self: start;
-  }
-
   .ms-index-entry {
     grid-template-columns: clamp(7.2rem, 34vw, 8.6rem) minmax(0, 1fr);
     gap: 0.65rem;
@@ -775,11 +742,11 @@ html.dark .ms-index-entry:hover .ms-index-image {
   }
 
   .ms-index-title {
-    font-size: 1.18rem;
+    font-size: var(--fs-body);
   }
 
   .ms-index-desc {
-    font-size: 0.9rem;
+    font-size: var(--fs-note);
     line-height: 1.46;
   }
 }
@@ -787,8 +754,7 @@ html.dark .ms-index-entry:hover .ms-index-image {
 @media (prefers-reduced-motion: reduce) {
   .ms-index-plate,
   .ms-index-image,
-  .ms-index-arrow,
-  .ms-index-all {
+  .ms-index-arrow {
     transition: none;
   }
 }
@@ -806,7 +772,7 @@ html.dark .ms-index-entry:hover .ms-index-image {
   margin: 0;
   color: var(--shelf-accent);
   font-family: var(--ms-font-mono);
-  font-size: 0.64rem;
+  font-size: var(--fs-label);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   opacity: 0.82;
@@ -935,7 +901,7 @@ html.dark .pub-card:hover .pub-card-image {
   margin: 0;
   color: var(--pub-accent);
   font-family: var(--ms-font-mono);
-  font-size: 0.58rem;
+  font-size: var(--fs-label);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   opacity: 0.88;
@@ -956,7 +922,7 @@ html.dark .pub-card:hover .pub-card-image {
 .pub-card-title {
   margin: 0;
   font-family: var(--ms-font-display);
-  font-size: clamp(0.96rem, 1.45vw, 1.08rem);
+  font-size: var(--fs-small);
   font-weight: 600;
   letter-spacing: -0.025em;
   line-height: 1.28;
@@ -981,7 +947,7 @@ html.dark .pub-card:hover .pub-card-image {
   margin: 0;
   min-height: calc(2 * 1.45em);
   color: var(--ms-on-surface-variant);
-  font-size: 0.86rem;
+  font-size: var(--fs-note);
   font-style: italic;
   line-height: 1.45;
   display: -webkit-box;

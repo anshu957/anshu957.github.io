@@ -227,7 +227,7 @@ export default function RealDataFigure({ citeN }) {
   };
 
   if (error) {
-    return <p className="rdf-error">The bone marrow dataset didn't load. The rest of the figure sits this one out.</p>;
+    return <p className="rdf-error">The bone marrow dataset didn't load, so this figure can't be shown.</p>;
   }
 
   return (

@@ -19,7 +19,7 @@ This file fixes the visual foundation for the site so future pages stay in one c
 
 - `Simple Icons` for local brand icons such as Google Scholar, GitHub, and ORCID
 - `KaTeX` for inline and display math fragments that need real symbolic typography
-- `Crimson Pro` (via `@fontsource/crimson-pro`) for body, display, and interface typography; `JetBrains Mono` for dates, tags, kickers and the header badge
+- `Literata` (variable, optical-size axis, via `@fontsource-variable/literata`) for body, display, and interface typography; `JetBrains Mono` for dates, tags, kickers and the header badge
 - `dotLottie React` for character-grade companion animation when we need a small ambient character accent
 - custom retro accents are allowed, but they are no longer the primary UI system
 - `TikZ` (LuaLaTeX + `pdftocairo`, build-time only) for post diagrams: `scripts/diagrams/<post>/render.sh` renders each `.tex` to light + dark SVGs in `public/assets/blog/<post>/`, shown by `src/components/blog/Diagram.astro`. Shared style in `_preamble.tex`; icons from `fontawesome5`. Add-on packages matched to TeX Live 2023 live outside the repo in `~/.local/share/texmf-tl2023` (fontawesome5, simpleicons, forest, pgf-umlsd, dirtree). Nothing ships to the browser but the SVGs.
@@ -27,12 +27,14 @@ This file fixes the visual foundation for the site so future pages stay in one c
 
 ## Fixed Font Choices
 
-- display/editorial serif: `Crimson Pro`
-- body/prose serif: `Crimson Pro`
+- display/editorial serif: `Literata`
+- body/prose serif: `Literata`
 - metadata (dates, tags, kickers, badge): `JetBrains Mono`
 - math typography: `KaTeX`'s bundled math fonts
-- diagrams: glyphs of `Crimson Pro` + `JetBrains Mono` are baked into each SVG as outlines at render time (TTFs in `scripts/diagrams/fonts/`); not loaded by the site
+- diagrams: glyphs of `Crimson Pro` + `JetBrains Mono` are baked into each SVG as outlines at render time (art pipeline not yet moved to Literata) (TTFs in `scripts/diagrams/fonts/`); not loaded by the site
 - utility text should inherit the editorial serif unless there is a deliberate exception
+- type scale (`base.css`): every `font-size` uses a step, `--fs-label` 12 / `--fs-note` 15 / `--fs-small` 17 / `--fs-body` 18 / `--fs-lede` 21 / `--fs-h3` / `--fs-h2` / `--fs-h1`; never a raw rem/px size (drop caps excepted)
+- plate width: post cards and research plates share `--ms-plate-w` (22rem)
 
 ## Fixed Style Rules
 

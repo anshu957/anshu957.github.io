@@ -222,7 +222,7 @@ export default function PhasePortrait() {
           className="pp-svg"
           onClick={handleClick}
           role="img"
-          aria-label="Phase portrait of the PU.1/GATA1 toggle switch in its bistable regime: two committed-fate attractors, myeloid and erythroid, separated by a single saddle point at the center, the undecided progenitor, and the separatrix between their two basins. Click anywhere to drop a cell and watch it settle; toggle the fate map to flood the whole plane by destiny."
+          aria-label="Phase portrait of the PU.1/GATA1 toggle switch in its bistable regime: two committed-fate attractors, myeloid and erythroid, separated by a single saddle point at the center, the undecided progenitor, and the separatrix between their two basins. Click anywhere to drop a cell and watch it settle; toggle the fate map to color the whole plane by the fate each point reaches."
         >
           <defs>
             <marker id="pp-arrowhead" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="4.2" markerHeight="4.2" orient="auto-start-reverse">

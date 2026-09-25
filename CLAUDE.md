@@ -4,7 +4,7 @@ Working notes for AI assistants on this repo. For humans, start with **README.md
 
 ## What this is
 
-Personal academic site for **Anshul Choudhary** — blog-first, manuscript aesthetic (Tufte Ivory: ivory/dark, Crimson Pro, one rubric-red accent, vivid domain colors for categories only). CV is a PDF download on **About** only (no `/cv` page).
+Personal academic site for **Anshul Choudhary** — blog-first, manuscript aesthetic (Tufte Ivory: ivory/dark, Literata, one rubric-red accent, vivid domain colors for categories only). CV is a PDF download on **About** only (no `/cv` page).
 
 ## Commands
 
@@ -22,7 +22,7 @@ npm run preview   # serve dist/
 - **Data:** `src/data/site.js`, `career.js`, `aboutTimeline.js`, `research.js`, `cv.js`.
 - **Styles:** colours only in `src/styles/palette.json` → `npm run tokens` generates `tokens.css` (+ Manim/TikZ palettes). `BaseLayout` imports `tokens.css` + `base.css`; pages import `manuscript.css`.
 - **Interactivity:** `ThemeToggle.jsx`, `ManuscriptNavCat.jsx` → `NavCompanion.jsx` (dotLottie).
-- **Typography:** Crimson Pro (manuscript); JetBrains Mono for rails/kickers.
+- **Typography:** Literata (variable, opsz); JetBrains Mono for rails/kickers. Sizes only via the `--fs-*` scale in `base.css`.
 - **Icons:** `BrandIcon.astro` + simple-icons (Scholar, GitHub, ORCID).
 
 ## Pages
@@ -31,7 +31,7 @@ npm run preview   # serve dist/
 |------|-----------|
 | `/` | `ManuscriptHome.astro` |
 | `/about` | `ManuscriptAbout.astro` (timeline + bio + CV band) |
-| `/blog` | inline in `pages/blog/index.astro` |
+| `/blog` | `pages/blog/index.astro` — open spiral lab notebook, two A4 pages. Left page = contents, never turns: Find box, GitHub-style contribution calendar (one year at a time, a square per post day coloured by project), project filters, list by year (two columns once a year has >12 entries; scrolls inside the page). Right page = the entry the reader points at (No., date, title, dek, card figure, Project / Length / Tags, Read →). ≤760px: contents only, no preview page |
 | `/blog/[slug]` | MDX + `Sidenote.astro` |
 | `/research` | `pages/research.astro` |
 
